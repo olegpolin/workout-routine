@@ -35,6 +35,7 @@
 	},
 	"dependencies": {
 		"@supabase/ssr": "^0.7.0",
-		"@supabase/supabase-js": "^2.80.0"
+		"@supabase/supabase-js": "^2.80.0",
+		"zod": "^4.1.12"
 	}
 }
