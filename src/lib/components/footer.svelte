@@ -1,0 +1,37 @@
+<script lang="ts">
+  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+  import { buttonVariants } from '$lib/components/ui/button';
+  import { resetMode, setMode } from 'mode-watcher';
+  import SunIcon from '@lucide/svelte/icons/sun';
+  import MoonIcon from '@lucide/svelte/icons/moon';
+</script>
+
+<footer class="w-full flex flex-row items-center justify-between gap-8 p-8">
+  <p class="text-sm text-muted-foreground">
+    Made with
+    <a class="font-medium underline underline-offset-4" href="https://svelte.dev" target="_blank" rel="noopener noreferrer">
+      SvelteKit
+    </a>,
+    <a class="font-medium underline underline-offset-4" href="https://supabase.com" target="_blank" rel="noopener noreferrer">
+      Supabase
+    </a>,
+    <a class="font-medium underline underline-offset-4" href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer">
+      Tailwind
+    </a> &amp;
+    <a class="font-medium underline underline-offset-4" href="https://shadcn-svelte.com" target="_blank" rel="noopener noreferrer">
+      shadcn-svelte
+    </a>.
+  </p>
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+      <SunIcon class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 !transition-all dark:-rotate-90 dark:scale-0" />
+      <MoonIcon class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 !transition-all dark:rotate-0 dark:scale-100" />
+      <span class="sr-only">Toggle theme</span>
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Content align="end">
+      <DropdownMenu.Item onclick={() => setMode('light')}>Light</DropdownMenu.Item>
+      <DropdownMenu.Item onclick={() => setMode('dark')}>Dark</DropdownMenu.Item>
+      <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
+    </DropdownMenu.Content>
+  </DropdownMenu.Root>
+</footer>
