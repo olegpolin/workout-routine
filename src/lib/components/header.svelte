@@ -13,12 +13,12 @@
 
   const navMenuLinks = [
     {
-      title: 'Home',
-      href: '/'
+      title: 'Browse',
+      href: '/browse'
     },
     {
-      title: 'Workout Routines',
-      href: '/workout-routines'
+      title: 'Create Routine',
+      href: '/new'
     }
   ];
 
