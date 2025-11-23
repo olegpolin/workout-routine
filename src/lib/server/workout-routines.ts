@@ -38,9 +38,9 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
       .single();
     const href = `/${profileData?.username ?? 'unknown'}/routines/${workoutRoutinesData[i].slug}`;
 
-    const uses_numbered_days = workoutRoutinesData[i].uses_numbered_days;
+    const usesNumberedDays = workoutRoutinesData[i].uses_numbered_days;
 
-    let days_preview: DayPreview[] = [];
+    let daysPreview: DayPreview[] = [];
     const { data: workoutDaysData } = await supabase
       .from('workout_days')
       .select('id, day_number, day_label')
@@ -50,22 +50,26 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
     if (!workoutDaysData) {
       continue;
     }
+    let totalExercises = 0;
     for (let j = 0; j < workoutDaysData.length; j++) {
       const { data: workoutExercisesData } = await supabase
         .from('workout_exercises')
         .select('id')
         .eq('workout_day_id', workoutDaysData[j].id);
-      days_preview.push({
-        day_label: workoutDaysData[j].day_label,
-        num_exercises: workoutExercisesData ? workoutExercisesData.length : 0,
+      const numExercises = workoutExercisesData ? workoutExercisesData.length : 0;
+      daysPreview.push({
+        dayLabel: workoutDaysData[j].day_label,
+        numExercises,
       });
+      totalExercises += numExercises;
     }
 
     workoutRoutines.push({
       name,
       href,
-      uses_numbered_days,
-      days_preview,
+      usesNumberedDays,
+      daysPreview,
+      totalExercises,
     });
   }
 
