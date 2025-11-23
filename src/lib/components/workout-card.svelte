@@ -29,7 +29,7 @@
         <p class="text-sm text-muted-foreground">No workout days yet</p>
       {:else}
         <ul class="flex flex-col gap-1">
-          {#each daysPreview as day, index}
+          {#each daysPreview.slice(0, 3) as day, index}
             {@const dayLabel = day.dayLabel ? `: ${day.dayLabel}` : ''}
             <li class="flex flex-row gap-2 justify-between">
               <p class="text-sm text-muted-foreground">

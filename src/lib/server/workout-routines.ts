@@ -45,8 +45,7 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
       .from('workout_days')
       .select('id, day_number, day_label')
       .eq('workout_routine_id', workoutRoutinesData[i].id)
-      .order('day_number', { ascending: true })
-      .limit(3);
+      .order('day_number', { ascending: true });
     if (!workoutDaysData) {
       continue;
     }
