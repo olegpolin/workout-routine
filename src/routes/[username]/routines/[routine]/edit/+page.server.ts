@@ -45,6 +45,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
 
     workoutDaysWithExercises.push({
       id: day.id,
+      day_label: day.day_label ?? undefined,
       notes: day.notes ?? undefined,
       workout_exercises: (workoutExercisesData ?? []).map((exercise) => ({
         id: exercise.id,
@@ -62,6 +63,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
     name: workoutRoutineData.name,
     slug: workoutRoutineData.slug,
     description: workoutRoutineData.description ?? undefined,
+    uses_numbered_days: workoutRoutineData.uses_numbered_days,
     workout_days: [
       ...workoutDaysWithExercises,
     ],
@@ -70,6 +72,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
   if (initialWorkoutFormData.workout_days.length === 0) {
     initialWorkoutFormData.workout_days.push({
       id: undefined,
+      day_label: undefined,
       notes: undefined,
       workout_exercises: [],
     });
@@ -113,6 +116,7 @@ export const actions: Actions = {
         name: workoutForm.data.name,
         slug: workoutForm.data.slug,
         description: workoutForm.data.description,
+        uses_numbered_days: workoutForm.data.uses_numbered_days,
       })
       .eq('id', existingRoutineData.id)
       .eq('user_id', session.user.id);
@@ -147,6 +151,7 @@ export const actions: Actions = {
           .from('workout_days')
           .update({
             day_number: dayNumber,
+            day_label: submittedDay.day_label,
             notes: submittedDay.notes,
           })
           .eq('id', submittedDay.id)
@@ -163,6 +168,7 @@ export const actions: Actions = {
           .insert({
             workout_routine_id: existingRoutineData.id,
             day_number: dayNumber,
+            day_label: submittedDay.day_label,
             notes: submittedDay.notes,
           })
           .select('id')

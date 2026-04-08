@@ -21,6 +21,15 @@
   let { data }: { data: { workoutForm: SuperValidated<Infer<WorkoutFormSchema>> } } = $props();
 
   let saveError = $state(false);
+  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  const getDayTitle = (index: number, usesNumberedDays: boolean) => {
+    if (usesNumberedDays) {
+      return `Day ${index + 1}`;
+    }
+
+    return weekdays[index % weekdays.length];
+  };
 
   const workoutForm = superForm(data.workoutForm, {
     validators: zod4Client(workoutFormSchema),
@@ -87,8 +96,18 @@
   <div class="flex flex-col gap-4 border rounded-lg p-4">
     <h2 class="text-2xl font-semibold">Schedule</h2>
 
+    <Button
+      onclick={() => {
+        $formData.uses_numbered_days = !$formData.uses_numbered_days;
+        $formData = $formData;
+      }}
+    >
+      {$formData.uses_numbered_days ? 'Use Weekdays' : 'Use Numbers'}
+    </Button>
+
     <Button onclick={() => {
       $formData.workout_days.push({
+        day_label: undefined,
         workout_exercises: []
       });
       $formData = $formData;
@@ -98,9 +117,19 @@
       {#each $formData.workout_days as day, index}
         <Accordion.Item value={index.toString()}>
           <Accordion.Trigger class="text-lg">
-            Day {index + 1}
+            {getDayTitle(index, $formData.uses_numbered_days)}
           </Accordion.Trigger>
           <Accordion.Content class="flex flex-col gap-4">
+            <Form.Field form={workoutForm} name="workout_days[{index}].day_label">
+              <Form.Control>
+                {#snippet children({ props })}
+                  <Form.Label>Daily Focus</Form.Label>
+                  <Input {...props} placeholder="e.g. Push, Pull, Legs" bind:value={$formData.workout_days[index].day_label} />
+                {/snippet}
+              </Form.Control>
+              <Form.FieldErrors />
+            </Form.Field>
+
             <Button onclick={() => {
               $formData.workout_days[index].workout_exercises.push({
                 name: '',

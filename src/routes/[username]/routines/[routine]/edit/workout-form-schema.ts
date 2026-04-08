@@ -5,9 +5,11 @@ export const workoutFormSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters long').max(100, 'Name must be at most 100 characters long'),
   slug: z.string().min(3, 'Slug must be at least 3 characters long').max(100, 'Slug must be at most 100 characters long'),
   description: z.optional(z.string().max(1000, 'Description must be at most 1000 characters long')),
+  uses_numbered_days: z.boolean(),
   workout_days: z.array(
     z.object({
       id: z.optional(z.int()),
+      day_label: z.optional(z.string().max(100, 'Daily focus must be at most 100 characters long')),
       notes: z.optional(z.string().max(500, 'Notes must be at most 500 characters long')),
       workout_exercises: z.array(
         z.object({
