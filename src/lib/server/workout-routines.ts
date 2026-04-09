@@ -36,7 +36,7 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
       .select('username')
       .eq('id', workoutRoutinesData[i].user_id)
       .single();
-    const href = `/${profileData?.username ?? 'unknown'}/routines/${workoutRoutinesData[i].slug}`;
+    const href = `/${profileData?.username ?? 'unknown'}/${workoutRoutinesData[i].slug}`;
 
     const usesNumberedDays = workoutRoutinesData[i].uses_numbered_days;
 

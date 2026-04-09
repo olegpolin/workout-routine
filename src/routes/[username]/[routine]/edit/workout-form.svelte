@@ -111,7 +111,7 @@
         {#snippet children({ props })}
           <Form.Label>Slug</Form.Label>
           <InputGroup.Root>
-            <InputGroup.Addon>/{page.data.profile?.username}/routines/</InputGroup.Addon>
+            <InputGroup.Addon>/{page.data.profile?.username}/</InputGroup.Addon>
             <InputGroup.Input {...props} bind:value={$formData.slug} placeholder="my-workout-routine" />
           </InputGroup.Root>
         {/snippet}
