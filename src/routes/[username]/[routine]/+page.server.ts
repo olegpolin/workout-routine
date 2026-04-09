@@ -25,12 +25,26 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 
   const { data: workoutDaysData } = await supabase
     .from('workout_days')
-    .select('id, day_number, day_label, notes')
+    .select(`
+      id, 
+      day_number, 
+      day_label, 
+      notes,
+      workout_exercises (
+        id,
+        name,
+        sets,
+        reps,
+        weight,
+        notes
+      )
+    `)
     .eq('workout_routine_id', workoutRoutine.id)
     .order('day_number', { ascending: true });
 
   return {
     userProfile,
     workoutRoutine,
+    workoutDaysData
   };
 };
