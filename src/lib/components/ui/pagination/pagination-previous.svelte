@@ -12,7 +12,7 @@
 <PaginationLink
 	aria-label="Go to previous page"
 	size="default"
-	class={cn("pl-1.5!", className)}
+	class={cn("pl-2!", className)}
 	{...restProps}
 >
 	<ChevronLeftIcon data-icon="inline-start" />

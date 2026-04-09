@@ -20,7 +20,7 @@
 <PaginationPrimitive.NextButton
 	bind:ref
 	aria-label="Go to next page"
-	class={cn(buttonVariants({ variant: "ghost" }), "pr-1.5!", className)}
+	class={cn(buttonVariants({ variant: "ghost" }), "pr-2!", className)}
 	{...restProps}
 >
 	{#if children}

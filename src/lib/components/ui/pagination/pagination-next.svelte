@@ -12,7 +12,7 @@
 <PaginationLink
 	aria-label="Go to next page"
 	size="default"
-	class={cn("pr-1.5!", className)}
+	class={cn("pr-2!", className)}
 	{...restProps}
 >
 	<span class="cn-pagination-next-text hidden sm:block">Next</span>
