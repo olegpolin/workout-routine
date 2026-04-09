@@ -26,6 +26,7 @@
 
   let saveError = $state(false);
   let deleteDialogOpen = $state<boolean[]>([]);
+  let deleteExerciseDialogOpen = $state<Record<string, boolean>>({});
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const getDayTitle = (index: number, usesNumberedDays: boolean) => {
@@ -41,6 +42,16 @@
     deleteDialogOpen = deleteDialogOpen;
   };
 
+  const getExerciseDialogKey = (dayIndex: number, exerciseIndex: number) => `${dayIndex}-${exerciseIndex}`;
+
+  const setDeleteExerciseDialogOpen = (dayIndex: number, exerciseIndex: number, open: boolean) => {
+    const key = getExerciseDialogKey(dayIndex, exerciseIndex);
+    deleteExerciseDialogOpen = {
+      ...deleteExerciseDialogOpen,
+      [key]: open,
+    };
+  };
+
   const markDayForDeletion = (index: number) => {
     const dayId = $formData.workout_days[index]?.id;
     if (dayId) {
@@ -49,6 +60,12 @@
     $formData.workout_days.splice(index, 1);
     $formData = $formData;
     setDeleteDialogOpen(index, false);
+  };
+
+  const markExerciseForDeletion = (dayIndex: number, exerciseIndex: number) => {
+    $formData.workout_days[dayIndex].workout_exercises.splice(exerciseIndex, 1);
+    $formData = $formData;
+    setDeleteExerciseDialogOpen(dayIndex, exerciseIndex, false);
   };
 
   const workoutForm = superForm(data.workoutForm, {
@@ -213,7 +230,40 @@
             {/if}
 
             {#each $formData.workout_days[index].workout_exercises as exercise, eIndex}
-              <div class="flex flex-col gap-4 border rounded-lg p-4">
+              <div class="relative flex flex-col gap-4 border rounded-lg p-4">
+                <AlertDialog.Root
+                  open={deleteExerciseDialogOpen[getExerciseDialogKey(index, eIndex)] ?? false}
+                  onOpenChange={(open) => setDeleteExerciseDialogOpen(index, eIndex, open)}
+                >
+                  <AlertDialog.Trigger
+                    type="button"
+                    class="absolute right-3 top-3 text-destructive hover:bg-destructive/10 rounded-md p-1 transition-colors"
+                    aria-label={`Delete ${exercise.name?.trim() || 'exercise'}`}
+                  >
+                    <Trash2Icon class="size-4" />
+                  </AlertDialog.Trigger>
+                  <AlertDialog.Content>
+                    <AlertDialog.Header>
+                      <AlertDialog.Title>Delete this exercise?</AlertDialog.Title>
+                      <AlertDialog.Description>
+                        This exercise will be removed when you save the workout routine.
+                      </AlertDialog.Description>
+                    </AlertDialog.Header>
+                    <AlertDialog.Footer>
+                      <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
+                      <AlertDialog.Action
+                        type="button"
+                        variant="destructive"
+                        onclick={() => {
+                          markExerciseForDeletion(index, eIndex);
+                        }}
+                      >
+                        Delete
+                      </AlertDialog.Action>
+                    </AlertDialog.Footer>
+                  </AlertDialog.Content>
+                </AlertDialog.Root>
+
                 <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].name">
                   <Form.Control>
                     {#snippet children({ props })}
