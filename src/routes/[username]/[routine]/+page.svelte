@@ -5,6 +5,16 @@
   import { Badge } from '$lib/components/ui/badge';
 
   let { data }: PageProps = $props();
+
+  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  const getDayTitle = (dayNumber: number) => {
+    if (data.workoutRoutine.uses_numbered_days) {
+      return `Day ${dayNumber}`;
+    }
+
+    return weekdays[dayNumber - 1] ?? `Day ${dayNumber}`;
+  };
 </script>
 
 <div class="space-y-6">
@@ -32,14 +42,21 @@
           <div class="rounded-xl border bg-card text-card-foreground shadow">
             <div class="flex flex-col space-y-1.5 p-6 pb-4">
               <div class="flex items-center justify-between">
-                <h3 class="font-semibold leading-none tracking-tight text-lg">
-                  {day.day_label || `Day ${day.day_number}`}
+                <h3 class="font-semibold leading-none tracking-tight text-lg sm:text-xl">
+                  {getDayTitle(day.day_number)}
                 </h3>
-                {#if day.workout_exercises && day.workout_exercises.length > 0}
-                  <!-- Badge optional, assuming we don't have tags in db -->
-                {:else}
-                  <Badge variant="secondary">Rest Day</Badge>
-                {/if}
+                <div class="flex items-center gap-2">
+                  {#if day.day_label?.trim()}
+                    <Badge variant="outline" class="h-10! px-5 text-base font-semibold sm:h-11! sm:px-6 sm:text-lg">
+                      {day.day_label}
+                    </Badge>
+                  {/if}
+                  {#if !day.workout_exercises || day.workout_exercises.length === 0}
+                    <Badge variant="secondary" class="h-10! px-5 text-base font-semibold sm:h-11! sm:px-6 sm:text-lg">
+                      Rest Day
+                    </Badge>
+                  {/if}
+                </div>
               </div>
             </div>
             <div class="p-6 pt-0">
