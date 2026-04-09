@@ -1,11 +1,23 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import type { PageProps } from './$types';
   import WorkoutCard from '$lib/components/workout-card.svelte';
-  import { Button } from '$lib/components/ui/button';
+  import * as Pagination from '$lib/components/ui/pagination';
 
   let { data }: PageProps = $props();
 
   const browseHref = (page: number) => (page <= 1 ? '/browse' : `/browse?page=${page}`);
+
+  const handlePageChange = async (nextPage: number) => {
+    if (nextPage === data.page) {
+      return;
+    }
+
+    await goto(browseHref(nextPage), {
+      keepFocus: true,
+      noScroll: true,
+    });
+  };
 </script>
 
 <div class="flex flex-col items-center gap-16 my-8">
@@ -29,13 +41,39 @@
     </div>
   {/if}
 
-  <div class="w-full flex items-center justify-center gap-3">
-    <Button href={browseHref(data.page - 1)} variant="outline" disabled={!data.hasPreviousPage}>
-      Previous
-    </Button>
+  <div class="w-full flex flex-col items-center gap-3">
+    <Pagination.Root
+      count={data.totalWorkoutRoutines}
+      perPage={data.pageSize}
+      page={data.page}
+      onPageChange={handlePageChange}
+    >
+      {#snippet children({ pages, currentPage })}
+        <Pagination.Content>
+          <Pagination.Item>
+            <Pagination.PrevButton />
+          </Pagination.Item>
+
+          {#each pages as page (page.key)}
+            {#if page.type === 'ellipsis'}
+              <Pagination.Item>
+                <Pagination.Ellipsis />
+              </Pagination.Item>
+            {:else}
+              <Pagination.Item>
+                <Pagination.Link {page} isActive={currentPage === page.value}>
+                  {page.value}
+                </Pagination.Link>
+              </Pagination.Item>
+            {/if}
+          {/each}
+
+          <Pagination.Item>
+            <Pagination.NextButton />
+          </Pagination.Item>
+        </Pagination.Content>
+      {/snippet}
+    </Pagination.Root>
     <p class="text-sm text-muted-foreground">Page {data.page}</p>
-    <Button href={browseHref(data.page + 1)} variant="outline" disabled={!data.hasNextPage}>
-      Next
-    </Button>
   </div>
 </div>

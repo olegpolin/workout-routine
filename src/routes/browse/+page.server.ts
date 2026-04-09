@@ -8,10 +8,13 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
   const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
   const offset = (page - 1) * PAGE_SIZE;
 
-  const workoutRoutinesWithProbe = await getPreviews(supabase, {
-    limit: PAGE_SIZE + 1,
-    offset,
-  });
+  const [{ count: totalWorkoutRoutines }, workoutRoutinesWithProbe] = await Promise.all([
+    supabase.from('workout_routines').select('id', { count: 'exact', head: true }),
+    getPreviews(supabase, {
+      limit: PAGE_SIZE + 1,
+      offset,
+    }),
+  ]);
 
   const hasNextPage = workoutRoutinesWithProbe.length > PAGE_SIZE;
   const workoutRoutines = hasNextPage
@@ -21,6 +24,8 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
   return {
     workoutRoutines,
     page,
+    pageSize: PAGE_SIZE,
+    totalWorkoutRoutines: totalWorkoutRoutines ?? 0,
     hasNextPage,
     hasPreviousPage: page > 1,
   };
