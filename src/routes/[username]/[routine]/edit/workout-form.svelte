@@ -30,6 +30,16 @@
   let deleteExerciseDialogOpen = $state<Record<string, boolean>>({});
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+  const slugify = (value: string) => value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
   const getDayTitle = (index: number, usesNumberedDays: boolean) => {
     if (usesNumberedDays) {
       return `Day ${index + 1}`;
@@ -101,7 +111,15 @@
       <Form.Control>
         {#snippet children({ props })}
           <Form.Label>Workout Routine Name</Form.Label>
-          <Input {...props} bind:value={$formData.name} placeholder="My Workout Routine" />
+          <Input
+            {...props}
+            bind:value={$formData.name}
+            placeholder="My Workout Routine"
+            oninput={(event) => {
+              $formData.slug = slugify((event.currentTarget as HTMLInputElement).value);
+              $formData = $formData;
+            }}
+          />
         {/snippet}
       </Form.Control>
       <Form.FieldErrors />
