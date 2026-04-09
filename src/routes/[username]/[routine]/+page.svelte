@@ -42,7 +42,7 @@
           <div class="rounded-xl border bg-card text-card-foreground shadow">
             <div class="flex flex-col space-y-1.5 p-6 pb-4">
               <div class="flex items-center justify-between">
-                <h3 class="font-semibold leading-none tracking-tight text-lg sm:text-xl">
+                <h3 class="font-semibold leading-none tracking-tight text-xl sm:text-2xl">
                   {getDayTitle(day.day_number)}
                 </h3>
                 <div class="flex items-center gap-2">
