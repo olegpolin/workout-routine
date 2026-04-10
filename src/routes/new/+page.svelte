@@ -4,15 +4,16 @@
 
 <section class="relative mx-auto my-auto flex min-h-136 w-full max-w-3xl flex-col items-center justify-center gap-10 px-6 py-14 text-center">
   <div class="pointer-events-none absolute inset-0 -z-10">
-    <div class="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-tr from-sky-300/85 via-cyan-200/70 to-emerald-200/75 dark:from-sky-200/55 dark:via-cyan-100/45 dark:to-emerald-100/50 blur-3xl"></div>
+    <div class="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl"></div>
   </div>
 
   <div class="space-y-3">
-    <p class="text-sm tracking-[0.18em] text-muted-foreground uppercase">New Routine</p>
-    <h1 class="text-4xl font-semibold sm:text-5xl">Start from scratch.</h1>
+    <p class="text-sm tracking-[0.18em] text-primary uppercase font-semibold">New Routine</p>
+    <h1 class="text-4xl font-bold sm:text-6xl text-foreground tracking-tight">Create. Save. <span class="text-primary">Share.</span></h1>
+    <p class="text-muted-foreground text-lg mt-4 max-w-lg mx-auto">Create and save a workout routine to never forget your split.</p>
   </div>
 
-  <form method="POST" action="?/create" class="flex h-56 items-center justify-center">
-    <Button type="submit" size="lg" class="h-12 min-w-56 text-base">Create Workout Routine</Button>
+  <form method="POST" action="?/create" class="flex h-32 items-center justify-center">
+    <Button type="submit" size="lg" class="rounded-xl font-bold px-8 h-14 text-lg">Create Workout Routine</Button>
   </form>
 </section>

@@ -34,41 +34,34 @@
   ]);
 </script>
 
-<header class="w-full flex flex-row items-center justify-between gap-4 p-4">
-  <div class="md:basis-1/3">
-    <a class="inline-flex items-center gap-2 text-2xl font-semibold" href="/">
-      <DumbbellIcon class="text-blue-500" />
+<header class="w-full flex flex-row items-center justify-between gap-4 py-4 px-2">
+  <div class="flex items-center gap-3">
+    <div class="bg-primary rounded-lg p-1.5 flex items-center justify-center">
+      <DumbbellIcon class="text-primary-foreground h-5 w-5" />
+    </div>
+    <a class="text-2xl font-bold tracking-tight text-foreground" href="/">
       Workout Routine
     </a>
   </div>
 
-  <NavigationMenu.Root class="md:basis-1/3 max-md:hidden">
-    <NavigationMenu.List>
-      {#each navMenuLinks as link}
-        <NavigationMenu.Item>
-          <NavigationMenu.Link>
-            {#snippet child()}
-              <a href={link.href} class={navigationMenuTriggerStyle()}>{link.title}</a>
-            {/snippet}
-          </NavigationMenu.Link>
-        </NavigationMenu.Item>
-      {/each}
-    </NavigationMenu.List>
-  </NavigationMenu.Root>
+  <div class="flex items-center gap-4">
+    <Button variant="outline" class="hidden md:flex rounded-xl" href="/browse">
+      Browse
+    </Button>
+    <Button class="hidden md:flex rounded-xl" href="/new">
+      Create Routine
+    </Button>
 
-  <div class="md:basis-1/3 flex justify-end">
     {#if !page.data.session}
-      <Button class="max-md:hidden" href="/login" variant="secondary">
+      <Button class="max-md:hidden rounded-xl" href="/login" variant="secondary">
         Log in
       </Button>
     {:else}
       <DropdownMenu.Root>
         <DropdownMenu.Trigger class="max-md:hidden">
-          <Avatar.Root>
+          <Avatar.Root class="h-10 w-10 border border-border">
             <Avatar.Image src={page.data.profile?.avatar_url} alt="Profile picture" />
-            <Avatar.Fallback>
-              <UserIcon />
-            </Avatar.Fallback>
+            <Avatar.Fallback class="bg-muted"><UserIcon class="h-5 w-5 text-muted-foreground" /></Avatar.Fallback>
           </Avatar.Root>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
