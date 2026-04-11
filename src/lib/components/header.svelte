@@ -7,7 +7,7 @@
   import * as Sheet from '$lib/components/ui/sheet';
   import { Button, buttonVariants } from '$lib/components/ui/button';
   import ProfileCard from '$lib/components/profile-card.svelte';
-  import DumbbellIcon from '@lucide/svelte/icons/dumbbell';
+  import favicon from '$lib/assets/favicon.svg';
   import MenuIcon from '@lucide/svelte/icons/menu';
   import UserIcon from '@lucide/svelte/icons/user';
 
@@ -36,8 +36,8 @@
 
 <header class="w-full flex flex-row items-center justify-between gap-4 py-4 px-2">
   <div class="flex items-center gap-3">
-    <div class="bg-primary rounded-lg p-1.5 flex items-center justify-center">
-      <DumbbellIcon class="text-primary-foreground h-5 w-5" />
+    <div class="rounded-lg flex items-center justify-center overflow-hidden">
+      <img src={favicon} alt="YourSplit logo" class="h-8 w-8" />
     </div>
     <a class="text-2xl font-bold tracking-tight text-foreground" href="/">
       YourSplit
