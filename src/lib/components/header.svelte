@@ -40,7 +40,7 @@
       <DumbbellIcon class="text-primary-foreground h-5 w-5" />
     </div>
     <a class="text-2xl font-bold tracking-tight text-foreground" href="/">
-      Workout Routine
+      YourSplit
     </a>
   </div>
 
