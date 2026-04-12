@@ -137,7 +137,7 @@
           <Form.Label>Slug</Form.Label>
           <InputGroup.Root class="h-auto min-h-9 flex-wrap sm:flex-nowrap rounded-2xl sm:rounded-4xl">
             <InputGroup.Addon class="max-w-32 sm:max-w-none truncate text-base md:text-sm">/{page.data.profile?.username}/</InputGroup.Addon>
-            <InputGroup.Input class="min-w-0" {...props} bind:value={$formData.slug} placeholder="my-workout-routine" />
+            <InputGroup.Input class="min-w-0" {...props} bind:value={$formData.slug} placeholder="my-workout-routine" disabled />
           </InputGroup.Root>
         {/snippet}
       </Form.Control>
