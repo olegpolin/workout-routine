@@ -77,7 +77,7 @@
           </InputGroup.Root>
         {/snippet}
       </Form.Control>
-      <Form.Description>This is your unique username.</Form.Description>
+      <Form.Description>Use lowercase letters, numbers, and dashes only.</Form.Description>
       <Form.FieldErrors />
     </Form.Field>
   </div>
