@@ -7,6 +7,7 @@
   import * as Alert from '$lib/components/ui/alert';
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import * as Accordion from '$lib/components/ui/accordion';
+  import * as Collapsible from '$lib/components/ui/collapsible';
   import { Accordion as AccordionPrimitive } from 'bits-ui';
   import { Button, buttonVariants } from '$lib/components/ui/button';
   import { toast } from 'svelte-sonner';
@@ -131,18 +132,29 @@
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Field form={workoutForm} name="slug">
-      <Form.Control>
-        {#snippet children({ props })}
-          <Form.Label>Slug</Form.Label>
-          <InputGroup.Root class="h-auto min-h-9 flex-wrap sm:flex-nowrap rounded-2xl sm:rounded-4xl">
-            <InputGroup.Addon class="max-w-32 sm:max-w-none truncate text-base md:text-sm">yoursplit.com/{page.data.profile?.username}/</InputGroup.Addon>
-            <InputGroup.Input class="min-w-0" {...props} bind:value={$formData.slug} placeholder="my-workout-routine" disabled />
-          </InputGroup.Root>
-        {/snippet}
-      </Form.Control>
-      <Form.FieldErrors />
-    </Form.Field>
+    <Collapsible.Root class="-mt-2 space-y-2">
+      <Collapsible.Trigger
+        type="button"
+        class={buttonVariants({ variant: 'outline', size: 'sm', class: 'w-fit gap-1.5 px-2.5 text-xs' })}
+      >
+        View URL
+        <ChevronDownIcon class="size-4" />
+      </Collapsible.Trigger>
+      <Collapsible.Content>
+        <Form.Field form={workoutForm} name="slug">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Slug</Form.Label>
+              <InputGroup.Root class="h-auto min-h-9 flex-wrap sm:flex-nowrap rounded-2xl sm:rounded-4xl">
+                <InputGroup.Addon class="max-w-32 sm:max-w-none truncate text-base md:text-sm">yoursplit.com/{page.data.profile?.username}/</InputGroup.Addon>
+                <InputGroup.Input class="min-w-0" {...props} bind:value={$formData.slug} placeholder="my-workout-routine" disabled />
+              </InputGroup.Root>
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+      </Collapsible.Content>
+    </Collapsible.Root>
 
     <Form.Field form={workoutForm} name="description">
       <Form.Control>
