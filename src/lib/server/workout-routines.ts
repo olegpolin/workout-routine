@@ -91,10 +91,12 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
     });
 
     const totalExercises = daysPreview.reduce((sum, day) => sum + day.numExercises, 0);
+    const username = profileById.get(routine.user_id) ?? 'unknown';
 
     return {
       name: routine.name,
-      href: `/${profileById.get(routine.user_id) ?? 'unknown'}/${routine.slug}`,
+      username,
+      href: `/${username}/${routine.slug}`,
       usesNumberedDays: routine.uses_numbered_days,
       workoutType: routine.workout_type,
       workoutDifficulty: routine.workout_difficulty,

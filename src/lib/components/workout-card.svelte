@@ -5,6 +5,7 @@
   };
   export type WorkoutRoutineCardProps = {
     name: string;
+    username: string;
     href: string;
     usesNumberedDays: boolean;
     workoutType: string;
@@ -19,7 +20,7 @@
   import { Separator } from '$lib/components/ui/separator';
   import { toast } from 'svelte-sonner';
 
-  let { name, href, usesNumberedDays, workoutType, workoutDifficulty, daysPreview, totalExercises }: WorkoutRoutineCardProps = $props();
+  let { name, username, href, usesNumberedDays, workoutType, workoutDifficulty, daysPreview, totalExercises }: WorkoutRoutineCardProps = $props();
 
   const workoutDaysCount = $derived(daysPreview.filter(d => d.numExercises > 0).length);
   const restDaysCount = $derived(daysPreview.length - workoutDaysCount);
@@ -45,7 +46,10 @@
     <Card.Header class="pb-2">
       <div class="flex flex-wrap items-start justify-between gap-2 sm:gap-4">
         <div class="flex min-w-0 flex-col gap-2">
-          <Card.Title class="text-lg sm:text-xl font-bold text-foreground wrap-break-word">{name}</Card.Title>
+          <div class="flex flex-col">
+            <Card.Title class="text-lg sm:text-xl font-bold text-foreground wrap-break-word">{name}</Card.Title>
+            <p class="text-sm text-muted-foreground font-medium">@{username}</p>
+          </div>
           <div class="flex flex-wrap gap-2 text-xs">
             <span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 font-semibold text-primary">
               {formatEnumLabel(workoutType)}
