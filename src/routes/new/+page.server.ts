@@ -35,6 +35,8 @@ export const actions: Actions = {
         user_id: session.user.id,
         name: 'My Workout Routine',
         slug,
+        workout_type: 'other',
+        workout_difficulty: 'other',
         uses_numbered_days: true,
       });
 

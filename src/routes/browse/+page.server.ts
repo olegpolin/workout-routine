@@ -2,8 +2,8 @@ import type { PageServerLoad } from './$types';
 import { getPreviews } from '$lib/server/workout-routines';
 
 const PAGE_SIZE = 12;
-const WORKOUT_TYPES = ['strength', 'cardio', 'flexibility', 'calisthenics'] as const;
-const WORKOUT_DIFFICULTIES = ['beginner', 'intermediate', 'advanced'] as const;
+const WORKOUT_TYPES = ['strength', 'cardio', 'flexibility', 'calisthenics', 'other'] as const;
+const WORKOUT_DIFFICULTIES = ['beginner', 'intermediate', 'advanced', 'other'] as const;
 
 export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
   const pageParam = Number.parseInt(url.searchParams.get('page') ?? '1', 10);

@@ -64,8 +64,8 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
     name: workoutRoutineData.name,
     slug: workoutRoutineData.slug,
     description: workoutRoutineData.description ?? undefined,
-    workout_type: workoutRoutineData.workout_type ?? 'strength',
-    workout_difficulty: workoutRoutineData.workout_difficulty ?? 'beginner',
+    workout_type: workoutRoutineData.workout_type ?? 'other',
+    workout_difficulty: workoutRoutineData.workout_difficulty ?? 'other',
     uses_numbered_days: workoutRoutineData.uses_numbered_days,
     deleted_day_ids: [],
     workout_days: [

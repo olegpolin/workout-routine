@@ -13,6 +13,7 @@
     { label: 'Cardio', value: 'cardio' },
     { label: 'Flexibility', value: 'flexibility' },
     { label: 'Calisthenics', value: 'calisthenics' },
+    { label: 'Other', value: 'other' },
   ] as const;
 
   const workoutDifficultyOptions = [
@@ -20,6 +21,7 @@
     { label: 'Beginner', value: 'beginner' },
     { label: 'Intermediate', value: 'intermediate' },
     { label: 'Advanced', value: 'advanced' },
+    { label: 'Other', value: 'other' },
   ] as const;
 
   const filterButtonClass =

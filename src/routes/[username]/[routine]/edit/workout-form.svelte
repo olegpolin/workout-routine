@@ -39,11 +39,13 @@
     { value: 'cardio', label: 'Cardio' },
     { value: 'flexibility', label: 'Flexibility' },
     { value: 'calisthenics', label: 'Calisthenics' },
+    { value: 'other', label: 'Other' },
   ] as const;
   const workoutDifficultyOptions = [
     { value: 'beginner', label: 'Beginner' },
     { value: 'intermediate', label: 'Intermediate' },
     { value: 'advanced', label: 'Advanced' },
+    { value: 'other', label: 'Other' },
   ] as const;
 
   const slugify = (value: string) => value

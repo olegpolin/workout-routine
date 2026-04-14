@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-const workoutTypeValues = ['strength', 'cardio', 'flexibility', 'calisthenics'] as const;
-const workoutDifficultyValues = ['beginner', 'intermediate', 'advanced'] as const;
+const workoutTypeValues = ['strength', 'cardio', 'flexibility', 'calisthenics', 'other'] as const;
+const workoutDifficultyValues = ['beginner', 'intermediate', 'advanced', 'other'] as const;
 
 export const workoutFormSchema = z.object({
   id: z.optional(z.int()),
