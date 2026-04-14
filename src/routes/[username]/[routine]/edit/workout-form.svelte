@@ -336,6 +336,7 @@
                           <InputGroup.Text>lbs</InputGroup.Text>
                         </InputGroup.Addon>
                       </InputGroup.Root>
+                      <Form.Description>Use 0 for bodyweight exercises.</Form.Description>
                     {/snippet}
                   </Form.Control>
                   <Form.FieldErrors />
