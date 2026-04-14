@@ -36,12 +36,6 @@
     }
   });
   const { form: formData, enhance, submitting } = accountForm;
-
-  function usernameIsDefault(): boolean {
-    const username = data.profile?.username;
-    if (!username) return false;
-    return username.startsWith('user-') && username.length === 41;
-  }
 </script>
 
 <form class="w-full flex flex-col gap-8" method="POST" action="?/update" use:enhance>
@@ -57,7 +51,7 @@
   </Form.Field>
 
   <div class="flex flex-col gap-4">
-    {#if usernameIsDefault()}
+    {#if data.hasDefaultUsername}
       <Alert.Root>
         <AlertCircleIcon />
         <Alert.Title>Set your username</Alert.Title>
@@ -73,7 +67,11 @@
           <Form.Label>Username</Form.Label>
           <InputGroup.Root>
             <InputGroup.Addon>@</InputGroup.Addon>
-            <InputGroup.Input {...props} bind:value={$formData.username} />
+            <InputGroup.Input
+              {...props}
+              bind:value={$formData.username}
+              placeholder={data.hasDefaultUsername ? 'Set a username' : ''}
+            />
           </InputGroup.Root>
         {/snippet}
       </Form.Control>

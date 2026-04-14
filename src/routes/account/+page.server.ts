@@ -5,6 +5,11 @@ import { zod4 } from "sveltekit-superforms/adapters";
 import { accountFormSchema } from './account-form-schema';
 import { signoutFormSchema } from './signout-form-schema';
 
+function isDefaultUsername(username?: string | null): boolean {
+  if (!username) return false;
+  return /^user-[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(username);
+}
+
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
   const { session } = await safeGetSession();
   if (!session) {
@@ -17,10 +22,18 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     .eq('id', session.user.id)
     .single();
 
+  const profileForForm = profile
+    ? {
+        ...profile,
+        username: isDefaultUsername(profile.username) ? '' : profile.username,
+      }
+    : profile;
+
   return {
-    accountForm: await superValidate(profile, zod4(accountFormSchema)),
+    accountForm: await superValidate(profileForForm, zod4(accountFormSchema)),
     signoutForm: await superValidate(zod4(signoutFormSchema)),
     session,
+    hasDefaultUsername: Boolean(profile?.username && isDefaultUsername(profile.username)),
   };
 };
 
