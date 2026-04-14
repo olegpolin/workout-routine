@@ -323,25 +323,27 @@
                   <Form.FieldErrors />
                 </Form.Field>
 
-                <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].sets">
-                  <Form.Control>
-                    {#snippet children({ props })}
-                      <Form.Label>Sets</Form.Label>
-                      <Input {...props} type="number" bind:value={$formData.workout_days[index].workout_exercises[eIndex].sets} />
-                    {/snippet}
-                  </Form.Control>
-                  <Form.FieldErrors />
-                </Form.Field>
+                <div class="grid grid-cols-2 gap-4">
+                  <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].sets">
+                    <Form.Control>
+                      {#snippet children({ props })}
+                        <Form.Label>Sets</Form.Label>
+                        <Input {...props} type="number" bind:value={$formData.workout_days[index].workout_exercises[eIndex].sets} />
+                      {/snippet}
+                    </Form.Control>
+                    <Form.FieldErrors />
+                  </Form.Field>
 
-                <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].reps">
-                  <Form.Control>
-                    {#snippet children({ props })}
-                      <Form.Label>Reps</Form.Label>
-                      <Input {...props} type="number" bind:value={$formData.workout_days[index].workout_exercises[eIndex].reps} />
-                    {/snippet}
-                  </Form.Control>
-                  <Form.FieldErrors />
-                </Form.Field>
+                  <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].reps">
+                    <Form.Control>
+                      {#snippet children({ props })}
+                        <Form.Label>Reps</Form.Label>
+                        <Input {...props} type="number" bind:value={$formData.workout_days[index].workout_exercises[eIndex].reps} />
+                      {/snippet}
+                    </Form.Control>
+                    <Form.FieldErrors />
+                  </Form.Field>
+                </div>
               </div>
             {/each}
           </Accordion.Content>
