@@ -1,24 +1,31 @@
 <script lang="ts">
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import { buttonVariants } from '$lib/components/ui/button';
+  import { Button, buttonVariants } from '$lib/components/ui/button';
   import { resetMode, setMode } from 'mode-watcher';
   import SunIcon from '@lucide/svelte/icons/sun';
   import MoonIcon from '@lucide/svelte/icons/moon';
+  import GitHubIcon from '$lib/assets/icons/github-icon.svelte';
 </script>
 
 <footer class="w-full flex flex-row items-center justify-between gap-8 p-8">
-  <p class="text-sm text-muted-foreground">
-    Created by
-    <a class="font-medium underline underline-offset-4" href="https://olegpolin.com" target="_blank" rel="noopener noreferrer">
-      Oleg
-    </a>,
-    <a class="font-medium underline underline-offset-4" href="https://github.com/bodenharris" target="_blank" rel="noopener noreferrer">
-      Boden
-    </a> &amp;
-    <a class="font-medium underline underline-offset-4" href="https://github.com/lukesantos34" target="_blank" rel="noopener noreferrer">
-      Luke
-    </a>.
-  </p>
+  <div class="flex flex-row items-center gap-4">
+    <Button variant="ghost" size="icon" href="https://github.com/yoursplit/yoursplit.com" target="_blank" rel="noopener noreferrer">
+      <GitHubIcon />
+    </Button>
+    <p class="text-sm text-muted-foreground">
+      Created by
+      <a class="font-medium underline underline-offset-4" href="https://olegpolin.com" target="_blank" rel="noopener noreferrer">
+        Oleg
+      </a>,
+      <a class="font-medium underline underline-offset-4" href="https://github.com/bodenharris" target="_blank" rel="noopener noreferrer">
+        Boden
+      </a> &amp;
+      <a class="font-medium underline underline-offset-4" href="https://github.com/lukesantos34" target="_blank" rel="noopener noreferrer">
+        Luke
+      </a>.
+    </p>
+  </div>
+
   <DropdownMenu.Root>
     <DropdownMenu.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
       <SunIcon class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 !transition-all dark:-rotate-90 dark:scale-0" />
