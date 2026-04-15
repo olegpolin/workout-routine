@@ -168,7 +168,7 @@
                         <Table.Cell class="font-bold text-foreground py-4">{exercise.name}</Table.Cell>
                         <Table.Cell class="font-bold text-foreground py-4">{exercise.sets || '—'}</Table.Cell>
                         <Table.Cell class="font-bold text-primary py-4">{exercise.reps || '—'}</Table.Cell>
-                        <Table.Cell class="font-bold text-foreground py-4">{exercise.weight === 0 ? 'Bodyweight' : exercise.weight ? `${exercise.weight} ${data.workoutRoutine.weight_unit || 'lbs'}` : '—'}</Table.Cell>
+                        <Table.Cell class="font-bold text-foreground py-4">{exercise.weight ? `${exercise.weight} ${data.workoutRoutine.weight_unit || 'lbs'}` : '—'}</Table.Cell>
                         <Table.Cell class="text-muted-foreground py-4">{exercise.notes || '—'}</Table.Cell>
                       </Table.Row>
                     {/each}
