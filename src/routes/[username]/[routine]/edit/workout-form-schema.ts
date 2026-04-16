@@ -1,7 +1,5 @@
 import { z } from 'zod';
-
-const workoutTypeValues = ['strength', 'cardio', 'flexibility', 'calisthenics', 'other'] as const;
-const workoutDifficultyValues = ['beginner', 'intermediate', 'advanced', 'other'] as const;
+import { SLUG_REGEX, WORKOUT_DIFFICULTIES, WORKOUT_TYPES } from '$lib/constants';
 
 export const workoutFormSchema = z.object({
   id: z.optional(z.int()),
@@ -10,12 +8,12 @@ export const workoutFormSchema = z.object({
     .min(3, 'Slug must be at least 3 characters long')
     .max(100, 'Slug must be at most 100 characters long')
     .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      SLUG_REGEX,
       'Slug must be lowercase and can only include letters, numbers, and single dashes'
     ),
   description: z.optional(z.string().max(1000, 'Description must be at most 1000 characters long')),
-  workout_type: z.enum(workoutTypeValues),
-  workout_difficulty: z.enum(workoutDifficultyValues),
+  workout_type: z.enum(WORKOUT_TYPES),
+  workout_difficulty: z.enum(WORKOUT_DIFFICULTIES),
   uses_numbered_days: z.boolean(),
   deleted_day_ids: z.array(z.int()).default([]),
   workout_days: z.array(

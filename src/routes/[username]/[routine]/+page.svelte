@@ -7,10 +7,11 @@
   import * as Card from '$lib/components/ui/card';
   import { toast } from 'svelte-sonner';
   import ProfileCard from '$lib/components/profile-card.svelte';
+  import { WEEKDAYS } from '$lib/constants';
 
   let { data }: PageProps = $props();
 
-  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const weekdays = WEEKDAYS;
 
   const getDayTitle = (dayNumber: number) => {
     if (data.workoutRoutine.uses_numbered_days) {

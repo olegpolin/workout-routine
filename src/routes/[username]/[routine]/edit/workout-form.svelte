@@ -26,6 +26,7 @@
   import Trash2Icon from '@lucide/svelte/icons/trash-2';
   import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
   import ListOrderedIcon from '@lucide/svelte/icons/list-ordered';
+  import { WEEKDAYS, WORKOUT_DIFFICULTY_OPTIONS, WORKOUT_TYPE_OPTIONS } from '$lib/constants';
 
   let { data }: { data: PageData & { workoutForm: SuperValidated<Infer<WorkoutFormSchema>> } } = $props();
 
@@ -33,20 +34,9 @@
   let deleteRoutineDialogOpen = $state(false);
   let deleteDialogOpen = $state<boolean[]>([]);
   let deleteExerciseDialogOpen = $state<Record<string, boolean>>({});
-  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const workoutTypeOptions = [
-    { value: 'strength', label: 'Strength' },
-    { value: 'cardio', label: 'Cardio' },
-    { value: 'flexibility', label: 'Flexibility' },
-    { value: 'calisthenics', label: 'Calisthenics' },
-    { value: 'other', label: 'Other' },
-  ] as const;
-  const workoutDifficultyOptions = [
-    { value: 'beginner', label: 'Beginner' },
-    { value: 'intermediate', label: 'Intermediate' },
-    { value: 'advanced', label: 'Advanced' },
-    { value: 'other', label: 'Other' },
-  ] as const;
+  const weekdays = WEEKDAYS;
+  const workoutTypeOptions = WORKOUT_TYPE_OPTIONS;
+  const workoutDifficultyOptions = WORKOUT_DIFFICULTY_OPTIONS;
 
   const slugify = (value: string) => value
     .normalize('NFKD')

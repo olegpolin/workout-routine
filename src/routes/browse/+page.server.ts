@@ -1,9 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { getPreviews, getSearchMatchedRoutineIds } from '$lib/server/workout-routines';
+import { isWorkoutDifficulty, isWorkoutType } from '$lib/constants';
 
 const PAGE_SIZE = 12;
-const WORKOUT_TYPES = ['strength', 'cardio', 'flexibility', 'calisthenics', 'other'] as const;
-const WORKOUT_DIFFICULTIES = ['beginner', 'intermediate', 'advanced', 'other'] as const;
 
 export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
   const pageParam = Number.parseInt(url.searchParams.get('page') ?? '1', 10);
@@ -15,10 +14,10 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
   const searchParam = url.searchParams.get('search')?.trim() ?? '';
   const search = searchParam.length > 0 ? searchParam : null;
 
-  const workoutType = workoutTypeParam && WORKOUT_TYPES.includes(workoutTypeParam as (typeof WORKOUT_TYPES)[number])
+  const workoutType = workoutTypeParam && isWorkoutType(workoutTypeParam)
     ? workoutTypeParam
     : null;
-  const workoutDifficulty = workoutDifficultyParam && WORKOUT_DIFFICULTIES.includes(workoutDifficultyParam as (typeof WORKOUT_DIFFICULTIES)[number])
+  const workoutDifficulty = workoutDifficultyParam && isWorkoutDifficulty(workoutDifficultyParam)
     ? workoutDifficultyParam
     : null;
 

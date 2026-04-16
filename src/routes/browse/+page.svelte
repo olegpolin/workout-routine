@@ -5,25 +5,12 @@
   import WorkoutCard from '$lib/components/workout-card.svelte';
   import { Input } from '$lib/components/ui/input';
   import * as Pagination from '$lib/components/ui/pagination';
+  import { WORKOUT_DIFFICULTY_FILTER_OPTIONS, WORKOUT_TYPE_FILTER_OPTIONS } from '$lib/constants';
 
   let { data }: PageProps = $props();
 
-  const workoutTypeOptions = [
-    { label: 'All', value: null },
-    { label: 'Strength', value: 'strength' },
-    { label: 'Cardio', value: 'cardio' },
-    { label: 'Flexibility', value: 'flexibility' },
-    { label: 'Calisthenics', value: 'calisthenics' },
-    { label: 'Other', value: 'other' },
-  ] as const;
-
-  const workoutDifficultyOptions = [
-    { label: 'All', value: null },
-    { label: 'Beginner', value: 'beginner' },
-    { label: 'Intermediate', value: 'intermediate' },
-    { label: 'Advanced', value: 'advanced' },
-    { label: 'Other', value: 'other' },
-  ] as const;
+  const workoutTypeOptions = WORKOUT_TYPE_FILTER_OPTIONS;
+  const workoutDifficultyOptions = WORKOUT_DIFFICULTY_FILTER_OPTIONS;
 
   const filterButtonClass =
     'px-5 py-2 rounded-full border border-border bg-background text-foreground hover:bg-muted text-sm transition-all';
