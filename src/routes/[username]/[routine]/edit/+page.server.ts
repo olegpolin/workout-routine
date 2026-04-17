@@ -136,8 +136,9 @@ export const actions: Actions = {
 
     const { data: existingDaysData, error: existingDaysError } = await supabase
       .from('workout_days')
-      .select('id')
-      .eq('workout_routine_id', existingRoutineData.id);
+      .select('id, day_number')
+      .eq('workout_routine_id', existingRoutineData.id)
+      .order('id', { ascending: true });
     if (existingDaysError) {
       console.log('Fetch days error:');
       console.log(existingDaysError);
@@ -145,6 +146,12 @@ export const actions: Actions = {
     }
 
     const existingDayIds = new Set((existingDaysData ?? []).map((day) => day.id));
+    const existingDayIdByNumber = new Map<number, number>();
+    for (const day of existingDaysData ?? []) {
+      if (!existingDayIdByNumber.has(day.day_number)) {
+        existingDayIdByNumber.set(day.day_number, day.id);
+      }
+    }
 
     const dayIdsMarkedForDeletion = [
       ...new Set([
@@ -201,6 +208,23 @@ export const actions: Actions = {
           error(500);
         }
         savedDayId = submittedDay.id;
+      } else if (existingDayIdByNumber.has(dayNumber)) {
+        const matchedDayId = existingDayIdByNumber.get(dayNumber) as number;
+        const { error: updateDayByNumberError } = await supabase
+          .from('workout_days')
+          .update({
+            day_number: dayNumber,
+            day_focus: submittedDay.day_focus,
+            notes: submittedDay.notes,
+          })
+          .eq('id', matchedDayId)
+          .eq('workout_routine_id', existingRoutineData.id);
+        if (updateDayByNumberError) {
+          console.log('Update day by number error:');
+          console.log(updateDayByNumberError);
+          error(500);
+        }
+        savedDayId = matchedDayId;
       } else {
         const { data: insertedDay, error: insertDayError } = await supabase
           .from('workout_days')
@@ -218,6 +242,7 @@ export const actions: Actions = {
           error(500);
         }
         savedDayId = insertedDay.id;
+        existingDayIdByNumber.set(dayNumber, savedDayId);
       }
 
       const { data: existingExercisesData, error: existingExercisesError } = await supabase
@@ -290,6 +315,63 @@ export const actions: Actions = {
           console.log(deleteExercisesError);
           error(500);
         }
+      }
+    }
+
+    const { data: daysAfterSaveData, error: daysAfterSaveError } = await supabase
+      .from('workout_days')
+      .select('id, day_number')
+      .eq('workout_routine_id', existingRoutineData.id)
+      .order('id', { ascending: true });
+    if (daysAfterSaveError) {
+      console.log('Fetch days after save error:');
+      console.log(daysAfterSaveError);
+      error(500);
+    }
+
+    const dayIdsToDelete: number[] = [];
+    const duplicateDayIdsByKeepId = new Map<number, number[]>();
+    const keepDayIdByNumber = new Map<number, number>();
+
+    for (const day of daysAfterSaveData ?? []) {
+      const keepId = keepDayIdByNumber.get(day.day_number);
+      if (!keepId) {
+        keepDayIdByNumber.set(day.day_number, day.id);
+        continue;
+      }
+
+      dayIdsToDelete.push(day.id);
+      const duplicates = duplicateDayIdsByKeepId.get(keepId) ?? [];
+      duplicates.push(day.id);
+      duplicateDayIdsByKeepId.set(keepId, duplicates);
+    }
+
+    for (const [keepId, duplicateIds] of duplicateDayIdsByKeepId.entries()) {
+      const { error: moveExercisesError } = await supabase
+        .from('workout_exercises')
+        .update({
+          workout_day_id: keepId,
+        })
+        .in('workout_day_id', duplicateIds);
+
+      if (moveExercisesError) {
+        console.log('Move duplicate day exercises error:');
+        console.log(moveExercisesError);
+        error(500);
+      }
+    }
+
+    if (dayIdsToDelete.length > 0) {
+      const { error: deleteDuplicateDaysError } = await supabase
+        .from('workout_days')
+        .delete()
+        .in('id', dayIdsToDelete)
+        .eq('workout_routine_id', existingRoutineData.id);
+
+      if (deleteDuplicateDaysError) {
+        console.log('Delete duplicate days error:');
+        console.log(deleteDuplicateDaysError);
+        error(500);
       }
     }
 
