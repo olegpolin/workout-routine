@@ -238,7 +238,7 @@ export const actions: Actions = {
             .from('workout_exercises')
             .update({
               name: submittedExercise.name,
-              weight: submittedExercise.weight,
+              weight: submittedExercise.weight ?? null,
               sets: submittedExercise.sets,
               reps: submittedExercise.reps,
               notes: submittedExercise.notes,
@@ -256,7 +256,7 @@ export const actions: Actions = {
             .insert({
               workout_day_id: savedDayId,
               name: submittedExercise.name,
-              weight: submittedExercise.weight,
+              weight: submittedExercise.weight ?? null,
               sets: submittedExercise.sets,
               reps: submittedExercise.reps,
               notes: submittedExercise.notes,
