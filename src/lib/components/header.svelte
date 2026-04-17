@@ -81,7 +81,7 @@
     {/if}
 
     <Sheet.Root>
-      <Sheet.Trigger class="md:hidden">
+      <Sheet.Trigger class="md:hidden" aria-label="Menu">
         <MenuIcon />
       </Sheet.Trigger>
       <Sheet.Content>
