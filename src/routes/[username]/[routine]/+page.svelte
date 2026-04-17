@@ -49,7 +49,7 @@
 <Seo title={data.workoutRoutine.name} />
 
 <div class="space-y-6 sm:space-y-8 max-w-5xl mx-auto w-full mt-2 sm:mt-4">
-  <a href="/browse" class="flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition-colors w-fit text-sm">
+  <a href="/browse" class="flex items-center gap-2 text-blue-500 font-medium hover:text-blue-500/80 transition-colors w-fit text-sm">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
     Back to Browse
   </a>
@@ -93,7 +93,7 @@
 
       <div class="mt-8 pt-8 border-t border-border flex flex-wrap gap-8 items-center text-foreground">
         <div class="flex items-center gap-4">
-          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-primary">
+          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-blue-500">
             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
           </div>
           <div class="flex flex-col">
@@ -103,7 +103,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-primary">
+          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-blue-500">
             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
           </div>
           <div class="flex flex-col">
@@ -113,7 +113,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-primary">
+          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-blue-500">
             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>
           </div>
           <div class="flex flex-col">
@@ -137,7 +137,7 @@
             </h3>
             <div class="flex flex-wrap items-center gap-2">
               {#if day.day_focus?.trim()}
-                <span class="px-5 py-2 rounded-full border border-primary/30 text-primary bg-primary/10 text-sm font-semibold">
+                <span class="px-5 py-2 rounded-full border border-primary/30 text-blue-500 bg-primary/10 text-sm font-semibold">
                   {day.day_focus}
                 </span>
               {/if}
@@ -168,7 +168,7 @@
                         <Table.Cell class="font-bold text-muted-foreground text-center py-4">{index + 1}</Table.Cell>
                         <Table.Cell class="font-bold text-foreground py-4">{exercise.name}</Table.Cell>
                         <Table.Cell class="font-bold text-foreground py-4">{exercise.sets || '—'}</Table.Cell>
-                        <Table.Cell class="font-bold text-primary py-4">{exercise.reps || '—'}</Table.Cell>
+                        <Table.Cell class="font-bold text-blue-500 py-4">{exercise.reps || '—'}</Table.Cell>
                         <Table.Cell class="font-bold text-foreground py-4">{exercise.weight ? `${exercise.weight} ${data.workoutRoutine.weight_unit || 'lbs'}` : '—'}</Table.Cell>
                         <Table.Cell class="text-muted-foreground py-4">{exercise.notes || '—'}</Table.Cell>
                       </Table.Row>

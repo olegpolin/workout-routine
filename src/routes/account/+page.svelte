@@ -18,7 +18,7 @@
   <div class="flex flex-col items-center gap-12 relative z-10 w-full">
     <div class="flex flex-col items-center gap-3 sm:gap-4">
       <h1 class="text-3xl sm:text-5xl text-center font-bold tracking-tight text-foreground">
-        Account <span class="text-primary">Settings</span>
+        Account <span class="text-blue-500">Settings</span>
       </h1>
       <p class="text-base sm:text-lg text-center text-muted-foreground font-medium max-w-md px-2">
         Manage your profile information and preferences

@@ -119,7 +119,7 @@
 <div class="flex flex-col items-center gap-10 sm:gap-16 my-6 sm:my-8">
   <div class="flex flex-col items-center gap-3 sm:gap-4 mb-2">
     <h1 class="text-3xl sm:text-5xl text-center font-bold tracking-tight text-foreground mb-2">
-      Discover Your Next <span class="text-primary">Workout</span>
+      Discover Your Next <span class="text-blue-500">Workout</span>
     </h1>
     <p class="text-base sm:text-lg text-center text-muted-foreground font-medium max-w-lg px-2">
       Browse community-created workout routines and start your fitness journey today

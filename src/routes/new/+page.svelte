@@ -23,8 +23,8 @@
   </div>
 
   <div class="space-y-3">
-    <p class="text-sm tracking-[0.18em] text-primary uppercase font-semibold">New Routine</p>
-    <h1 class="text-3xl font-bold sm:text-6xl text-foreground tracking-tight">Create. Save. <span class="text-primary">Share.</span></h1>
+    <p class="text-sm tracking-[0.18em] text-blue-500 uppercase font-semibold">New Routine</p>
+    <h1 class="text-3xl font-bold sm:text-6xl text-foreground tracking-tight">Create. Save. <span class="text-blue-500">Share.</span></h1>
     <p class="text-muted-foreground text-base sm:text-lg mt-4 max-w-lg mx-auto px-2">Create and save a workout routine to never forget your split.</p>
   </div>
 
