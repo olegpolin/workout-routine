@@ -23,6 +23,7 @@
   import Loader2Icon from '@lucide/svelte/icons/loader-2';
   import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
   import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
+  import XIcon from '@lucide/svelte/icons/x';
   import Trash2Icon from '@lucide/svelte/icons/trash-2';
   import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
   import ListOrderedIcon from '@lucide/svelte/icons/list-ordered';
@@ -386,6 +387,19 @@
                         />
                         <InputGroup.Addon align="inline-end">
                           <InputGroup.Text>lbs</InputGroup.Text>
+                          <InputGroup.Button
+                            type="button"
+                            size="icon-xs"
+                            variant="outline"
+                            aria-label="Clear weight"
+                            disabled={$formData.workout_days[index].workout_exercises[eIndex].weight === undefined}
+                            onclick={() => {
+                              $formData.workout_days[index].workout_exercises[eIndex].weight = undefined;
+                              $formData = $formData;
+                            }}
+                          >
+                            <XIcon />
+                          </InputGroup.Button>
                         </InputGroup.Addon>
                       </InputGroup.Root>
                       <Form.Description>Weight is not required.</Form.Description>
