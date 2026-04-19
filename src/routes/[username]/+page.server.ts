@@ -71,6 +71,60 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
 
   const isOwnProfile = Boolean(session && session.user.id === userProfile.id);
   let isFollowing = false;
+  let favoriteRoutines: Array<{ name: string; username: string; href: string }> = [];
+  let numFavoriteRoutines = 0;
+
+  const { count: favoriteCount } = await supabase
+    .from('favorites')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', userProfile.id);
+
+  numFavoriteRoutines = favoriteCount ?? 0;
+
+  const { data: favoriteRows } = await supabase
+    .from('favorites')
+    .select('routine_id')
+    .eq('user_id', userProfile.id)
+    .order('created_at', { ascending: false })
+    .limit(8);
+
+  const routineIds = [...new Set((favoriteRows ?? []).map((row) => row.routine_id))];
+
+  if (routineIds.length > 0) {
+    const { data: routinesData } = await supabase
+      .from('workout_routines')
+      .select('id, user_id, name, slug')
+      .in('id', routineIds);
+
+    const ownerIds = [...new Set((routinesData ?? []).map((routine) => routine.user_id))];
+    const { data: ownersData } = await supabase
+      .from('profiles')
+      .select('id, username')
+      .in('id', ownerIds);
+
+    const ownerUsernameById = new Map((ownersData ?? []).map((owner) => [owner.id, owner.username]));
+    const routineById = new Map((routinesData ?? []).map((routine) => [routine.id, routine]));
+
+    favoriteRoutines = routineIds
+      .map((routineId) => {
+        const routine = routineById.get(routineId);
+        if (!routine) {
+          return null;
+        }
+
+        const username = ownerUsernameById.get(routine.user_id);
+        if (!username) {
+          return null;
+        }
+
+        return {
+          name: routine.name,
+          username,
+          href: `/${username}/${routine.slug}`,
+        };
+      })
+      .filter((routine): routine is NonNullable<typeof routine> => Boolean(routine));
+  }
 
   if (session && !isOwnProfile) {
     const { count: relationshipCount } = await supabase
@@ -91,6 +145,8 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
     isOwnProfile,
     isFollowing,
     isLoggedIn: Boolean(session),
+    favoriteRoutines,
+    numFavoriteRoutines,
   };
 };
 

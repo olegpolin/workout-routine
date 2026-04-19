@@ -237,6 +237,37 @@
           </Button>
         {/if}
       {/if}
+
+      <div class="w-full max-w-md rounded-2xl border border-border bg-muted/30 p-4">
+        <div class="mb-2 flex items-center justify-between">
+          <h2 class="text-sm font-semibold tracking-wide text-foreground uppercase">Favorites</h2>
+          <span class="text-xs text-muted-foreground">{data.numFavoriteRoutines}</span>
+        </div>
+
+        {#if data.favoriteRoutines.length > 0}
+          <div class="flex flex-col gap-1">
+            {#each data.favoriteRoutines as routine (routine.href)}
+              <a
+                href={routine.href}
+                class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-xl px-3 py-2`}
+              >
+                <span class="min-w-0 text-left">
+                  <span class="block truncate font-medium">{routine.name}</span>
+                  <span class="block truncate text-muted-foreground text-xs">@{routine.username}</span>
+                </span>
+              </a>
+            {/each}
+          </div>
+
+          {#if data.numFavoriteRoutines > data.favoriteRoutines.length}
+            <p class="mt-2 text-xs text-muted-foreground">
+              Showing recent {data.favoriteRoutines.length} favorites.
+            </p>
+          {/if}
+        {:else}
+          <p class="text-sm text-muted-foreground">No favorites yet.</p>
+        {/if}
+      </div>
     </div>
 
     <div class="md:basis-1/2 flex flex-col gap-4">
