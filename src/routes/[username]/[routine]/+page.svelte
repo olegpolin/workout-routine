@@ -60,6 +60,15 @@
       }
     };
   };
+
+  const scrollToDay = (dayNumber: number) => {
+    if (typeof document !== 'undefined') {
+      const element = document.getElementById(`day-${dayNumber}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 </script>
 
 <Seo title={data.workoutRoutine.name} />
@@ -166,9 +175,25 @@
   <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-10 sm:mt-12 mb-4">Weekly Schedule</h2>
   
   {#if data.workoutDaysData}
+    <div class="mb-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
+      {#each data.workoutDaysData as day}
+        {@const isRestDay = !day.workout_exercises || day.workout_exercises.length === 0}
+        <Button 
+          variant={isRestDay ? "outline" : "default"}
+          class="h-auto py-3 flex-col gap-1 w-full"
+          onclick={() => scrollToDay(day.day_number)}
+        >
+          <span class="text-sm font-semibold">{getDayTitle(day.day_number)}</span>
+          <span class="text-xs font-normal opacity-80 truncate w-full px-1 text-center">
+            {isRestDay ? 'Rest' : (day.day_focus || `${day.workout_exercises?.length || 0} exercises`)}
+          </span>
+        </Button>
+      {/each}
+    </div>
+
     <div class="space-y-6">
       {#each data.workoutDaysData as day}
-        <Card.Root class="rounded-2xl overflow-hidden shadow-sm">
+        <Card.Root id="day-{day.day_number}" class="rounded-2xl overflow-hidden shadow-sm scroll-mt-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-6 border-b">
             <h3 class="font-bold text-lg sm:text-2xl text-foreground">
               {getDayTitle(day.day_number)}
