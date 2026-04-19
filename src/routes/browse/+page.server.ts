@@ -12,7 +12,9 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
   const workoutTypeParam = url.searchParams.get('type');
   const workoutDifficultyParam = url.searchParams.get('difficulty');
   const searchParam = url.searchParams.get('search')?.trim() ?? '';
+  const followingParam = url.searchParams.get('following');
   const search = searchParam.length > 0 ? searchParam : null;
+  const followingOnly = followingParam === 'true';
 
   const workoutType = workoutTypeParam && isWorkoutType(workoutTypeParam)
     ? workoutTypeParam
@@ -20,6 +22,50 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
   const workoutDifficulty = workoutDifficultyParam && isWorkoutDifficulty(workoutDifficultyParam)
     ? workoutDifficultyParam
     : null;
+
+  let followingUserIds: string[] | null = null;
+  if (followingOnly) {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      return {
+        workoutRoutines: [],
+        page,
+        pageSize: PAGE_SIZE,
+        totalWorkoutRoutines: 0,
+        workoutType,
+        workoutDifficulty,
+        search,
+        followingOnly,
+        hasNextPage: false,
+        hasPreviousPage: page > 1,
+      };
+    }
+
+    const { data: followingRows } = await supabase
+      .from('follows')
+      .select('following_id')
+      .eq('follower_id', session.user.id);
+
+    followingUserIds = [...new Set((followingRows ?? []).map((row) => row.following_id))];
+
+    if (followingUserIds.length === 0) {
+      return {
+        workoutRoutines: [],
+        page,
+        pageSize: PAGE_SIZE,
+        totalWorkoutRoutines: 0,
+        workoutType,
+        workoutDifficulty,
+        search,
+        followingOnly,
+        hasNextPage: false,
+        hasPreviousPage: page > 1,
+      };
+    }
+  }
 
   const searchMatchedRoutineIds = search
     ? await getSearchMatchedRoutineIds(supabase, search)
@@ -34,6 +80,7 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
       workoutType,
       workoutDifficulty,
       search,
+      followingOnly,
       hasNextPage: false,
       hasPreviousPage: page > 1,
     };
@@ -55,12 +102,17 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
     workoutRoutinesCountQuery = workoutRoutinesCountQuery.in('id', searchMatchedRoutineIds);
   }
 
+  if (followingUserIds && followingUserIds.length > 0) {
+    workoutRoutinesCountQuery = workoutRoutinesCountQuery.in('user_id', followingUserIds);
+  }
+
   const [{ count: totalWorkoutRoutines }, workoutRoutinesWithProbe] = await Promise.all([
     workoutRoutinesCountQuery,
     getPreviews(supabase, {
       workout_type: workoutType ?? undefined,
       workout_difficulty: workoutDifficulty ?? undefined,
       routine_ids: searchMatchedRoutineIds ?? undefined,
+      user_ids: followingUserIds ?? undefined,
       limit: PAGE_SIZE + 1,
       offset,
     }),
@@ -79,6 +131,7 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
     workoutType,
     workoutDifficulty,
     search,
+    followingOnly,
     hasNextPage,
     hasPreviousPage: page > 1,
   };

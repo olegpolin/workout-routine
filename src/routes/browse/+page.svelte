@@ -22,6 +22,7 @@
     workoutType: string | null = data.workoutType,
     workoutDifficulty: string | null = data.workoutDifficulty,
     workoutSearch: string | null = data.search,
+    followingOnly: boolean = data.followingOnly,
   ) => {
     const params = new URLSearchParams();
 
@@ -35,6 +36,10 @@
 
     if (workoutSearch) {
       params.set('search', workoutSearch);
+    }
+
+    if (followingOnly) {
+      params.set('following', 'true');
     }
 
     if (page > 1) {
@@ -61,7 +66,7 @@
       return;
     }
 
-    await goto(browseHref(1, nextType, data.workoutDifficulty, data.search), {
+    await goto(browseHref(1, nextType, data.workoutDifficulty, data.search, data.followingOnly), {
       keepFocus: true,
       noScroll: true,
     });
@@ -72,7 +77,18 @@
       return;
     }
 
-    await goto(browseHref(1, data.workoutType, nextDifficulty, data.search), {
+    await goto(browseHref(1, data.workoutType, nextDifficulty, data.search, data.followingOnly), {
+      keepFocus: true,
+      noScroll: true,
+    });
+  };
+
+  const handleFollowingFilterChange = async (nextFollowingOnly: boolean) => {
+    if (nextFollowingOnly === data.followingOnly) {
+      return;
+    }
+
+    await goto(browseHref(1, data.workoutType, data.workoutDifficulty, data.search, nextFollowingOnly), {
       keepFocus: true,
       noScroll: true,
     });
@@ -96,7 +112,7 @@
       return;
     }
 
-    await goto(browseHref(1, data.workoutType, data.workoutDifficulty, nextSearch), {
+    await goto(browseHref(1, data.workoutType, data.workoutDifficulty, nextSearch, data.followingOnly), {
       keepFocus: true,
       noScroll: true,
     });
@@ -107,7 +123,7 @@
       return;
     }
 
-    await goto(browseHref(1, data.workoutType, data.workoutDifficulty, null), {
+    await goto(browseHref(1, data.workoutType, data.workoutDifficulty, null, data.followingOnly), {
       keepFocus: true,
       noScroll: true,
     });
@@ -178,6 +194,28 @@
             {option.label}
           </button>
         {/each}
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="text-muted-foreground text-sm mr-2">Creator:</span>
+
+        <button
+          type="button"
+          class={!data.followingOnly ? activeFilterButtonClass : filterButtonClass}
+          aria-pressed={!data.followingOnly}
+          onclick={() => handleFollowingFilterChange(false)}
+        >
+          Everyone
+        </button>
+
+        <button
+          type="button"
+          class={data.followingOnly ? activeFilterButtonClass : filterButtonClass}
+          aria-pressed={data.followingOnly}
+          onclick={() => handleFollowingFilterChange(true)}
+        >
+          Following
+        </button>
       </div>
     </div>
   </div>

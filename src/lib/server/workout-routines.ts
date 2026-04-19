@@ -3,6 +3,7 @@ import type { WorkoutRoutineCardProps, DayPreview } from '$lib/components/workou
 
 type Filters = {
   user_id?: string;
+  user_ids?: string[];
   workout_type?: string;
   workout_difficulty?: string;
   routine_ids?: string[];
@@ -71,6 +72,10 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
 
   if (filters?.user_id) {
     workoutRoutinesQuery = workoutRoutinesQuery.eq('user_id', filters.user_id);
+  }
+
+  if (filters?.user_ids) {
+    workoutRoutinesQuery = workoutRoutinesQuery.in('user_id', filters.user_ids);
   }
 
   if (filters?.workout_type) {
