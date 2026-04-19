@@ -86,48 +86,36 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
     };
   }
 
-  let workoutRoutinesCountQuery = supabase
-    .from('workout_routines')
-    .select('id', { count: 'exact', head: true });
+  const allWorkoutRoutines = await getPreviews(supabase, {
+    workout_type: workoutType ?? undefined,
+    workout_difficulty: workoutDifficulty ?? undefined,
+    routine_ids: searchMatchedRoutineIds ?? undefined,
+    user_ids: followingUserIds ?? undefined,
+    limit: 10000,
+    offset: 0,
+  });
 
-  if (workoutType) {
-    workoutRoutinesCountQuery = workoutRoutinesCountQuery.eq('workout_type', workoutType);
-  }
+  const sortedWorkoutRoutines = [...allWorkoutRoutines].sort((a, b) => {
+    if (b.favoritesCount !== a.favoritesCount) {
+      return b.favoritesCount - a.favoritesCount;
+    }
 
-  if (workoutDifficulty) {
-    workoutRoutinesCountQuery = workoutRoutinesCountQuery.eq('workout_difficulty', workoutDifficulty);
-  }
+    if (b.totalExercises !== a.totalExercises) {
+      return b.totalExercises - a.totalExercises;
+    }
 
-  if (searchMatchedRoutineIds && searchMatchedRoutineIds.length > 0) {
-    workoutRoutinesCountQuery = workoutRoutinesCountQuery.in('id', searchMatchedRoutineIds);
-  }
+    return a.name.localeCompare(b.name);
+  });
 
-  if (followingUserIds && followingUserIds.length > 0) {
-    workoutRoutinesCountQuery = workoutRoutinesCountQuery.in('user_id', followingUserIds);
-  }
-
-  const [{ count: totalWorkoutRoutines }, workoutRoutinesWithProbe] = await Promise.all([
-    workoutRoutinesCountQuery,
-    getPreviews(supabase, {
-      workout_type: workoutType ?? undefined,
-      workout_difficulty: workoutDifficulty ?? undefined,
-      routine_ids: searchMatchedRoutineIds ?? undefined,
-      user_ids: followingUserIds ?? undefined,
-      limit: PAGE_SIZE + 1,
-      offset,
-    }),
-  ]);
-
-  const hasNextPage = workoutRoutinesWithProbe.length > PAGE_SIZE;
-  const workoutRoutines = hasNextPage
-    ? workoutRoutinesWithProbe.slice(0, PAGE_SIZE)
-    : workoutRoutinesWithProbe;
+  const totalWorkoutRoutines = sortedWorkoutRoutines.length;
+  const workoutRoutines = sortedWorkoutRoutines.slice(offset, offset + PAGE_SIZE);
+  const hasNextPage = offset + PAGE_SIZE < totalWorkoutRoutines;
 
   return {
     workoutRoutines,
     page,
     pageSize: PAGE_SIZE,
-    totalWorkoutRoutines: totalWorkoutRoutines ?? 0,
+    totalWorkoutRoutines,
     workoutType,
     workoutDifficulty,
     search,

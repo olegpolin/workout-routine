@@ -12,6 +12,7 @@
     workoutDifficulty: string;
     daysPreview: DayPreview[];
     totalExercises: number;
+    favoritesCount: number;
   };
 </script>
 
@@ -20,7 +21,7 @@
   import { Separator } from '$lib/components/ui/separator';
   import { toast } from 'svelte-sonner';
 
-  let { name, username, href, usesNumberedDays, workoutType, workoutDifficulty, daysPreview, totalExercises }: WorkoutRoutineCardProps = $props();
+  let { name, username, href, usesNumberedDays, workoutType, workoutDifficulty, daysPreview, totalExercises, favoritesCount }: WorkoutRoutineCardProps = $props();
 
   const workoutDaysCount = $derived(daysPreview.filter(d => d.numExercises > 0).length);
   const restDaysCount = $derived(daysPreview.length - workoutDaysCount);
@@ -49,6 +50,9 @@
           <div class="flex flex-col">
             <Card.Title class="text-lg sm:text-xl font-bold text-foreground wrap-break-word">{name}</Card.Title>
             <p class="text-sm text-muted-foreground font-medium">@{username}</p>
+            <p class="text-xs text-muted-foreground font-medium mt-0.5">
+              {favoritesCount} {favoritesCount === 1 ? 'favorite' : 'favorites'}
+            </p>
           </div>
           <div class="flex flex-wrap gap-2 text-xs">
             <span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 font-semibold text-primary">

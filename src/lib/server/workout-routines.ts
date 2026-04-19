@@ -112,6 +112,7 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
 
   const dayIds = (workoutDaysData ?? []).map((day) => day.id);
   const exerciseCountByDayId = new Map<string, number>();
+  const favoritesCountByRoutineId = new Map<string, number>();
 
   if (dayIds.length > 0) {
     const { data: workoutExercisesData } = await supabase
@@ -122,6 +123,18 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
     for (const exercise of workoutExercisesData ?? []) {
       const dayId = exercise.workout_day_id;
       exerciseCountByDayId.set(dayId, (exerciseCountByDayId.get(dayId) ?? 0) + 1);
+    }
+  }
+
+  if (routineIds.length > 0) {
+    const { data: favoritesData } = await supabase
+      .from('favorites')
+      .select('routine_id')
+      .in('routine_id', routineIds);
+
+    for (const favorite of favoritesData ?? []) {
+      const routineId = favorite.routine_id;
+      favoritesCountByRoutineId.set(routineId, (favoritesCountByRoutineId.get(routineId) ?? 0) + 1);
     }
   }
 
@@ -161,6 +174,7 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
       workoutDifficulty: routine.workout_difficulty,
       daysPreview,
       totalExercises,
+      favoritesCount: favoritesCountByRoutineId.get(routine.id) ?? 0,
     };
   });
 }
