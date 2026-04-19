@@ -1,15 +1,19 @@
 <script lang="ts">
+  import { enhance } from '$app/forms';
   import type { PageProps } from './$types';
   import Seo from '$lib/components/seo.svelte';
   import { Button } from '$lib/components/ui/button';
+  import { Spinner } from '$lib/components/ui/spinner';
   import * as Table from '$lib/components/ui/table';
   import { Badge } from '$lib/components/ui/badge';
   import * as Card from '$lib/components/ui/card';
   import { toast } from 'svelte-sonner';
   import ProfileCard from '$lib/components/profile-card.svelte';
   import { WEEKDAYS } from '$lib/constants';
+  import HeartIcon from '@lucide/svelte/icons/heart';
 
   let { data }: PageProps = $props();
+  let isFavoritePending = $state(false);
 
   const weekdays = WEEKDAYS;
 
@@ -44,6 +48,18 @@
   // Assuming roughly 12 minutes per exercise for average duration calculation
   const AVG_MIN_PER_EXERCISE = 12;
   const avgDurationPerWorkoutDay = $derived(workoutDaysCount > 0 ? Math.round((totalExercises * AVG_MIN_PER_EXERCISE) / workoutDaysCount) : 0);
+
+  const enhanceFavorite = () => {
+    isFavoritePending = true;
+
+    return async ({ update }: { update: () => Promise<void> }) => {
+      try {
+        await update();
+      } finally {
+        isFavoritePending = false;
+      }
+    };
+  };
 </script>
 
 <Seo title={data.workoutRoutine.name} />
@@ -76,9 +92,31 @@
           <a href={`/${data.userProfile.username}`} class="block w-fit bg-muted/40 rounded-xl hover:bg-muted/80 transition-colors">
             <ProfileCard profile={data.userProfile} class="p-3" />
           </a>
+          <p class="text-sm text-muted-foreground font-medium px-1">
+            {data.favoritesCount} {data.favoritesCount === 1 ? 'favorite' : 'favorites'}
+          </p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2 sm:gap-3 self-start">
+          {#if data.isLoggedIn}
+            <form method="POST" action={data.isFavorited ? '?/unfavorite' : '?/favorite'} use:enhance={enhanceFavorite}>
+              <Button type="submit" variant="outline" class="rounded-xl" disabled={isFavoritePending}>
+                {#if isFavoritePending}
+                  <Spinner />
+                  {data.isFavorited ? 'Removing...' : 'Adding...'}
+                {:else}
+                  <HeartIcon class={`h-4 w-4 ${data.isFavorited ? 'fill-red-500 text-red-500' : 'text-foreground'}`} />
+                  {data.isFavorited ? 'Favorited' : 'Add to favorites'}
+                {/if}
+              </Button>
+            </form>
+          {:else}
+            <Button href="/login" variant="outline" class="rounded-xl">
+              <HeartIcon class="h-4 w-4" />
+              Add to favorites
+            </Button>
+          {/if}
+
           <Button variant="default" size="lg" class="rounded-xl font-semibold px-4 sm:px-6" onclick={shareWorkout}>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
             Share Workout
