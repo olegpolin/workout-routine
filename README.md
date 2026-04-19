@@ -2,6 +2,15 @@
 
 Create, save, and share workout routines.
 
+## Tech stack
+
+- [Svelte](https://svelte.dev)
+- [SvelteKit](https://svelte.dev/docs/kit)
+- [Tailwind CSS](https://tailwindcss.com)
+- [shadcn-svelte](https://www.shadcn-svelte.com)
+- [Supabase](https://supabase.com)
+- [Cloudflare Workers](https://workers.cloudflare.com)
+
 ## Developing
 
 Once you've installed dependencies with `npm install`, start a development server:
