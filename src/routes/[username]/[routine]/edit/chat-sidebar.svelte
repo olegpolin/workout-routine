@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { slide } from 'svelte/transition';
   import Bot from '@lucide/svelte/icons/bot';
   import Send from '@lucide/svelte/icons/send';
   import User from '@lucide/svelte/icons/user';
@@ -69,8 +70,8 @@
   }
 </script>
 
-<div class="flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden {open ? 'h-135 lg:h-[calc(100vh-10rem)]' : ''}">
-  <div class="p-4 border-b bg-muted/30">
+<div class="flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden">
+  <div class="p-4 bg-muted/30 {open ? 'border-b' : ''}">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2 font-semibold">
         <Bot class="w-5 h-5 text-primary" />
@@ -83,6 +84,7 @@
   </div>
 
   {#if open}
+  <div class="flex flex-col h-105 lg:h-[calc(100vh-16rem)]" transition:slide={{ duration: 250 }}>
   <ScrollArea class="flex-1 min-h-0 px-4">
     <div class="flex flex-col gap-4 py-4">
       {#each messages as msg}
@@ -126,6 +128,7 @@
         <Send class="w-4 h-4" />
       </Button>
     </form>
+  </div>
   </div>
   {/if}
 </div>
