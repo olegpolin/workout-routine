@@ -9,7 +9,22 @@ const groq = new Groq({ apiKey: GROQ_API_KEY });
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { message, currentData } = await request.json();
+    const { message, currentData, chatHistory } = await request.json();
+
+    const sanitizedChatHistory = Array.isArray(chatHistory)
+      ? chatHistory
+          .filter(
+            (item: unknown): item is { role: 'user' | 'assistant'; content: string } =>
+              typeof item === 'object' &&
+              item !== null &&
+              'role' in item &&
+              'content' in item &&
+              ((item as { role?: unknown }).role === 'user' || (item as { role?: unknown }).role === 'assistant') &&
+              typeof (item as { content?: unknown }).content === 'string'
+          )
+          .map((item) => ({ role: item.role, content: item.content.trim() }))
+          .filter((item) => item.content.length > 0)
+      : [];
 
     const responseSchema = z.object({
       message: z.string().describe("Friendly message to the user that explicitly includes a concise summary of what was changed in the routine."),
@@ -43,6 +58,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
       Return valid JSON only, with proper objects/arrays (never stringified JSON).` 
         },
+              ...sanitizedChatHistory,
         {
           role: "user",
           content: `Here is my current workout routine data:\n${JSON.stringify(currentData, null, 2)}\n\nHere is my request/goal: ${message}`

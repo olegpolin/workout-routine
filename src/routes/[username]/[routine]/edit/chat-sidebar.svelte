@@ -59,6 +59,7 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          chatHistory: messages.map((msg) => ({ role: msg.role, content: msg.content })),
           message: currentMessage,
           currentData: $formData
         })
