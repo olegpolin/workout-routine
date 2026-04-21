@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import { slide } from 'svelte/transition';
   import Bot from '@lucide/svelte/icons/bot';
   import Send from '@lucide/svelte/icons/send';
@@ -21,6 +22,27 @@
   ]);
   let inputMessage = $state('');
   let isLoading = $state(false);
+  let chatViewport: HTMLElement | null = $state(null);
+
+  async function scrollToBottom() {
+    await tick();
+
+    if (!chatViewport) return;
+
+    chatViewport.scrollTo({
+      top: chatViewport.scrollHeight,
+      behavior: 'smooth'
+    });
+  }
+
+  $effect(() => {
+    if (!open) return;
+
+    messages.length;
+    isLoading;
+
+    scrollToBottom();
+  });
 
   async function sendMessage() {
     if (!inputMessage.trim() || isLoading) return;
@@ -81,7 +103,7 @@
 
   {#if open}
   <div class="flex flex-col h-105 lg:h-[calc(100vh-16rem)]" transition:slide={{ duration: 250 }}>
-  <ScrollArea class="flex-1 min-h-0 px-4">
+  <ScrollArea class="flex-1 min-h-0 px-4" bind:viewportRef={chatViewport}>
     <div class="flex flex-col gap-4 py-4">
       {#each messages as msg}
         <div class="flex gap-2 {msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}">
