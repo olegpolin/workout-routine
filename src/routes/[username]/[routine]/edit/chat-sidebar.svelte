@@ -27,7 +27,7 @@
     isLoading = true;
 
     try {
-      const resp = await fetch('/api/ai-workout', {
+      const resp = await fetch('/api/workout-assistant', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
