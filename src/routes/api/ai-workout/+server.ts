@@ -1,14 +1,11 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import Groq from 'groq-sdk';
-import { env } from '$env/dynamic/private';
-import { SLUG_REGEX, WORKOUT_DIFFICULTIES, WORKOUT_TYPES } from '$lib/constants';
 import { workoutFormSchema } from '../../[username]/[routine]/edit/workout-form-schema';
 import { z } from 'zod';
+import { GROQ_API_KEY } from '$env/static/private';
 
-const groq = new Groq({
-  apiKey: env.GROQ_API_KEY
-});
+const groq = new Groq({ apiKey: GROQ_API_KEY });
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
