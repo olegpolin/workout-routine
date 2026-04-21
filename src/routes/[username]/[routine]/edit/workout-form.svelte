@@ -150,6 +150,15 @@
     {/if}
     Save
   </Button>
+  {#if saveError}
+    <Alert.Root variant="destructive">
+      <AlertCircleIcon />
+      <Alert.Title>Something went wrong</Alert.Title>
+      <Alert.Description>
+        We encountered an issue while saving your workout routine. Please try again later.
+      </Alert.Description>
+    </Alert.Root>
+  {/if}
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-[1fr_24rem] gap-8 w-full">
@@ -486,6 +495,15 @@
         {/if}
         Save
       </Button>
+      {#if saveError}
+        <Alert.Root variant="destructive">
+          <AlertCircleIcon />
+          <Alert.Title>Something went wrong</Alert.Title>
+          <Alert.Description>
+            We encountered an issue while saving your workout routine. Please try again later.
+          </Alert.Description>
+        </Alert.Root>
+      {/if}
     </div>
     <ChatSidebar form={workoutForm} />
   </aside>
@@ -518,14 +536,5 @@
       </AlertDialog.Content>
     </AlertDialog.Root>
 
-    {#if saveError}
-      <Alert.Root variant="destructive">
-        <AlertCircleIcon />
-        <Alert.Title>Something went wrong</Alert.Title>
-        <Alert.Description>
-          We encountered an issue while saving your workout routine. Please try again later.
-        </Alert.Description>
-      </Alert.Root>
-    {/if}
   </div>
 </div></div>
