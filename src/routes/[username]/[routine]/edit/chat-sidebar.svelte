@@ -74,7 +74,7 @@
     </div>
   </div>
 
-  <ScrollArea class="flex-1 p-4">
+  <ScrollArea class="flex-1 min-h-0 p-4">
     <div class="flex flex-col gap-4">
       {#each messages as msg}
         <div class="flex gap-2 {msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}">
