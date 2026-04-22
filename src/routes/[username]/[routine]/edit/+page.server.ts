@@ -21,7 +21,15 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
 
   const { data: workoutRoutineData } = await supabase
     .from('workout_routines')
-    .select('id, name, slug, description, uses_numbered_days, workout_type, workout_difficulty')
+    .select(`
+      id, name, slug, description, uses_numbered_days, workout_type, workout_difficulty,
+      workout_days (
+        id, day_number, day_focus, notes,
+        workout_exercises (
+          id, name, weight, sets, reps, notes
+        )
+      )
+    `)
     .eq('user_id', userProfile.id)
     .eq('slug', params.routine)
     .single();
@@ -29,31 +37,23 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
     error(404, 'Not Found');
   }
 
-  const { data: workoutDaysData } = await supabase
-    .from('workout_days')
-    .select('id, day_number, day_focus, notes')
-    .eq('workout_routine_id', workoutRoutineData.id)
-    .order('day_number', { ascending: true });
+  const sortedWorkoutDays = (workoutRoutineData.workout_days ?? []).sort((a, b) => a.day_number - b.day_number);
 
   const workoutDaysWithExercises = [];
-  for (const day of workoutDaysData ?? []) {
-    const { data: workoutExercisesData } = await supabase
-      .from('workout_exercises')
-      .select('id, name, weight, sets, reps, notes')
-      .eq('workout_day_id', day.id)
-      .order('id', { ascending: true });
+  for (const day of sortedWorkoutDays) {
+    const sortedExercises = (day.workout_exercises ?? []).sort((a, b) => a.id - b.id);
 
     workoutDaysWithExercises.push({
       id: day.id,
       day_focus: day.day_focus ?? undefined,
       notes: day.notes ?? undefined,
       marked_for_deletion: false,
-      workout_exercises: (workoutExercisesData ?? []).map((exercise) => ({
+      workout_exercises: sortedExercises.map((exercise) => ({
         id: exercise.id,
         name: exercise.name,
         weight: exercise.weight ?? undefined,
-        sets: exercise.sets,
-        reps: exercise.reps,
+        sets: exercise.sets ?? 0,
+        reps: exercise.reps ?? 0,
         notes: exercise.notes ?? undefined,
       })),
     });
@@ -80,7 +80,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase, safeGet
       notes: undefined,
       marked_for_deletion: false,
       workout_exercises: [],
-    });
+    } as any);
   }
 
   return {
@@ -107,7 +107,7 @@ export const actions: Actions = {
     const { data: existingRoutineData, error: existingRoutineError } = await supabase
       .from('workout_routines')
       .select('id, slug')
-      .eq('id', workoutForm.data.id)
+      .eq('id', workoutForm.data.id as number)
       .eq('user_id', session.user.id)
       .single();
     if (existingRoutineError || !existingRoutineData) {
@@ -187,135 +187,114 @@ export const actions: Actions = {
 
     const submittedDaysToKeep = workoutForm.data.workout_days.filter((day) => !day.marked_for_deletion);
 
-    for (let i = 0; i < submittedDaysToKeep.length; i++) {
-      const submittedDay = submittedDaysToKeep[i];
-      const dayNumber = i + 1;
-      let savedDayId: number;
+    const daysToUpsert: any[] = [];
 
-      if (submittedDay.id && existingDayIds.has(submittedDay.id)) {
-        const { error: updateDayError } = await supabase
-          .from('workout_days')
-          .update({
-            day_number: dayNumber,
-            day_focus: submittedDay.day_focus,
-            notes: submittedDay.notes,
-          })
-          .eq('id', submittedDay.id)
-          .eq('workout_routine_id', existingRoutineData.id);
-        if (updateDayError) {
-          console.log('Update day error:');
-          console.log(updateDayError);
-          error(500);
+    for (let i = 0; i < submittedDaysToKeep.length; i++) {
+        const submittedDay = submittedDaysToKeep[i];
+        const dayNumber = i + 1;
+        let id: number | undefined;
+
+        if (submittedDay.id && existingDayIds.has(submittedDay.id)) {
+            id = submittedDay.id;
+        } else if (existingDayIdByNumber.has(dayNumber)) {
+            id = existingDayIdByNumber.get(dayNumber) as number;
         }
-        savedDayId = submittedDay.id;
-      } else if (existingDayIdByNumber.has(dayNumber)) {
-        const matchedDayId = existingDayIdByNumber.get(dayNumber) as number;
-        const { error: updateDayByNumberError } = await supabase
-          .from('workout_days')
-          .update({
-            day_number: dayNumber,
-            day_focus: submittedDay.day_focus,
-            notes: submittedDay.notes,
-          })
-          .eq('id', matchedDayId)
-          .eq('workout_routine_id', existingRoutineData.id);
-        if (updateDayByNumberError) {
-          console.log('Update day by number error:');
-          console.log(updateDayByNumberError);
-          error(500);
-        }
-        savedDayId = matchedDayId;
-      } else {
-        const { data: insertedDay, error: insertDayError } = await supabase
-          .from('workout_days')
-          .insert({
+
+        daysToUpsert.push({
+            ...(id ? { id } : {}),
             workout_routine_id: existingRoutineData.id,
             day_number: dayNumber,
             day_focus: submittedDay.day_focus,
             notes: submittedDay.notes,
-          })
-          .select('id')
-          .single();
-        if (insertDayError || !insertedDay) {
-          console.log('Insert day error:');
-          console.log(insertDayError);
-          error(500);
-        }
-        savedDayId = insertedDay.id;
-        existingDayIdByNumber.set(dayNumber, savedDayId);
-      }
+        });
+    }
 
-      const { data: existingExercisesData, error: existingExercisesError } = await supabase
+    const savedDayIdMap = new Map<number, number>();
+    if (daysToUpsert.length > 0) {
+        const { data: upsertedDays, error: upsertDaysError } = await supabase
+            .from('workout_days')
+            .upsert(daysToUpsert, { onConflict: 'id' })
+            .select('id, day_number');
+
+        if (upsertDaysError || !upsertedDays) {
+            console.log('Upsert days error:');
+            console.log(upsertDaysError);
+            error(500);
+        }
+
+        for (const d of upsertedDays) {
+            savedDayIdMap.set(d.day_number, d.id);
+        }
+    }
+
+    const savedDayIds = Array.from(savedDayIdMap.values());
+    const { data: allExistingExercisesData, error: allExistingExercisesError } = await supabase
         .from('workout_exercises')
-        .select('id')
-        .eq('workout_day_id', savedDayId);
-      if (existingExercisesError) {
-        console.log('Fetch exercises error:');
-        console.log(existingExercisesError);
+        .select('id, workout_day_id')
+        .in('workout_day_id', savedDayIds.length > 0 ? savedDayIds : [-1]);
+
+    if (allExistingExercisesError) {
+        console.log('Fetch all exercises error:');
+        console.log(allExistingExercisesError);
         error(500);
-      }
+    }
 
-      const existingExerciseIds = new Set((existingExercisesData ?? []).map((exercise) => exercise.id));
+    const existingExerciseIds = new Set((allExistingExercisesData ?? []).map((exercise) => exercise.id));
+    const exercisesToUpsert: any[] = [];
+    const submittedExistingExerciseIds = new Set<number>();
 
-      for (const submittedExercise of submittedDay.workout_exercises) {
-        if (submittedExercise.id && existingExerciseIds.has(submittedExercise.id)) {
-          const { error: updateExerciseError } = await supabase
-            .from('workout_exercises')
-            .update({
-              name: submittedExercise.name,
-              weight: submittedExercise.weight ?? null,
-              sets: submittedExercise.sets,
-              reps: submittedExercise.reps,
-              notes: submittedExercise.notes,
-            })
-            .eq('id', submittedExercise.id)
-            .eq('workout_day_id', savedDayId);
-          if (updateExerciseError) {
-            console.log('Update exercise error:');
-            console.log(updateExerciseError);
-            error(500);
-          }
-        } else {
-          const { error: insertExerciseError } = await supabase
-            .from('workout_exercises')
-            .insert({
-              workout_day_id: savedDayId,
-              name: submittedExercise.name,
-              weight: submittedExercise.weight ?? null,
-              sets: submittedExercise.sets,
-              reps: submittedExercise.reps,
-              notes: submittedExercise.notes,
+    for (let i = 0; i < submittedDaysToKeep.length; i++) {
+        const submittedDay = submittedDaysToKeep[i];
+        const dayNumber = i + 1;
+        const savedDayId = savedDayIdMap.get(dayNumber);
+
+        if (!savedDayId) continue;
+
+        for (const submittedExercise of submittedDay.workout_exercises) {
+            let id: number | undefined;
+
+            if (submittedExercise.id && existingExerciseIds.has(submittedExercise.id)) {
+                id = submittedExercise.id;
+                submittedExistingExerciseIds.add(id);
+            }
+
+            exercisesToUpsert.push({
+                ...(id ? { id } : {}),
+                workout_day_id: savedDayId,
+                name: submittedExercise.name,
+                weight: submittedExercise.weight ?? null,
+                sets: submittedExercise.sets,
+                reps: submittedExercise.reps,
+                notes: submittedExercise.notes,
             });
-          if (insertExerciseError) {
-            console.log('Insert exercise error:');
-            console.log(insertExerciseError);
-            error(500);
-          }
         }
-      }
+    }
 
-      const submittedExistingExerciseIds = new Set(
-        submittedDay.workout_exercises
-          .map((exercise) => exercise.id)
-          .filter((id): id is number => !!id)
-      );
+    if (exercisesToUpsert.length > 0) {
+        const { error: upsertExercisesError } = await supabase
+            .from('workout_exercises')
+            .upsert(exercisesToUpsert, { onConflict: 'id' });
+        if (upsertExercisesError) {
+            console.log('Upsert exercises error:');
+            console.log(upsertExercisesError);
+            error(500);
+        }
+    }
 
-      const exerciseIdsToDelete = (existingExercisesData ?? [])
+    const exerciseIdsToDelete = (allExistingExercisesData ?? [])
         .map((exercise) => exercise.id)
         .filter((id) => !submittedExistingExerciseIds.has(id));
 
-      if (exerciseIdsToDelete.length > 0) {
+    if (exerciseIdsToDelete.length > 0) {
         const { error: deleteExercisesError } = await supabase
-          .from('workout_exercises')
-          .delete()
-          .in('id', exerciseIdsToDelete)
-          .eq('workout_day_id', savedDayId);
+            .from('workout_exercises')
+            .delete()
+            .in('id', exerciseIdsToDelete);
         if (deleteExercisesError) {
-          console.log('Delete exercises error:');
-          console.log(deleteExercisesError);
-          error(500);
+            console.log('Delete exercises error:');
+            console.log(deleteExercisesError);
+            error(500);
         }
-      }
     }
 
     const { data: daysAfterSaveData, error: daysAfterSaveError } = await supabase
@@ -378,7 +357,7 @@ export const actions: Actions = {
     const { error: updateRoutineError } = await supabase
       .from('workout_routines')
       .update({
-        updated_at: new Date(),
+        updated_at: new Date().toISOString(),
         name: workoutForm.data.name,
         slug: workoutForm.data.slug,
         description: workoutForm.data.description,
