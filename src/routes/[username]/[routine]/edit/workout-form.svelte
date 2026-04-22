@@ -534,6 +534,7 @@
             isDeleting = true;
             return async ({ update }) => {
               isDeleting = false;
+              deleteRoutineDialogOpen = false;
               update();
             };
           }}>
