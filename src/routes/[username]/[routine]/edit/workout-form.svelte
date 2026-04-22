@@ -23,7 +23,6 @@
   import type { PageData } from './$types';
   import { workoutFormSchema, type WorkoutFormSchema } from './workout-form-schema';
   import ChatSidebar from './chat-sidebar.svelte';
-  import Loader2Icon from '@lucide/svelte/icons/loader-2';
   import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
   import CheckCircle2Icon from '@lucide/svelte/icons/check-circle-2';
   import TriangleAlertIcon from '@lucide/svelte/icons/triangle-alert';
@@ -149,7 +148,7 @@
   {/if}
   <Button type="submit" form="workout-form" class="w-full" disabled={$submitting || !$tainted}>
     {#if $submitting}
-      <Loader2Icon class="animate-spin" />
+      <Spinner />
     {/if}
     Save
   </Button>
@@ -494,7 +493,7 @@
       {/if}
       <Button type="submit" form="workout-form" class="w-full" disabled={$submitting || !$tainted}>
         {#if $submitting}
-          <Loader2Icon class="animate-spin" />
+          <Spinner />
         {/if}
         Save
       </Button>

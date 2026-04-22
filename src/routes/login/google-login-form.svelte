@@ -5,7 +5,7 @@
   import { superForm } from 'sveltekit-superforms';
   import { zod4Client } from 'sveltekit-superforms/adapters';
   import { googleLoginFormSchema } from './google-login-form-schema';
-  import Loader2Icon from '@lucide/svelte/icons/loader-2';
+  import { Spinner } from '$lib/components/ui/spinner';
   import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
   import GoogleIcon from '$lib/assets/icons/google-icon.svelte';
 
@@ -29,7 +29,7 @@
 <form class="w-full flex flex-col gap-4" method="POST" action="?/google" use:enhance>
   <Form.Button size="lg" disabled={$submitting} class="w-full h-12 text-base font-semibold shadow-md transition-all">
     {#if $submitting}
-      <Loader2Icon class="animate-spin mr-2 h-5 w-5" />
+      <Spinner class="mr-2 h-5 w-5" />
     {:else}
       <div class="mr-3 h-5 w-5 fill-current">
         <GoogleIcon />

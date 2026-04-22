@@ -10,7 +10,7 @@
   import { superForm } from 'sveltekit-superforms';
   import { zod4Client } from 'sveltekit-superforms/adapters';
   import { accountFormSchema } from './account-form-schema';
-  import Loader2Icon from '@lucide/svelte/icons/loader-2';
+  import { Spinner } from '$lib/components/ui/spinner';
   import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
   import MailIcon from '@lucide/svelte/icons/mail';
   import LinkIcon from '@lucide/svelte/icons/link';
@@ -114,7 +114,7 @@
 
   <Form.Button class="mt-4" disabled={$submitting}>
     {#if $submitting}
-      <Loader2Icon class="animate-spin" />
+      <Spinner />
     {/if}
     Save
   </Form.Button>

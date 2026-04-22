@@ -5,7 +5,7 @@
   import { superForm } from 'sveltekit-superforms';
   import { zod4Client } from 'sveltekit-superforms/adapters';
   import { signoutFormSchema } from './signout-form-schema';
-  import Loader2Icon from '@lucide/svelte/icons/loader-2';
+  import { Spinner } from '$lib/components/ui/spinner';
   import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 
   let { data }: { data: PageData } = $props();
@@ -28,7 +28,7 @@
 <form class="w-full flex flex-col gap-4" method="POST" action="?/signout" use:enhance>
   <Form.Button variant="destructive" disabled={$submitting}>
     {#if $submitting}
-      <Loader2Icon class="animate-spin" />
+      <Spinner />
     {/if}
     Sign out
   </Form.Button>

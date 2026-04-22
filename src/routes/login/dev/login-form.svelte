@@ -6,7 +6,7 @@
   import { superForm } from 'sveltekit-superforms';
   import { zod4Client } from 'sveltekit-superforms/adapters';
   import { loginFormSchema } from './login-form-schema';
-  import Loader2Icon from '@lucide/svelte/icons/loader-2';
+  import { Spinner } from '$lib/components/ui/spinner';
   import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 
   let { data }: { data: PageData } = $props();
@@ -48,7 +48,7 @@
   </Form.Field>
   <Form.Button size="lg" variant="secondary" disabled={$submitting}>
     {#if $submitting}
-      <Loader2Icon class="animate-spin" />
+      <Spinner />
     {/if}
     Log in
   </Form.Button>
