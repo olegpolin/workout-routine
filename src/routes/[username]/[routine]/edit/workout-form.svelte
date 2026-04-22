@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { enhance as formEnhance } from '$app/forms';
   import * as Form from '$lib/components/ui/form';
   import * as Select from '$lib/components/ui/select';
   import { Input } from '$lib/components/ui/input';
@@ -9,6 +10,7 @@
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import * as Accordion from '$lib/components/ui/accordion';
   import * as Collapsible from '$lib/components/ui/collapsible';
+  import { Spinner } from '$lib/components/ui/spinner';
   import { Accordion as AccordionPrimitive } from 'bits-ui';
   import { Button, buttonVariants } from '$lib/components/ui/button';
   import { toast } from 'svelte-sonner';
@@ -36,6 +38,7 @@
 
   let saveError = $state(false);
   let deleteRoutineDialogOpen = $state(false);
+  let isDeleting = $state(false);
   let deleteDialogOpen = $state<boolean[]>([]);
   let deleteExerciseDialogOpen = $state<Record<string, boolean>>({});
   const weekdays = WEEKDAYS;
@@ -527,8 +530,17 @@
         </AlertDialog.Header>
         <AlertDialog.Footer>
           <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
-          <form method="POST" action="?/delete">
-            <AlertDialog.Action type="submit" variant="destructive">
+          <form method="POST" action="?/delete" use:formEnhance={() => {
+            isDeleting = true;
+            return async ({ update }) => {
+              isDeleting = false;
+              update();
+            };
+          }}>
+            <AlertDialog.Action type="submit" variant="destructive" disabled={isDeleting}>
+              {#if isDeleting}
+                <Spinner />
+              {/if}
               Delete Routine
             </AlertDialog.Action>
           </form>
