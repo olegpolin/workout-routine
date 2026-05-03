@@ -1,5 +1,6 @@
 <script lang="ts">
   import './layout.css';
+  import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import { onMount } from 'svelte';
   import { invalidate } from '$app/navigation';
@@ -24,7 +25,10 @@
   });
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head>
+  <link rel="icon" href={favicon} />
+  <meta property="og:image" content={`${page.url.origin}/logo.png`} />
+</svelte:head>
 
 <ModeWatcher defaultMode="dark" />
 
