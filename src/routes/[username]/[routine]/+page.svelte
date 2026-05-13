@@ -12,7 +12,14 @@
   import { toast } from 'svelte-sonner';
   import ProfileCard from '$lib/components/profile-card.svelte';
   import { WEEKDAYS } from '$lib/constants';
+  import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
+  import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
+  import Clock3Icon from '@lucide/svelte/icons/clock-3';
+  import PencilIcon from '@lucide/svelte/icons/pencil';
   import HeartIcon from '@lucide/svelte/icons/heart';
+  import Share2Icon from '@lucide/svelte/icons/share-2';
+  import VideoIcon from '@lucide/svelte/icons/video';
+  import ZapIcon from '@lucide/svelte/icons/zap';
 
   type DemoSearchActionResult = {
     exerciseName?: string;
@@ -131,35 +138,36 @@
 
 <Seo title={data.workoutRoutine.name} />
 
-<div class="space-y-6 sm:space-y-8 max-w-5xl mx-auto w-full mt-2 sm:mt-4">
-  <a href="/browse" class="flex items-center gap-2 text-blue-500 font-medium hover:text-blue-500/80 transition-colors w-fit text-sm">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+<div class="w-full max-w-6xl mx-auto mt-2 space-y-7 sm:mt-4 sm:space-y-9">
+  <a href="/browse" class="flex w-fit items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] transition-all hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_var(--hard-shadow)] dark:bg-secondary dark:text-secondary-foreground">
+    <ArrowLeftIcon class="size-4" />
     Back to Browse
   </a>
 
-  <Card.Root class="rounded-2xl">
-    <Card.Content class="p-6 sm:p-8">
+  <Card.Root class="rounded-4xl bg-card">
+    <Card.Content class="p-5 sm:p-8">
       <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div class="flex flex-col gap-4">
           <div>
-            <h1 class="text-2xl sm:text-4xl font-bold tracking-tight text-foreground wrap-break-word">{data.workoutRoutine.name}</h1>
+            <p class="mb-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Workout routine</p>
+            <h1 class="text-3xl font-black tracking-tight text-foreground wrap-break-word sm:text-5xl">{data.workoutRoutine.name}</h1>
             {#if data.workoutRoutine.description}
-              <p class="text-muted-foreground mt-2 text-base sm:text-lg wrap-break-word">{data.workoutRoutine.description}</p>
+              <p class="mt-3 max-w-3xl text-base font-semibold leading-7 text-muted-foreground wrap-break-word sm:text-lg">{data.workoutRoutine.description}</p>
             {/if}
             <div class="mt-4 flex flex-wrap gap-3">
-              <Badge variant="default" class="h-8 rounded-full px-4 text-sm font-semibold">
+              <Badge variant="default" class="h-9 rounded-4xl border-border px-4 text-sm font-black">
                 {formatEnumLabel(data.workoutRoutine.workout_type)}
               </Badge>
-              <Badge variant="secondary" class="h-8 rounded-full px-4 text-sm font-semibold">
+              <Badge variant="secondary" class="h-9 rounded-4xl border-border px-4 text-sm font-black">
                 {formatEnumLabel(data.workoutRoutine.workout_difficulty)}
               </Badge>
             </div>
           </div>
           
-          <a href={`/${data.userProfile.username}`} class="block w-fit bg-muted/40 rounded-xl hover:bg-muted/80 transition-colors">
+          <a href={`/${data.userProfile.username}`} class="block w-fit rounded-3xl border border-border bg-background transition-colors hover:bg-muted dark:bg-muted dark:hover:bg-card">
             <ProfileCard profile={data.userProfile} class="p-3" />
           </a>
-          <p class="text-sm text-muted-foreground font-medium px-1">
+          <p class="px-1 text-sm font-bold text-muted-foreground">
             {data.favoritesCount} {data.favoritesCount === 1 ? 'favorite' : 'favorites'}
           </p>
         </div>
@@ -167,7 +175,7 @@
         <div class="flex flex-wrap items-center gap-2 sm:gap-3 self-start">
           {#if data.isLoggedIn}
             <form method="POST" action={data.isFavorited ? '?/unfavorite' : '?/favorite'} use:enhance={enhanceFavorite}>
-              <Button type="submit" variant="outline" class="rounded-xl" disabled={isFavoritePending}>
+              <Button type="submit" variant="outline" disabled={isFavoritePending}>
                 {#if isFavoritePending}
                   <Spinner />
                   {data.isFavorited ? 'Removing...' : 'Adding...'}
@@ -178,71 +186,75 @@
               </Button>
             </form>
           {:else}
-            <Button href="/login" variant="outline" class="rounded-xl">
+            <Button href="/login" variant="outline">
               <HeartIcon class="h-4 w-4" />
               Add to favorites
             </Button>
           {/if}
 
-          <Button variant="default" size="lg" class="rounded-xl font-semibold px-4 sm:px-6" onclick={shareWorkout}>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
+          <Button variant="default" size="lg" class="px-4 sm:px-6" onclick={shareWorkout}>
+            <Share2Icon class="size-4" />
             Share Workout
           </Button>
           {#if data.profile?.username === data.userProfile.username}
-            <Button href={`/${data.userProfile.username}/${data.workoutRoutine.slug}/edit`} variant="outline" class="rounded-xl">
+            <Button href={`/${data.userProfile.username}/${data.workoutRoutine.slug}/edit`} variant="secondary">
+              <PencilIcon class="size-4" />
               Edit
             </Button>
           {/if}
         </div>
       </div>
 
-      <div class="mt-8 pt-8 border-t border-border flex flex-wrap gap-8 items-center text-foreground">
+      <div class="mt-8 grid gap-4 border-t border-border pt-8 text-foreground sm:grid-cols-3">
         <div class="flex items-center gap-4">
-          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-blue-500">
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+          <div class="flex h-13 w-13 items-center justify-center rounded-full border border-border bg-primary text-primary-foreground">
+            <Clock3Icon class="size-6" />
           </div>
           <div class="flex flex-col">
-            <span class="text-xs text-muted-foreground font-medium">Avg Duration</span>
-            <span class="text-lg font-bold">{avgDurationPerWorkoutDay} min/day</span>
+            <span class="text-xs font-black uppercase tracking-[0.12em] text-muted-foreground">Avg Duration</span>
+            <span class="text-xl font-black">{avgDurationPerWorkoutDay} min/day</span>
           </div>
         </div>
 
         <div class="flex items-center gap-4">
-          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-blue-500">
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
+          <div class="flex h-13 w-13 items-center justify-center rounded-full border border-border bg-secondary text-secondary-foreground">
+            <CalendarDaysIcon class="size-6" />
           </div>
           <div class="flex flex-col">
-            <span class="text-xs text-muted-foreground font-medium">Weekly Split</span>
-            <span class="text-lg font-bold">{workoutDaysCount} on / {restDaysCount} rest</span>
+            <span class="text-xs font-black uppercase tracking-[0.12em] text-muted-foreground">Weekly Split</span>
+            <span class="text-xl font-black">{workoutDaysCount} on / {restDaysCount} rest</span>
           </div>
         </div>
 
         <div class="flex items-center gap-4">
-          <div class="h-12 w-12 rounded-full border border-border bg-muted flex items-center justify-center text-blue-500">
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>
+          <div class="flex h-13 w-13 items-center justify-center rounded-full border border-border bg-accent text-accent-foreground">
+            <ZapIcon class="size-6" />
           </div>
           <div class="flex flex-col">
-            <span class="text-xs text-muted-foreground font-medium">Total Exercises</span>
-            <span class="text-lg font-bold">{totalExercises}</span>
+            <span class="text-xs font-black uppercase tracking-[0.12em] text-muted-foreground">Total Exercises</span>
+            <span class="text-xl font-black">{totalExercises}</span>
           </div>
         </div>
       </div>
     </Card.Content>
   </Card.Root>
 
-  <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-10 sm:mt-12 mb-4">Weekly Schedule</h2>
+  <div class="mt-10 flex flex-col gap-2 sm:mt-12">
+    <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Training week</p>
+    <h2 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">Weekly Schedule</h2>
+  </div>
   
   {#if data.workoutDaysData}
-    <div class="mb-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
+    <div class="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-7">
       {#each data.workoutDaysData as day}
         {@const isRestDay = !day.workout_exercises || day.workout_exercises.length === 0}
         <Button 
           variant={isRestDay ? "outline" : "default"}
-          class="h-auto py-3 flex-col gap-1 w-full"
+          class="h-auto w-full flex-col gap-1 py-3"
           onclick={() => scrollToDay(day.day_number)}
         >
-          <span class="text-sm font-semibold">{getDayTitle(day.day_number)}</span>
-          <span class="text-xs font-normal opacity-80 truncate w-full px-1 text-center">
+          <span class="text-sm font-black">{getDayTitle(day.day_number)}</span>
+          <span class="w-full truncate px-1 text-center text-xs font-semibold opacity-80">
             {isRestDay ? 'Rest' : (day.day_focus || `${day.workout_exercises?.length || 0} exercises`)}
           </span>
         </Button>
@@ -251,19 +263,19 @@
 
     <div class="space-y-6">
       {#each data.workoutDaysData as day}
-        <Card.Root id="day-{day.day_number}" class="rounded-2xl overflow-hidden shadow-sm scroll-mt-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-6 border-b">
-            <h3 class="font-bold text-lg sm:text-2xl text-foreground">
+        <Card.Root id="day-{day.day_number}" class="scroll-mt-6 overflow-hidden rounded-4xl bg-card">
+          <div class="flex flex-col justify-between gap-3 border-b border-border p-4 sm:flex-row sm:items-center sm:p-6">
+            <h3 class="text-xl font-black text-foreground sm:text-2xl">
               {getDayTitle(day.day_number)}
             </h3>
             <div class="flex flex-wrap items-center gap-2">
               {#if day.day_focus?.trim()}
-                <span class="px-5 py-2 rounded-full border border-primary/30 text-blue-500 bg-primary/10 text-sm font-semibold">
+                <span class="rounded-4xl border border-border bg-primary px-5 py-2 text-sm font-black text-primary-foreground">
                   {day.day_focus}
                 </span>
               {/if}
               {#if !day.workout_exercises || day.workout_exercises.length === 0}
-                <span class="px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold border">
+                <span class="rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-black text-secondary-foreground">
                   Rest Day
                 </span>
               {/if}
@@ -273,34 +285,34 @@
             {#if day.workout_exercises && day.workout_exercises.length > 0}
               <div class="overflow-x-auto">
                 <Table.Root class="w-full text-sm">
-                  <Table.Header class="border-b">
+                  <Table.Header class="border-b border-border bg-background dark:bg-muted">
                     <Table.Row class="hover:bg-transparent">
-                      <Table.Head class="w-15 text-center font-bold py-4">#</Table.Head>
-                      <Table.Head class="font-bold py-4 uppercase text-xs tracking-wide">Exercise</Table.Head>
-                      <Table.Head class="font-bold py-4 uppercase text-xs tracking-wide">Sets</Table.Head>
-                      <Table.Head class="font-bold py-4 uppercase text-xs tracking-wide">Reps</Table.Head>
-                      <Table.Head class="font-bold py-4 uppercase text-xs tracking-wide">Weight</Table.Head>
-                      <Table.Head class="font-bold py-4 uppercase text-xs tracking-wide">Notes</Table.Head>
-                      <Table.Head class="font-bold py-4 uppercase text-xs tracking-wide">Demo</Table.Head>
+                      <Table.Head class="w-15 py-4 text-center font-black">#</Table.Head>
+                      <Table.Head class="py-4 text-xs font-black uppercase tracking-wide">Exercise</Table.Head>
+                      <Table.Head class="py-4 text-xs font-black uppercase tracking-wide">Sets</Table.Head>
+                      <Table.Head class="py-4 text-xs font-black uppercase tracking-wide">Reps</Table.Head>
+                      <Table.Head class="py-4 text-xs font-black uppercase tracking-wide">Weight</Table.Head>
+                      <Table.Head class="py-4 text-xs font-black uppercase tracking-wide">Notes</Table.Head>
+                      <Table.Head class="py-4 text-xs font-black uppercase tracking-wide">Demo</Table.Head>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
                     {#each day.workout_exercises as exercise, index (exercise.id)}
-                      <Table.Row class="border-b hover:bg-muted/50 transition-colors">
-                        <Table.Cell class="font-bold text-muted-foreground text-center py-4">{index + 1}</Table.Cell>
-                        <Table.Cell class="font-bold text-foreground py-4">{exercise.name}</Table.Cell>
-                        <Table.Cell class="font-bold text-foreground py-4">{exercise.sets || '—'}</Table.Cell>
-                        <Table.Cell class="font-bold text-blue-500 py-4">{exercise.reps || '—'}</Table.Cell>
-                        <Table.Cell class="font-bold text-foreground py-4">{exercise.weight ? `${exercise.weight} lbs` : '—'}</Table.Cell>
-                        <Table.Cell class="text-muted-foreground py-4">{exercise.notes || '—'}</Table.Cell>
+                      <Table.Row class="border-b border-border transition-colors hover:bg-muted/70">
+                        <Table.Cell class="py-4 text-center font-black text-muted-foreground">{index + 1}</Table.Cell>
+                        <Table.Cell class="py-4 font-black text-foreground">{exercise.name}</Table.Cell>
+                        <Table.Cell class="py-4 font-bold text-foreground">{exercise.sets || '-'}</Table.Cell>
+                        <Table.Cell class="py-4 font-black text-primary">{exercise.reps || '-'}</Table.Cell>
+                        <Table.Cell class="py-4 font-bold text-foreground">{exercise.weight ? `${exercise.weight} lbs` : '-'}</Table.Cell>
+                        <Table.Cell class="py-4 font-semibold text-muted-foreground">{exercise.notes || '-'}</Table.Cell>
                         <Table.Cell class="py-4">
                           <Button
                             type="button"
                             size="sm"
                             variant="outline"
-                            class="rounded-xl"
                             onclick={() => openExerciseDemoDialog(exercise.name)}
                           >
+                            <VideoIcon class="size-4" />
                             Watch Demo
                           </Button>
                         </Table.Cell>
@@ -310,7 +322,7 @@
                 </Table.Root>
               </div>
             {:else}
-              <div class="flex justify-center p-10 text-muted-foreground font-medium">
+              <div class="flex justify-center p-10 text-center font-bold text-muted-foreground">
                 {day.notes || "Take this day to rest and recover. Stay hydrated!"}
               </div>
             {/if}

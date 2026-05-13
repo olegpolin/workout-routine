@@ -93,11 +93,11 @@
   }
 </script>
 
-<div class="flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden">
-  <button type="button" class="p-4 bg-muted/30 {open ? 'border-b' : ''} flex items-center justify-between w-full cursor-pointer hover:bg-muted/50 transition-colors" onclick={() => open = !open}>
-    <div class="flex items-center gap-2 font-semibold">
-      <Bot class="w-5 h-5 text-primary" />
-      AI Assistant
+<div class="flex flex-col overflow-hidden rounded-4xl border border-border bg-card shadow-[6px_6px_0_0_var(--hard-shadow)]">
+  <button type="button" class="flex w-full cursor-pointer items-center justify-between bg-secondary p-4 text-secondary-foreground transition-colors hover:bg-secondary/90 {open ? 'border-b border-border' : ''}" onclick={() => open = !open}>
+    <div class="flex items-center gap-2 font-black">
+      <Bot class="h-5 w-5" />
+      Routine Assistant
     </div>
     <ChevronDownIcon class="w-4 h-4 transition-transform duration-200 {open ? '' : '-rotate-90'}" />
   </button>
@@ -108,14 +108,14 @@
     <div class="flex flex-col gap-4 py-4">
       {#each messages as msg}
         <div class="flex gap-2 {msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
+          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
             {#if msg.role === 'user'}
               <User class="w-4 h-4" />
             {:else}
               <Bot class="w-4 h-4" />
             {/if}
           </div>
-          <div class="max-w-[80%] rounded-lg p-3 text-sm {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
+          <div class="max-w-[80%] rounded-3xl border border-border p-3 text-sm font-semibold {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
             {msg.content}
           </div>
         </div>
@@ -123,10 +123,10 @@
       
       {#if isLoading}
         <div class="flex gap-2">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-muted">
+          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-muted">
             <Bot class="w-4 h-4" />
           </div>
-          <div class="max-w-[80%] rounded-lg p-3 text-sm bg-muted flex items-center gap-2">
+          <div class="flex max-w-[80%] items-center gap-2 rounded-3xl border border-border bg-muted p-3 text-sm font-semibold">
             <Spinner class="w-4 h-4" /> Thinking...
           </div>
         </div>
@@ -134,14 +134,14 @@
     </div>
   </ScrollArea>
 
-  <div class="p-3 border-t bg-muted/10">
+  <div class="border-t border-border bg-background p-3 dark:bg-muted">
     <form onsubmit={(e) => { e.preventDefault(); sendMessage(); }} class="flex gap-2">
       <Textarea
         bind:value={inputMessage}
-        placeholder="Type a message..."
+        placeholder="Ask for a routine change..."
         onkeydown={handleKeyDown}
         disabled={isLoading}
-        class="flex-1 min-h-12 max-h-28 resize-y"
+        class="max-h-28 min-h-12 flex-1 resize-y"
       />
       <Button type="submit" size="icon" disabled={isLoading || !inputMessage.trim()}>
         <Send class="w-4 h-4" />

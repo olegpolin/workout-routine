@@ -133,9 +133,9 @@
 </script>
 
 <div class="w-full flex flex-col gap-8">
-<div class="sticky top-0 z-20 lg:hidden w-full bg-background pt-4 pb-3 flex flex-col gap-3">
+<div class="sticky top-0 z-20 flex w-full flex-col gap-3 border-b border-border bg-background/95 pt-4 pb-4 lg:hidden dark:bg-background/95">
   {#if $tainted}
-    <Alert.Root class="border-yellow-500/50 text-yellow-600 dark:text-yellow-400 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400">
+    <Alert.Root class="border-border bg-secondary text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] [&>svg]:text-secondary-foreground">
       <TriangleAlertIcon />
       <Alert.Title>Unsaved changes</Alert.Title>
       <Alert.Description>You have unsaved changes.</Alert.Description>
@@ -163,10 +163,13 @@
   {/if}
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-[1fr_24rem] gap-8 w-full">
-  <form id="workout-form" class="order-2 lg:order-1 w-full flex flex-col gap-6 sm:gap-8" method="POST" action="?/save" use:enhance>
-    <div class="flex flex-col gap-4 border rounded-lg p-3 sm:p-4">
-      <h2 class="text-xl sm:text-2xl font-semibold">Basic Info</h2>
+<div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-[1fr_24rem]">
+  <form id="workout-form" class="order-2 flex w-full flex-col gap-6 sm:gap-8 lg:order-1" method="POST" action="?/save" use:enhance>
+    <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-[6px_6px_0_0_var(--hard-shadow)] sm:p-6">
+      <div>
+        <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Setup</p>
+        <h2 class="text-2xl font-black">Basic Info</h2>
+      </div>
 
     <Form.Field form={workoutForm} name="name">
       <Form.Control>
@@ -189,7 +192,7 @@
     <Collapsible.Root class="-mt-2 space-y-2">
       <Collapsible.Trigger
         type="button"
-        class={buttonVariants({ variant: 'outline', size: 'sm', class: 'w-fit gap-1.5 px-2.5 text-xs' })}
+        class={buttonVariants({ variant: 'outline', size: 'sm', class: 'w-fit gap-1.5 px-3 text-xs' })}
       >
         View URL
         <ChevronDownIcon class="size-4" />
@@ -199,7 +202,7 @@
           <Form.Control>
             {#snippet children({ props })}
               <Form.Label>Slug</Form.Label>
-              <InputGroup.Root class="h-auto min-h-9 flex-wrap sm:flex-nowrap rounded-2xl sm:rounded-4xl">
+              <InputGroup.Root class="h-auto min-h-10 flex-wrap rounded-3xl sm:flex-nowrap sm:rounded-4xl">
                 <InputGroup.Addon class="max-w-32 sm:max-w-none truncate text-xs sm:text-sm">yoursplit.com/{page.data.profile?.username}/</InputGroup.Addon>
                 <InputGroup.Input class="min-w-0 text-xs sm:text-sm" {...props} bind:value={$formData.slug} placeholder="my-workout-routine" disabled />
               </InputGroup.Root>
@@ -261,8 +264,11 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-4 border rounded-lg p-3 sm:p-4">
-    <h2 class="text-xl sm:text-2xl font-semibold">Schedule</h2>
+  <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-[6px_6px_0_0_var(--hard-shadow)] sm:p-6">
+    <div>
+      <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Training days</p>
+      <h2 class="text-2xl font-black">Schedule</h2>
+    </div>
 
     <Button
       type="button"
@@ -290,12 +296,12 @@
       $formData = $formData;
     }}>Add Day</Button>
 
-    <Accordion.Root class="border rounded-lg bg-background" type="single" value="0">
+    <Accordion.Root class="rounded-4xl border border-border bg-background dark:bg-muted" type="single" value="0">
       {#each $formData.workout_days as day, index}
-        <Accordion.Item value={index.toString()} class="border-b last:border-b-0">
-          <AccordionPrimitive.Header level={3} class="flex flex-wrap sm:flex-nowrap items-start sm:items-center gap-2 px-3 sm:px-4 hover:bg-muted/30 transition-colors">
+        <Accordion.Item value={index.toString()} class="border-b border-border last:border-b-0">
+          <AccordionPrimitive.Header level={3} class="flex flex-wrap items-start gap-2 px-3 transition-colors hover:bg-muted/60 sm:flex-nowrap sm:items-center sm:px-4">
             <AccordionPrimitive.Trigger
-              class="focus-visible:border-ring focus-visible:ring-ring/50 min-w-0 flex flex-1 items-center gap-2 rounded-md py-3 sm:py-4 pr-1 text-left text-sm sm:text-base font-medium outline-none transition-all focus-visible:ring-[3px] [&[data-state=open]>svg]:rotate-180 hover:no-underline"
+              class="focus-visible:border-ring focus-visible:ring-ring/50 min-w-0 flex flex-1 items-center gap-2 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring-[3px] sm:py-4 sm:text-base [&[data-state=open]>svg]:rotate-180"
             >
               <ChevronDownIcon
                 class="text-muted-foreground pointer-events-none size-4 shrink-0 transition-transform duration-200"
@@ -303,7 +309,7 @@
               <span class="min-w-0 wrap-break-word">
                 {getDayTitle(index, $formData.uses_numbered_days)}
                 {#if day.day_focus?.trim()}
-                  <span class="text-xs sm:text-sm text-muted-foreground wrap-break-word">{' - '}{day.day_focus}</span>
+                  <span class="text-xs text-muted-foreground wrap-break-word sm:text-sm">{' - '}{day.day_focus}</span>
                 {/if}
               </span>
             </AccordionPrimitive.Trigger>
@@ -314,7 +320,7 @@
             >
               <AlertDialog.Trigger
                 type="button"
-                class="focus-visible:border-ring focus-visible:ring-ring/50 hover:bg-destructive/10 text-destructive inline-flex shrink-0 h-8 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium outline-none transition-all focus-visible:ring-[3px]"
+                class="focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-8 shrink-0 items-center gap-1.5 rounded-3xl border border-border bg-background px-2.5 text-sm font-bold text-destructive shadow-[2px_2px_0_0_var(--hard-shadow)] outline-none transition-all hover:bg-destructive hover:text-primary-foreground focus-visible:ring-[3px] dark:bg-card"
                 aria-label={`Delete ${getDayTitle(index, $formData.uses_numbered_days)}`}
               >
                 <Trash2Icon class="size-4" />
@@ -343,7 +349,7 @@
             </AlertDialog.Root>
           </AccordionPrimitive.Header>
 
-          <Accordion.Content class="flex flex-col gap-4 px-0 pb-4 pt-2">
+          <Accordion.Content class="flex flex-col gap-4 px-3 pb-5 pt-2 sm:px-4">
             <Form.Field form={workoutForm} name="workout_days[{index}].day_focus">
               <Form.Control>
                 {#snippet children({ props })}
@@ -365,18 +371,18 @@
             }}>Add Exercise</Button>
 
             {#if $formData.workout_days[index].workout_exercises.length === 0}
-              <p class="text-muted-foreground">No exercises added yet.</p>
+              <p class="rounded-3xl border border-border bg-card px-4 py-5 text-sm font-bold text-muted-foreground dark:bg-background">No exercises added yet.</p>
             {/if}
 
             {#each $formData.workout_days[index].workout_exercises as exercise, eIndex}
-              <div class="relative flex flex-col gap-4 border rounded-lg p-3 sm:p-4">
+              <div class="relative flex flex-col gap-4 rounded-4xl border border-border bg-card p-4 shadow-[4px_4px_0_0_var(--hard-shadow)] dark:bg-card sm:p-5">
                 <AlertDialog.Root
                   open={deleteExerciseDialogOpen[getExerciseDialogKey(index, eIndex)] ?? false}
                   onOpenChange={(open) => setDeleteExerciseDialogOpen(index, eIndex, open)}
                 >
                   <AlertDialog.Trigger
                     type="button"
-                    class="absolute right-3 top-3 text-destructive hover:bg-destructive/10 rounded-md p-1 transition-colors"
+                    class="absolute right-3 top-3 rounded-full border border-border bg-background p-1 text-destructive shadow-[2px_2px_0_0_var(--hard-shadow)] transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted"
                     aria-label={`Delete ${exercise.name?.trim() || 'exercise'}`}
                   >
                     <Trash2Icon class="size-4" />
@@ -477,16 +483,16 @@
 
   </form>
 
-  <aside class="order-1 lg:order-2 w-full lg:sticky lg:top-8 lg:self-start flex flex-col gap-3">
+  <aside class="order-1 flex w-full flex-col gap-4 lg:order-2 lg:sticky lg:top-8 lg:self-start">
     <div class="hidden lg:flex flex-col gap-3">
       {#if $tainted}
-        <Alert.Root class="border-yellow-500/50 text-yellow-600 dark:text-yellow-400 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400">
+        <Alert.Root class="border-border bg-secondary text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] [&>svg]:text-secondary-foreground">
           <TriangleAlertIcon />
           <Alert.Title>Unsaved changes</Alert.Title>
           <Alert.Description>You have unsaved changes.</Alert.Description>
         </Alert.Root>
       {:else}
-        <Alert.Root>
+        <Alert.Root class="border-border shadow-[3px_3px_0_0_var(--hard-shadow)]">
           <CheckCircle2Icon />
           <Alert.Title>No unsaved changes</Alert.Title>
         </Alert.Root>

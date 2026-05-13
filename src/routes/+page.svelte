@@ -1,33 +1,92 @@
 <script lang="ts">
   import Seo from '$lib/components/seo.svelte';
   import { buttonVariants } from '$lib/components/ui/button';
+  import ActivityIcon from '@lucide/svelte/icons/activity';
+  import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
   import DumbbellIcon from '@lucide/svelte/icons/dumbbell';
+  import TimerIcon from '@lucide/svelte/icons/timer';
 </script>
 
 <Seo />
 
-<div class="relative w-full flex flex-col items-center justify-center pt-12 sm:pt-24 pb-12 sm:pb-16 text-center max-w-4xl mx-auto my-auto gap-6 sm:gap-8">
-  <div class="absolute left-1/2 top-1/2 h-80 w-80 sm:h-125 sm:w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[100px] -z-10"></div>
+<div class="w-full max-w-6xl mx-auto my-auto py-8 sm:py-14">
+  <section class="flex flex-col items-center gap-7 text-center">
+    <span class="inline-flex items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] dark:bg-secondary dark:text-secondary-foreground">
+      <DumbbellIcon class="size-4" />
+      YourSplit Routine Builder
+    </span>
 
-  <span class="px-4 py-1.5 rounded-full border border-primary/20 bg-primary/10 text-blue-500 font-semibold text-sm shadow-sm flex items-center gap-2">
-    <DumbbellIcon class="size-4" />
-    YourSplit
-  </span>
+    <div class="flex max-w-4xl flex-col items-center gap-5">
+      <h1 class="text-4xl font-black tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+        Build a split that feels ready for the gym.
+      </h1>
+      <p class="max-w-2xl px-2 text-base font-semibold leading-7 text-muted-foreground sm:text-xl">
+        Plan training days, keep sets and reps close, and share routines that look clean enough to follow mid-workout.
+      </p>
+    </div>
 
-  <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-foreground leading-tight">
-    Never Miss Your Workout Routine <br><span class="text-blue-500">Ever Again</span>
-  </h1>
+    <div class="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
+      <a href="/browse" class="{buttonVariants({ variant: 'default', size: 'lg' })} w-full px-6 py-6 text-base sm:w-auto">
+        <ActivityIcon class="size-5" />
+        Explore Workouts
+      </a>
+      <a href="/new" class="{buttonVariants({ variant: 'secondary', size: 'lg' })} w-full px-6 py-6 text-base sm:w-auto">
+        <CalendarDaysIcon class="size-5" />
+        Create a Plan
+      </a>
+    </div>
+  </section>
 
-  <p class="text-base sm:text-xl text-muted-foreground font-medium max-w-2xl px-4">
-    Create, discover and share workout routines tailored for any needs.
-  </p>
+  <section class="mt-10 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="rounded-4xl border border-border bg-card p-4 shadow-[7px_7px_0_0_var(--hard-shadow)] dark:bg-card sm:p-6">
+      <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="text-left">
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Current split</p>
+          <h2 class="text-2xl font-black text-foreground">Push / Pull / Legs</h2>
+        </div>
+        <div class="inline-flex w-fit items-center gap-2 rounded-4xl border border-border bg-accent px-3 py-2 text-sm font-black text-accent-foreground">
+          <TimerIcon class="size-4" />
+          58 min avg
+        </div>
+      </div>
 
-  <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-6 sm:mt-8 w-full sm:w-auto">
-    <a href="/browse" class="{buttonVariants({ variant: 'default', size: 'lg' })} rounded-xl font-bold px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg transition-transform hover:scale-105 shadow-lg shadow-primary/20 w-full sm:w-auto">
-      Explore Workouts
-    </a>
-    <a href="/new" class="{buttonVariants({ variant: 'outline', size: 'lg' })} rounded-xl font-bold px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg transition-all w-full sm:w-auto">
-      Create a Plan
-    </a>
-  </div>
+      <div class="grid gap-3 sm:grid-cols-3">
+        {#each [
+          { day: 'Mon', focus: 'Push', tone: 'bg-primary text-primary-foreground', lifts: ['Bench press', 'Overhead press', 'Cable fly'] },
+          { day: 'Wed', focus: 'Pull', tone: 'bg-secondary text-secondary-foreground', lifts: ['Deadlift', 'Pull-up', 'Face pull'] },
+          { day: 'Fri', focus: 'Legs', tone: 'bg-accent text-accent-foreground', lifts: ['Squat', 'RDL', 'Leg press'] }
+        ] as item}
+          <div class="rounded-3xl border border-border bg-background p-4 text-left dark:bg-muted">
+            <div class="mb-4 flex items-center justify-between gap-2">
+              <span class="rounded-3xl border border-border px-3 py-1 text-xs font-black">{item.day}</span>
+              <span class="{item.tone} rounded-3xl border border-border px-3 py-1 text-xs font-black">{item.focus}</span>
+            </div>
+            <div class="space-y-2">
+              {#each item.lifts as lift, index}
+                <div class="flex items-center gap-2 rounded-2xl border border-border bg-card px-3 py-2 dark:bg-card">
+                  <span class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-background text-xs font-black dark:bg-muted">{index + 1}</span>
+                  <span class="truncate text-sm font-bold">{lift}</span>
+                </div>
+              {/each}
+            </div>
+          </div>
+        {/each}
+      </div>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
+      <div class="rounded-4xl border border-border bg-primary p-5 text-left text-primary-foreground shadow-[5px_5px_0_0_var(--hard-shadow)]">
+        <p class="text-4xl font-black">7</p>
+        <p class="mt-1 text-sm font-bold">day schedule with rest built in</p>
+      </div>
+      <div class="rounded-4xl border border-border bg-secondary p-5 text-left text-secondary-foreground shadow-[5px_5px_0_0_var(--hard-shadow)]">
+        <p class="text-4xl font-black">42</p>
+        <p class="mt-1 text-sm font-bold">sets tracked without spreadsheet energy</p>
+      </div>
+      <div class="rounded-4xl border border-border bg-accent p-5 text-left text-accent-foreground shadow-[5px_5px_0_0_var(--hard-shadow)]">
+        <p class="text-4xl font-black">1</p>
+        <p class="mt-1 text-sm font-bold">shareable routine link</p>
+      </div>
+    </div>
+  </section>
 </div>

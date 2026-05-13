@@ -36,7 +36,7 @@
 
 {#if navigating.to}
   <div
-    class="fixed top-0 left-0 z-50 h-1 w-full animate-slide-gradient bg-linear-to-r from-primary via-indigo-500 to-primary bg-size-[200%_100%]"
+    class="fixed top-0 left-0 z-50 h-1 w-full bg-accent"
     in:fade={{ delay: 300 }}
   ></div>
 {/if}
@@ -44,7 +44,7 @@
 <div class="min-h-screen max-w-7xl flex flex-col mx-auto">
   <Header />
 
-  <main class="grow flex flex-col px-8 md:px-16 py-8">
+  <main class="grow flex flex-col px-5 py-6 sm:px-8 md:px-16 md:py-8">
     {@render children?.()}
   </main>
 
