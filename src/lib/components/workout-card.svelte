@@ -43,27 +43,27 @@
 </script>
 
 <a {href}>
-  <Card.Root class="hover:border-primary/50 transition-all card-shadow rounded-2xl overflow-hidden">
+  <Card.Root class="overflow-hidden rounded-4xl transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">
     <Card.Header class="pb-2">
       <div class="flex flex-wrap items-start justify-between gap-2 sm:gap-4">
         <div class="flex min-w-0 flex-col gap-2">
           <div class="flex flex-col">
-            <Card.Title class="text-lg sm:text-xl font-bold text-foreground wrap-break-word">{name}</Card.Title>
-            <p class="text-sm text-muted-foreground font-medium">@{username}</p>
-            <p class="text-xs text-muted-foreground font-medium mt-0.5">
+            <Card.Title class="text-lg sm:text-xl font-black text-foreground wrap-break-word">{name}</Card.Title>
+            <p class="text-sm text-muted-foreground font-bold">@{username}</p>
+            <p class="text-xs text-muted-foreground font-bold mt-0.5">
               {favoritesCount} {favoritesCount === 1 ? 'favorite' : 'favorites'}
             </p>
           </div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 font-semibold text-primary">
+            <span class="inline-flex items-center rounded-4xl border border-border bg-primary px-2.5 py-1 font-black text-primary-foreground">
               {formatEnumLabel(workoutType)}
             </span>
-            <span class="inline-flex items-center rounded-full bg-muted px-2.5 py-1 font-semibold text-foreground">
+            <span class="inline-flex items-center rounded-4xl border border-border bg-secondary px-2.5 py-1 font-black text-secondary-foreground">
               {formatEnumLabel(workoutDifficulty)}
             </span>
           </div>
         </div>
-        <button class="flex shrink-0 items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-background border border-primary/20 text-primary text-xs font-semibold rounded-full hover:bg-primary/10 transition-colors" onclick={shareWorkout}>
+        <button class="flex shrink-0 items-center gap-1.5 rounded-4xl border border-border bg-background px-2.5 py-1 text-xs font-black text-primary shadow-xs transition-colors hover:bg-muted sm:px-3" onclick={shareWorkout}>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
           Share
         </button>
@@ -76,8 +76,8 @@
         <ul class="flex flex-col gap-2">
           {#each daysPreview.slice(0, 3) as day, index}
             {@const dayLabel = day.dayLabel ? `: ${day.dayLabel}` : ''}
-            <li class="flex flex-row gap-2 justify-between">
-              <p class="text-sm text-muted-foreground font-medium">
+            <li class="flex flex-row items-center justify-between gap-2">
+              <p class="min-w-0 truncate text-sm font-bold text-muted-foreground">
                 {#if usesNumberedDays}
                   Day {index + 1}{dayLabel}
                 {:else}
@@ -90,14 +90,14 @@
                   {/if}
                 {/if}
               </p>
-              <p class="text-sm font-bold text-foreground">
+              <p class="shrink-0 whitespace-nowrap text-right text-sm font-black text-foreground">
                 {day.numExercises} exercises
               </p>
             </li>
           {/each}
           {#if daysPreview.length > 3}
             <li class="mt-1">
-              <p class="text-sm text-muted-foreground font-medium">+{daysPreview.length - 3} more workout days</p>
+              <p class="text-sm text-muted-foreground font-bold">+{daysPreview.length - 3} more workout days</p>
             </li>
           {/if}
         </ul>

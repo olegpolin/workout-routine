@@ -104,7 +104,7 @@
           <Item.Content>
             <Item.Title>Sign in with {provider.charAt(0).toUpperCase() + provider.slice(1)}</Item.Title>
           </Item.Content>
-          <Item.Actions class="text-green-500">
+          <Item.Actions class="font-bold text-primary">
             Connected
           </Item.Actions>
         </Item.Root>

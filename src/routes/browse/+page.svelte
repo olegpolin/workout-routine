@@ -13,9 +13,9 @@
   const workoutDifficultyOptions = WORKOUT_DIFFICULTY_FILTER_OPTIONS;
 
   const filterButtonClass =
-    'px-5 py-2 rounded-full border border-border bg-background text-foreground hover:bg-muted text-sm transition-all';
+    'px-5 py-2 rounded-4xl border border-border bg-background text-foreground hover:bg-muted text-sm font-bold shadow-sm transition-all';
   const activeFilterButtonClass =
-    'px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm shadow-sm transition-all';
+    'px-5 py-2 rounded-4xl border border-border bg-primary text-primary-foreground text-sm font-bold shadow-md transition-all';
 
   const browseHref = (
     page: number,
@@ -132,14 +132,17 @@
 
 <Seo title="Browse" />
 
-<div class="flex flex-col items-center gap-10 sm:gap-16 my-6 sm:my-8">
-  <div class="flex flex-col items-center gap-3 sm:gap-4 mb-2">
-    <h1 class="text-3xl sm:text-5xl text-center font-bold tracking-tight text-foreground mb-2">
-      Discover Your Next <span class="text-blue-500">Workout</span>
-    </h1>
-    <p class="text-base sm:text-lg text-center text-muted-foreground font-medium max-w-lg px-2">
-      Browse community-created workout routines and start your fitness journey today
-    </p>
+<div class="my-6 flex flex-col items-center gap-8 sm:my-8 sm:gap-12">
+  <div class="flex w-full max-w-5xl flex-col gap-5 rounded-4xl border border-border bg-card p-5 text-left shadow-lg sm:p-8">
+    <div>
+      <p class="mb-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Routine library</p>
+      <h1 class="text-3xl font-black tracking-tight text-foreground sm:text-5xl">
+        Discover Your Next <span class="text-primary">Workout</span>
+      </h1>
+      <p class="mt-3 max-w-2xl text-base font-semibold leading-7 text-muted-foreground sm:text-lg">
+        Browse community-created workout routines and start your fitness journey today
+      </p>
+    </div>
 
     <form class="w-full max-w-xl mt-4 flex items-center gap-2" onsubmit={handleSearchSubmit}>
       <Input
@@ -155,9 +158,9 @@
       {/if}
     </form>
 
-    <div class="flex flex-col items-center gap-4 mt-6 w-full max-w-4xl justify-center font-medium">
+    <div class="flex w-full flex-col items-start gap-4 font-medium">
       <div class="flex flex-wrap items-center justify-center gap-2">
-        <span class="text-muted-foreground text-sm flex items-center gap-1.5 mr-2">
+        <span class="text-muted-foreground text-sm font-bold flex items-center gap-1.5 mr-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
             ><path
               stroke-linecap="round"
@@ -182,7 +185,7 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-center gap-2">
-        <span class="text-muted-foreground text-sm mr-2">Difficulty:</span>
+        <span class="text-muted-foreground text-sm font-bold mr-2">Difficulty:</span>
 
         {#each workoutDifficultyOptions as option}
           <button
@@ -197,7 +200,7 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-center gap-2">
-        <span class="text-muted-foreground text-sm mr-2">Creator:</span>
+        <span class="text-muted-foreground text-sm font-bold mr-2">Creator:</span>
 
         <button
           type="button"
@@ -220,10 +223,10 @@
     </div>
   </div>
 
-  <div class="text-sm text-muted-foreground font-medium">Showing {data.totalWorkoutRoutines} workouts</div>
+  <div class="rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-black text-secondary-foreground shadow-sm">Showing {data.totalWorkoutRoutines} workouts</div>
 
   {#if data.workoutRoutines.length === 0}
-    <p class="text-lg text-muted-foreground">No routines found on this page.</p>
+    <p class="rounded-4xl border border-border bg-card px-6 py-8 text-lg font-bold text-muted-foreground shadow-md">No routines found on this page.</p>
   {:else}
     <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
       {#each data.workoutRoutines as workoutRoutine}

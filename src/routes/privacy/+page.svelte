@@ -4,16 +4,15 @@
 
 <Seo title="Privacy Policy" />
 
-<div class="relative w-full flex flex-col items-center pt-12 sm:pt-24 pb-12 sm:pb-16 max-w-4xl mx-auto my-auto gap-6 sm:gap-8 text-left px-4">
-  <div class="absolute left-1/2 top-[20%] h-80 w-80 sm:h-125 sm:w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[100px] -z-10"></div>
-  
-  <div class="w-full text-center flex flex-col items-center mb-8">
-    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
-      Privacy <span class="text-blue-500">Policy</span>
+<div class="flex w-full max-w-4xl flex-col items-center gap-6 px-4 pt-10 pb-12 text-left sm:gap-8 sm:pt-16 sm:pb-16 mx-auto my-auto">
+  <div class="mb-2 flex w-full flex-col gap-3 rounded-4xl border border-border bg-card p-5 text-left shadow-lg sm:p-8">
+    <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Your data</p>
+    <h1 class="text-3xl font-black tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+      Privacy <span class="text-primary">Policy</span>
     </h1>
   </div>
 
-  <div class="w-full prose prose-neutral dark:prose-invert max-w-3xl space-y-8 text-muted-foreground font-medium">
+  <div class="w-full max-w-3xl space-y-6 rounded-4xl border border-border bg-card p-5 text-muted-foreground shadow-lg sm:p-8 font-medium">
     <section>
       <h2 class="text-2xl font-bold text-foreground mb-4">1. Information We Collect</h2>
       <p>
