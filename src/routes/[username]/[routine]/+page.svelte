@@ -180,7 +180,7 @@
                   <Spinner />
                   {data.isFavorited ? 'Removing...' : 'Adding...'}
                 {:else}
-                  <HeartIcon class={`h-4 w-4 ${data.isFavorited ? 'fill-red-500 text-red-500' : 'text-foreground'}`} />
+                  <HeartIcon class={`h-4 w-4 ${data.isFavorited ? 'fill-destructive text-destructive' : 'text-foreground'}`} />
                   {data.isFavorited ? 'Favorited' : 'Add to favorites'}
                 {/if}
               </Button>

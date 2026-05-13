@@ -18,10 +18,17 @@
 
     <div class="flex max-w-4xl flex-col items-center gap-5">
       <h1 class="text-4xl font-black tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-        Build a split that feels ready for the gym.
+        Create and share
+        <span class="inline-block rounded-3xl border border-border bg-primary px-3 text-primary-foreground shadow-sm">
+          Your
+        </span>
+        workout
+        <span class="inline-block rounded-3xl border border-border bg-primary px-3 text-primary-foreground shadow-sm">
+          Split
+        </span>.
       </h1>
       <p class="max-w-2xl px-2 text-base font-semibold leading-7 text-muted-foreground sm:text-xl">
-        Plan training days, keep sets and reps close, and share routines that look clean enough to follow mid-workout.
+        Build a clean routine page for your training days, exercises, sets, and reps, then send one link anyone can follow.
       </p>
     </div>
 

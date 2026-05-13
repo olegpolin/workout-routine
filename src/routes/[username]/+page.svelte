@@ -105,22 +105,24 @@
 <form bind:this={followersLoadForm} class="hidden" method="POST" action="?/followers" use:enhance={enhanceFollowers}></form>
 <form bind:this={followingLoadForm} class="hidden" method="POST" action="?/following" use:enhance={enhanceFollowing}></form>
 
-<div class="flex flex-col gap-10 sm:gap-16 my-auto">
-  <div class="flex flex-col md:flex-row gap-10 sm:gap-16">
-    <div class="md:basis-1/2 flex flex-col items-center gap-4">
-      <Avatar.Root class="size-16">
+<div class="my-auto flex flex-col gap-8 sm:gap-10">
+  <div class="grid gap-8 lg:grid-cols-[22rem_1fr]">
+    <div class="flex flex-col items-center gap-5 rounded-4xl border border-border bg-card p-5 shadow-lg sm:p-6">
+      <Avatar.Root class="size-20 border border-border shadow-sm">
         <Avatar.Image src={data.userProfile.avatar_url} alt="Profile picture" />
         <Avatar.Fallback>
           <UserIcon />
         </Avatar.Fallback>
       </Avatar.Root>
-      <h1 class="text-xl sm:text-2xl text-center font-semibold wrap-break-word">{data.userProfile.full_name}</h1>
-      <p class="text-base sm:text-lg text-muted-foreground text-center break-all">@{data.userProfile.username}</p>
+      <div class="text-center">
+        <h1 class="text-2xl font-black wrap-break-word">{data.userProfile.full_name}</h1>
+        <p class="text-base font-bold text-muted-foreground break-all">@{data.userProfile.username}</p>
+      </div>
 
       <div class="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
         <Dialog.Root bind:open={followersDialogOpen}>
-          <Dialog.Trigger class={`${buttonVariants({ variant: 'ghost' })} h-auto rounded-xl px-4 py-2 flex-col gap-0`} onclick={handleFollowersTriggerClick}>
-            <span class="font-semibold">{data.numFollowers}</span>
+          <Dialog.Trigger class={`${buttonVariants({ variant: 'secondary' })} h-auto px-4 py-2 flex-col gap-0`} onclick={handleFollowersTriggerClick}>
+            <span class="font-black">{data.numFollowers}</span>
             <span class="text-muted-foreground">Followers</span>
           </Dialog.Trigger>
           <Dialog.Content class="sm:max-w-md">
@@ -129,7 +131,7 @@
               <Dialog.Description>People who follow @{data.userProfile.username}</Dialog.Description>
             </Dialog.Header>
 
-            <ScrollArea class="h-72 rounded-md border">
+            <ScrollArea class="h-72 rounded-3xl border">
               <div class="p-2">
                 {#if isFollowersLoading}
                   <div class="space-y-3 p-1">
@@ -169,8 +171,8 @@
         </Dialog.Root>
 
         <Dialog.Root bind:open={followingDialogOpen}>
-          <Dialog.Trigger class={`${buttonVariants({ variant: 'ghost' })} h-auto rounded-xl px-4 py-2 flex-col gap-0`} onclick={handleFollowingTriggerClick}>
-            <span class="font-semibold">{data.numFollowing}</span>
+          <Dialog.Trigger class={`${buttonVariants({ variant: 'secondary' })} h-auto px-4 py-2 flex-col gap-0`} onclick={handleFollowingTriggerClick}>
+            <span class="font-black">{data.numFollowing}</span>
             <span class="text-muted-foreground">Following</span>
           </Dialog.Trigger>
           <Dialog.Content class="sm:max-w-md">
@@ -179,7 +181,7 @@
               <Dialog.Description>People @{data.userProfile.username} follows</Dialog.Description>
             </Dialog.Header>
 
-            <ScrollArea class="h-72 rounded-md border">
+            <ScrollArea class="h-72 rounded-3xl border">
               <div class="p-2">
                 {#if isFollowingLoading}
                   <div class="space-y-3 p-1">
@@ -238,10 +240,10 @@
         {/if}
       {/if}
 
-      <div class="w-full max-w-md rounded-2xl border border-border bg-muted/30 p-4">
+      <div class="w-full rounded-4xl border border-border bg-background p-4 shadow-md dark:bg-muted">
         <div class="mb-2 flex items-center justify-between">
-          <h2 class="text-sm font-semibold tracking-wide text-foreground uppercase">Favorites</h2>
-          <span class="text-xs text-muted-foreground">{data.numFavoriteRoutines}</span>
+          <h2 class="text-sm font-black tracking-wide text-foreground uppercase">Favorites</h2>
+          <span class="rounded-full border border-border bg-secondary px-2 py-0.5 text-xs font-black text-secondary-foreground">{data.numFavoriteRoutines}</span>
         </div>
 
         {#if data.favoriteRoutines.length > 0}
@@ -252,7 +254,7 @@
                 class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-xl px-3 py-2`}
               >
                 <span class="min-w-0 text-left">
-                  <span class="block truncate font-medium">{routine.name}</span>
+                  <span class="block truncate font-bold">{routine.name}</span>
                   <span class="block truncate text-muted-foreground text-xs">@{routine.username}</span>
                 </span>
               </a>
@@ -270,8 +272,8 @@
       </div>
     </div>
 
-    <div class="md:basis-1/2 flex flex-col gap-4">
-      <h2 class="text-xl text-center md:text-left font-semibold">
+    <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-5 shadow-lg sm:p-6">
+      <h2 class="text-2xl font-black text-center md:text-left">
         {data.numWorkoutRoutines} Workout {data.numWorkoutRoutines === 1 ? 'Routine' : 'Routines'}
       </h2>
 

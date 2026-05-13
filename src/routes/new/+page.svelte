@@ -17,15 +17,11 @@
 
 <Seo title="New Workout Routine" />
 
-<section class="relative mx-auto my-auto flex min-h-136 w-full max-w-3xl flex-col items-center justify-center gap-8 sm:gap-10 px-4 sm:px-6 py-10 sm:py-14 text-center">
-  <div class="pointer-events-none absolute inset-0 -z-10">
-    <div class="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl"></div>
-  </div>
-
-  <div class="space-y-3">
-    <p class="text-sm tracking-[0.18em] text-blue-500 uppercase font-semibold">New Routine</p>
-    <h1 class="text-3xl font-bold sm:text-6xl text-foreground tracking-tight">Create. Save. <span class="text-blue-500">Share.</span></h1>
-    <p class="text-muted-foreground text-base sm:text-lg mt-4 max-w-lg mx-auto px-2">Create and save a workout routine to never forget your split.</p>
+<section class="mx-auto my-auto flex min-h-136 w-full max-w-3xl flex-col items-center justify-center gap-8 px-4 py-10 text-center sm:gap-10 sm:px-6 sm:py-14">
+  <div class="w-full rounded-4xl border border-border bg-card p-6 text-left shadow-lg sm:p-8">
+    <p class="text-sm font-black uppercase tracking-[0.18em] text-primary">New Routine</p>
+    <h1 class="mt-3 text-4xl font-black tracking-tight text-foreground sm:text-6xl">Create. Save. <span class="text-primary">Share.</span></h1>
+    <p class="mt-4 max-w-lg text-base font-semibold leading-7 text-muted-foreground sm:text-lg">Create and save a workout routine to never forget your split.</p>
   </div>
 
   <form method="POST" action="?/create" use:enhance={enhanceCreateRoutine} class="flex h-32 items-center justify-center">
@@ -34,7 +30,7 @@
         type="submit"
         size="lg"
         disabled={isCreating}
-        class="rounded-xl font-bold px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg"
+        class="px-6 text-base sm:h-14 sm:px-8 sm:text-lg"
       >
         {isCreating ? 'Creating...' : 'Create Workout Routine'}
       </Button>
