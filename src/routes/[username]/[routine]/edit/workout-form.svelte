@@ -135,7 +135,7 @@
 <div class="w-full flex flex-col gap-8">
 <div class="sticky top-0 z-20 flex w-full flex-col gap-3 border-b border-border bg-background/95 pt-4 pb-4 lg:hidden dark:bg-background/95">
   {#if $tainted}
-    <Alert.Root class="border-border bg-secondary text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] [&>svg]:text-secondary-foreground">
+    <Alert.Root class="border border-border bg-secondary text-secondary-foreground shadow-sm [&>svg]:text-secondary-foreground">
       <TriangleAlertIcon />
       <Alert.Title>Unsaved changes</Alert.Title>
       <Alert.Description>You have unsaved changes.</Alert.Description>
@@ -165,7 +165,7 @@
 
 <div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-[1fr_24rem]">
   <form id="workout-form" class="order-2 flex w-full flex-col gap-6 sm:gap-8 lg:order-1" method="POST" action="?/save" use:enhance>
-    <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-[6px_6px_0_0_var(--hard-shadow)] sm:p-6">
+    <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-lg sm:p-6">
       <div>
         <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Setup</p>
         <h2 class="text-2xl font-black">Basic Info</h2>
@@ -264,7 +264,7 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-[6px_6px_0_0_var(--hard-shadow)] sm:p-6">
+  <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-lg sm:p-6">
     <div>
       <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Training days</p>
       <h2 class="text-2xl font-black">Schedule</h2>
@@ -301,7 +301,7 @@
         <Accordion.Item value={index.toString()} class="border-b border-border last:border-b-0">
           <AccordionPrimitive.Header level={3} class="flex flex-wrap items-start gap-2 px-3 transition-colors hover:bg-muted/60 sm:flex-nowrap sm:items-center sm:px-4">
             <AccordionPrimitive.Trigger
-              class="focus-visible:border-ring focus-visible:ring-ring/50 min-w-0 flex flex-1 items-center gap-2 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring-[3px] sm:py-4 sm:text-base [&[data-state=open]>svg]:rotate-180"
+              class="focus-visible:border-ring focus-visible:ring-ring min-w-0 flex flex-1 items-center gap-2 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring focus-visible:ring-offset-2 sm:py-4 sm:text-base [&[data-state=open]>svg]:rotate-180"
             >
               <ChevronDownIcon
                 class="text-muted-foreground pointer-events-none size-4 shrink-0 transition-transform duration-200"
@@ -320,7 +320,7 @@
             >
               <AlertDialog.Trigger
                 type="button"
-                class="focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-8 shrink-0 items-center gap-1.5 rounded-3xl border border-border bg-background px-2.5 text-sm font-bold text-destructive shadow-[2px_2px_0_0_var(--hard-shadow)] outline-none transition-all hover:bg-destructive hover:text-primary-foreground focus-visible:ring-[3px] dark:bg-card"
+                class="focus-visible:border-ring focus-visible:ring-ring inline-flex h-8 shrink-0 items-center gap-1.5 rounded-3xl border border-border bg-background px-2.5 text-sm font-bold text-destructive shadow-xs outline-none transition-all hover:bg-destructive hover:text-primary-foreground focus-visible:ring focus-visible:ring-offset-2 dark:bg-card"
                 aria-label={`Delete ${getDayTitle(index, $formData.uses_numbered_days)}`}
               >
                 <Trash2Icon class="size-4" />
@@ -375,14 +375,14 @@
             {/if}
 
             {#each $formData.workout_days[index].workout_exercises as exercise, eIndex}
-              <div class="relative flex flex-col gap-4 rounded-4xl border border-border bg-card p-4 shadow-[4px_4px_0_0_var(--hard-shadow)] dark:bg-card sm:p-5">
+              <div class="relative flex flex-col gap-4 rounded-4xl border border-border bg-card p-4 shadow-md dark:bg-card sm:p-5">
                 <AlertDialog.Root
                   open={deleteExerciseDialogOpen[getExerciseDialogKey(index, eIndex)] ?? false}
                   onOpenChange={(open) => setDeleteExerciseDialogOpen(index, eIndex, open)}
                 >
                   <AlertDialog.Trigger
                     type="button"
-                    class="absolute right-3 top-3 rounded-full border border-border bg-background p-1 text-destructive shadow-[2px_2px_0_0_var(--hard-shadow)] transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted"
+                    class="absolute right-3 top-3 rounded-full border border-border bg-background p-1 text-destructive shadow-xs transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted"
                     aria-label={`Delete ${exercise.name?.trim() || 'exercise'}`}
                   >
                     <Trash2Icon class="size-4" />
@@ -486,13 +486,13 @@
   <aside class="order-1 flex w-full flex-col gap-4 lg:order-2 lg:sticky lg:top-8 lg:self-start">
     <div class="hidden lg:flex flex-col gap-3">
       {#if $tainted}
-        <Alert.Root class="border-border bg-secondary text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] [&>svg]:text-secondary-foreground">
+        <Alert.Root class="border border-border bg-secondary text-secondary-foreground shadow-sm [&>svg]:text-secondary-foreground">
           <TriangleAlertIcon />
           <Alert.Title>Unsaved changes</Alert.Title>
           <Alert.Description>You have unsaved changes.</Alert.Description>
         </Alert.Root>
       {:else}
-        <Alert.Root class="border-border shadow-[3px_3px_0_0_var(--hard-shadow)]">
+        <Alert.Root class="border border-border shadow-sm">
           <CheckCircle2Icon />
           <Alert.Title>No unsaved changes</Alert.Title>
         </Alert.Root>

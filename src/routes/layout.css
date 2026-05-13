@@ -30,7 +30,6 @@
   --chart-4: oklch(0.78 0.09 83);
   --chart-5: oklch(0.62 0.08 250);
   --radius: 1rem;
-  --hard-shadow: #2f2923;
   --sidebar: oklch(0.918 0.035 80);
   --sidebar-foreground: oklch(0.22 0.016 68);
   --sidebar-primary: oklch(0.49 0.092 184);
@@ -57,7 +56,7 @@
   --accent: oklch(0.75 0.11 42);
   --accent-foreground: oklch(0.16 0.015 70);
   --destructive: oklch(0.72 0.14 30);
-  --border: oklch(0.82 0.024 82);
+  --border: oklch(0.08 0.008 70);
   --input: oklch(0.285 0.014 70);
   --ring: oklch(0.68 0.09 184);
   --chart-1: oklch(0.68 0.09 184);
@@ -65,7 +64,6 @@
   --chart-3: oklch(0.74 0.075 132);
   --chart-4: oklch(0.62 0.08 250);
   --chart-5: oklch(0.82 0.07 83);
-  --hard-shadow: #d8d0c3;
   --sidebar: oklch(0.255 0.014 70);
   --sidebar-foreground: oklch(0.94 0.023 82);
   --sidebar-primary: oklch(0.68 0.09 184);
@@ -116,6 +114,17 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --default-border-width: 2px;
+  --default-ring-width: var(--default-border-width);
+  --shadow-width: 4px;
+  --shadow-2xs: calc(var(--shadow-width) * 0.25) calc(var(--shadow-width) * 0.25) 0px var(--color-border);
+  --shadow-xs: calc(var(--shadow-width) * 0.5) calc(var(--shadow-width) * 0.5) 0px var(--color-border);
+  --shadow-sm: calc(var(--shadow-width) * 0.75) calc(var(--shadow-width) * 0.75) 0px var(--color-border);
+  --shadow-md: calc(var(--shadow-width) * 1) calc(var(--shadow-width) * 1) 0px var(--color-border);
+  --shadow-lg: calc(var(--shadow-width) * 1.5) calc(var(--shadow-width) * 1.5) 0px var(--color-border);
+  --shadow-xl: calc(var(--shadow-width) * 2) calc(var(--shadow-width) * 2) 0px var(--color-border);
+  --shadow-2xl: calc(var(--shadow-width) * 3) calc(var(--shadow-width) * 3) 0px var(--color-border);
 }
 
 @layer base {

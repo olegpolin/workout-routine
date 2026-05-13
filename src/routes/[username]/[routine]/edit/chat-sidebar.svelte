@@ -93,8 +93,8 @@
   }
 </script>
 
-<div class="flex flex-col overflow-hidden rounded-4xl border border-border bg-card shadow-[6px_6px_0_0_var(--hard-shadow)]">
-  <button type="button" class="flex w-full cursor-pointer items-center justify-between bg-secondary p-4 text-secondary-foreground transition-colors hover:bg-secondary/90 {open ? 'border-b border-border' : ''}" onclick={() => open = !open}>
+<div class="flex flex-col overflow-hidden rounded-4xl border border-border bg-card shadow-lg">
+  <button type="button" class="flex w-full cursor-pointer items-center justify-between bg-secondary p-4 text-secondary-foreground transition-colors hover:bg-secondary/90 {open ? 'border-b-2 border-border' : ''}" onclick={() => open = !open}>
     <div class="flex items-center gap-2 font-black">
       <Bot class="h-5 w-5" />
       Routine Assistant
@@ -134,7 +134,7 @@
     </div>
   </ScrollArea>
 
-  <div class="border-t border-border bg-background p-3 dark:bg-muted">
+  <div class="border-t-2 border-border bg-background p-3 dark:bg-muted">
     <form onsubmit={(e) => { e.preventDefault(); sendMessage(); }} class="flex gap-2">
       <Textarea
         bind:value={inputMessage}

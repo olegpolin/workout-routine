@@ -139,7 +139,7 @@
 <Seo title={data.workoutRoutine.name} />
 
 <div class="w-full max-w-6xl mx-auto mt-2 space-y-7 sm:mt-4 sm:space-y-9">
-  <a href="/browse" class="flex w-fit items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] transition-all hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_var(--hard-shadow)] dark:bg-secondary dark:text-secondary-foreground">
+  <a href="/browse" class="flex w-fit items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-sm transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:bg-secondary dark:text-secondary-foreground">
     <ArrowLeftIcon class="size-4" />
     Back to Browse
   </a>

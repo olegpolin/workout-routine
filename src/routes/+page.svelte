@@ -11,7 +11,7 @@
 
 <div class="w-full max-w-6xl mx-auto my-auto py-8 sm:py-14">
   <section class="flex flex-col items-center gap-7 text-center">
-    <span class="inline-flex items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-[3px_3px_0_0_var(--hard-shadow)] dark:bg-secondary dark:text-secondary-foreground">
+    <span class="inline-flex items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-sm dark:bg-secondary dark:text-secondary-foreground">
       <DumbbellIcon class="size-4" />
       YourSplit Routine Builder
     </span>
@@ -38,7 +38,7 @@
   </section>
 
   <section class="mt-10 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-    <div class="rounded-4xl border border-border bg-card p-4 shadow-[7px_7px_0_0_var(--hard-shadow)] dark:bg-card sm:p-6">
+    <div class="rounded-4xl border border-border bg-card p-4 shadow-lg dark:bg-card sm:p-6">
       <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="text-left">
           <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Current split</p>
@@ -75,15 +75,15 @@
     </div>
 
     <div class="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
-      <div class="rounded-4xl border border-border bg-primary p-5 text-left text-primary-foreground shadow-[5px_5px_0_0_var(--hard-shadow)]">
+      <div class="rounded-4xl border border-border bg-primary p-5 text-left text-primary-foreground shadow-md">
         <p class="text-4xl font-black">7</p>
         <p class="mt-1 text-sm font-bold">day schedule with rest built in</p>
       </div>
-      <div class="rounded-4xl border border-border bg-secondary p-5 text-left text-secondary-foreground shadow-[5px_5px_0_0_var(--hard-shadow)]">
+      <div class="rounded-4xl border border-border bg-secondary p-5 text-left text-secondary-foreground shadow-md">
         <p class="text-4xl font-black">42</p>
         <p class="mt-1 text-sm font-bold">sets tracked without spreadsheet energy</p>
       </div>
-      <div class="rounded-4xl border border-border bg-accent p-5 text-left text-accent-foreground shadow-[5px_5px_0_0_var(--hard-shadow)]">
+      <div class="rounded-4xl border border-border bg-accent p-5 text-left text-accent-foreground shadow-md">
         <p class="text-4xl font-black">1</p>
         <p class="mt-1 text-sm font-bold">shareable routine link</p>
       </div>
