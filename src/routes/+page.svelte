@@ -83,16 +83,16 @@
 
     <div class="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
       <div class="rounded-4xl border border-border bg-primary p-5 text-left text-primary-foreground shadow-md">
-        <p class="text-4xl font-black">7</p>
-        <p class="mt-1 text-sm font-bold">day schedule with rest built in</p>
+        <p class="text-3xl font-black">Build</p>
+        <p class="mt-1 text-sm font-bold">lay out training days, focus areas, and rest days</p>
       </div>
       <div class="rounded-4xl border border-border bg-secondary p-5 text-left text-secondary-foreground shadow-md">
-        <p class="text-4xl font-black">42</p>
-        <p class="mt-1 text-sm font-bold">sets tracked without spreadsheet energy</p>
+        <p class="text-3xl font-black">Organize</p>
+        <p class="mt-1 text-sm font-bold">keep exercises, sets, reps, and notes easy to scan</p>
       </div>
       <div class="rounded-4xl border border-border bg-accent p-5 text-left text-accent-foreground shadow-md">
-        <p class="text-4xl font-black">1</p>
-        <p class="mt-1 text-sm font-bold">shareable routine link</p>
+        <p class="text-3xl font-black">Share</p>
+        <p class="mt-1 text-sm font-bold">send your split with one clean routine link</p>
       </div>
     </div>
   </section>
