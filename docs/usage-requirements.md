@@ -12,7 +12,21 @@ Someone should use YourSplit because it allows for the seamless sharing of worko
 
 ## How YourSplit should be used
 
-1. User goes to the website/app.
-2. User does x
-3. User does y
-4. Then, user does z
+First, the user will have to navigate to the YourSplit app or website.
+
+They then have the option of logging in, signing up, or just exploring.
+
+### Creating Workouts
+
+User goes to "Create Routine" and then uses a schedule to set all the different workouts.
+
+### Exploring Workouts
+
+Users can click on "Browse" to see all the different workouts and routines, as well as to sort them by difficulty, type, and creator.
+
+On workout pages, users can share that workout or add it to their favorites. Pressing "Watch Demo" pulls up a youtube demo of that exercise.
+
+
+### Interacting with other users
+
+You can follow other users and see their routines/workouts and favorites.
