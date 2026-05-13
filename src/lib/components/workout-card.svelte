@@ -76,8 +76,8 @@
         <ul class="flex flex-col gap-2">
           {#each daysPreview.slice(0, 3) as day, index}
             {@const dayLabel = day.dayLabel ? `: ${day.dayLabel}` : ''}
-            <li class="flex flex-row gap-2 justify-between">
-              <p class="text-sm text-muted-foreground font-bold">
+            <li class="flex flex-row items-center justify-between gap-2">
+              <p class="min-w-0 truncate text-sm font-bold text-muted-foreground">
                 {#if usesNumberedDays}
                   Day {index + 1}{dayLabel}
                 {:else}
@@ -90,7 +90,7 @@
                   {/if}
                 {/if}
               </p>
-              <p class="text-sm font-black text-foreground">
+              <p class="shrink-0 whitespace-nowrap text-right text-sm font-black text-foreground">
                 {day.numExercises} exercises
               </p>
             </li>
