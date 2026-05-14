@@ -301,7 +301,7 @@
         <Accordion.Item value={index.toString()} class="border-b border-border last:border-b-0">
           <AccordionPrimitive.Header level={3} class="flex flex-wrap items-start gap-2 px-3 transition-colors hover:bg-muted/60 sm:flex-nowrap sm:items-center sm:px-4">
             <AccordionPrimitive.Trigger
-              class="focus-visible:border-ring focus-visible:ring-ring min-w-0 flex flex-1 items-center gap-2 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring focus-visible:ring-offset-2 sm:py-4 sm:text-base [&[data-state=open]>svg]:rotate-180"
+              class="ring-offset-background focus-visible:border-ring focus-visible:ring-ring min-w-0 flex flex-1 items-center gap-2 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring focus-visible:ring-offset-2 sm:py-4 sm:text-base [&[data-state=open]>svg]:rotate-180"
             >
               <ChevronDownIcon
                 class="text-muted-foreground pointer-events-none size-4 shrink-0 transition-transform duration-200"
@@ -320,7 +320,7 @@
             >
               <AlertDialog.Trigger
                 type="button"
-                class="focus-visible:border-ring focus-visible:ring-ring inline-flex h-8 shrink-0 items-center gap-1.5 rounded-3xl border border-border bg-background px-2.5 text-sm font-bold text-destructive shadow-xs outline-none transition-all hover:bg-destructive hover:text-primary-foreground focus-visible:ring focus-visible:ring-offset-2 dark:bg-card"
+                class="ring-offset-background focus-visible:border-ring focus-visible:ring-ring inline-flex h-8 shrink-0 items-center gap-1.5 rounded-3xl border border-border bg-background px-2.5 text-sm font-bold text-destructive shadow-xs outline-none transition-all hover:bg-destructive hover:text-primary-foreground focus-visible:ring focus-visible:ring-offset-2 dark:bg-card"
                 aria-label={`Delete ${getDayTitle(index, $formData.uses_numbered_days)}`}
               >
                 <Trash2Icon class="size-4" />
