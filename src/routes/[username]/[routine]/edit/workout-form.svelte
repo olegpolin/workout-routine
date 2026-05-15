@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { enhance as formEnhance } from '$app/forms';
+  import { beforeNavigate } from '$app/navigation';
   import * as Form from '$lib/components/ui/form';
   import * as Select from '$lib/components/ui/select';
   import { Input } from '$lib/components/ui/input';
@@ -116,6 +117,7 @@
     },
     onResult: ({ result }) => {
       if (result.type === 'redirect') {
+        workoutForm.tainted.set(undefined);
         toast.success('Workout routine saved successfully');
       }
     },
@@ -130,6 +132,27 @@
     }
   });
   const { form: formData, enhance, submitting, tainted } = workoutForm;
+
+  $effect(() => {
+    if (!$tainted) return;
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  });
+
+  beforeNavigate(({ cancel }) => {
+    if ($submitting) return;
+    if ($tainted && !window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
+      cancel();
+    }
+  });
 </script>
 
 <div class="w-full flex flex-col gap-8">
