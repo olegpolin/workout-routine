@@ -35,33 +35,36 @@
 </script>
 
 <header class="w-full flex flex-row items-center justify-between gap-4 py-4 px-2">
-  <a class="flex items-center gap-3" href="/">
-    <div class="rounded-lg flex items-center justify-center overflow-hidden">
-      <img src={favicon} alt="YourSplit logo" class="h-8 w-8" />
+  <a class="group/logo flex items-center gap-3 rounded-3xl px-2 py-1 -mx-2 -my-1 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring focus-visible:ring-ring focus-visible:ring-offset-2" href="/">
+    <div class="flex size-8 items-center justify-center overflow-hidden">
+      <img src={favicon} alt="YourSplit logo" class="size-8 transition-transform group-hover/logo:rotate-[-6deg]" />
     </div>
-    <span class="text-2xl font-bold tracking-tight text-foreground">
+    <span class="text-2xl font-black tracking-tight text-foreground">
       YourSplit
     </span>
   </a>
 
   <div class="flex items-center gap-4">
-    <Button variant="outline" class="hidden md:flex rounded-xl" href="/browse">
+    <Button variant="outline" class="hidden md:flex" href="/browse">
       Browse
     </Button>
-    <Button class="hidden md:flex rounded-xl" href="/new">
+    <Button class="hidden md:flex" href="/new">
       Create Routine
     </Button>
 
     {#if !page.data.session}
-      <Button class="max-md:hidden rounded-xl" href="/login" variant="secondary">
+      <Button class="max-md:hidden" href="/login" variant="secondary">
         Log in
       </Button>
     {:else}
       <DropdownMenu.Root>
-        <DropdownMenu.Trigger class="max-md:hidden">
-          <Avatar.Root class="h-10 w-10 border border-border">
+        <DropdownMenu.Trigger
+          class="max-md:hidden rounded-full transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label="Account menu"
+        >
+          <Avatar.Root class="size-10 border border-border shadow-sm">
             <Avatar.Image src={page.data.profile?.avatar_url} alt="Profile picture" />
-            <Avatar.Fallback class="bg-muted"><UserIcon class="h-5 w-5 text-muted-foreground" /></Avatar.Fallback>
+            <Avatar.Fallback class="bg-muted"><UserIcon class="size-5 text-muted-foreground" /></Avatar.Fallback>
           </Avatar.Root>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
@@ -81,7 +84,10 @@
     {/if}
 
     <Sheet.Root>
-      <Sheet.Trigger class="md:hidden" aria-label="Menu">
+      <Sheet.Trigger
+        class={[buttonVariants({ variant: 'outline', size: 'icon' }), 'md:hidden']}
+        aria-label="Menu"
+      >
         <MenuIcon />
       </Sheet.Trigger>
       <Sheet.Content>

@@ -12,6 +12,7 @@
   import * as Empty from '$lib/components/ui/empty';
   import WorkoutCard from '$lib/components/workout-card.svelte';
   import UserIcon from '@lucide/svelte/icons/user';
+  import PencilIcon from '@lucide/svelte/icons/pencil';
 
   type FollowProfile = {
     id: string;
@@ -136,7 +137,7 @@
                 {#if isFollowersLoading}
                   <div class="space-y-3 p-1">
                     {#each Array.from({ length: 5 }) as _, index (index)}
-                      <div class="flex items-center gap-3 rounded-xl px-2 py-1">
+                      <div class="flex items-center gap-3 rounded-3xl px-2 py-1">
                         <Skeleton class="size-8 rounded-full" />
                         <div class="min-w-0 flex-1 space-y-2">
                           <Skeleton class="h-4 w-32" />
@@ -148,7 +149,7 @@
                 {:else if (followers?.length ?? 0) > 0}
                   <div class="flex flex-col gap-1">
                     {#each followers ?? [] as follower (follower.id)}
-                      <a href={`/${follower.username}`} class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-xl px-3 py-2`} onclick={() => { followersDialogOpen = false; }}>
+                      <a href={`/${follower.username}`} class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-3xl px-3 py-2`} onclick={() => { followersDialogOpen = false; }}>
                         <Avatar.Root class="size-8">
                           <Avatar.Image src={follower.avatar_url} alt="Profile picture" />
                           <Avatar.Fallback>
@@ -186,7 +187,7 @@
                 {#if isFollowingLoading}
                   <div class="space-y-3 p-1">
                     {#each Array.from({ length: 5 }) as _, index (index)}
-                      <div class="flex items-center gap-3 rounded-xl px-2 py-1">
+                      <div class="flex items-center gap-3 rounded-3xl px-2 py-1">
                         <Skeleton class="size-8 rounded-full" />
                         <div class="min-w-0 flex-1 space-y-2">
                           <Skeleton class="h-4 w-32" />
@@ -198,7 +199,7 @@
                 {:else if (following?.length ?? 0) > 0}
                   <div class="flex flex-col gap-1">
                     {#each following ?? [] as followedProfile (followedProfile.id)}
-                      <a href={`/${followedProfile.username}`} class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-xl px-3 py-2`} onclick={() => { followingDialogOpen = false; }}>
+                      <a href={`/${followedProfile.username}`} class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-3xl px-3 py-2`} onclick={() => { followingDialogOpen = false; }}>
                         <Avatar.Root class="size-8">
                           <Avatar.Image src={followedProfile.avatar_url} alt="Profile picture" />
                           <Avatar.Fallback>
@@ -221,23 +222,26 @@
         </Dialog.Root>
       </div>
 
-      {#if !data.isOwnProfile}
-        {#if data.isLoggedIn}
-          <form method="POST" action={data.isFollowing ? '?/unfollow' : '?/follow'} use:enhance={enhanceFollow}>
-            <Button type="submit" variant={data.isFollowing ? 'outline' : 'default'} disabled={isFollowPending}>
-              {#if isFollowPending}
-                <Spinner />
-                {data.isFollowing ? 'Unfollowing...' : 'Following...'}
-              {:else}
-                {data.isFollowing ? 'Unfollow' : 'Follow'}
-              {/if}
-            </Button>
-          </form>
-        {:else}
-          <Button href="/login" variant="outline">
-            Log in to follow
+      {#if data.isOwnProfile}
+        <Button href="/account" variant="secondary">
+          <PencilIcon class="size-4" />
+          Edit profile
+        </Button>
+      {:else if data.isLoggedIn}
+        <form method="POST" action={data.isFollowing ? '?/unfollow' : '?/follow'} use:enhance={enhanceFollow}>
+          <Button type="submit" variant={data.isFollowing ? 'outline' : 'default'} disabled={isFollowPending}>
+            {#if isFollowPending}
+              <Spinner />
+              {data.isFollowing ? 'Unfollowing...' : 'Following...'}
+            {:else}
+              {data.isFollowing ? 'Unfollow' : 'Follow'}
+            {/if}
           </Button>
-        {/if}
+        </form>
+      {:else}
+        <Button href="/login" variant="outline">
+          Log in to follow
+        </Button>
       {/if}
 
       <div class="w-full rounded-4xl border border-border bg-background p-4 shadow-md dark:bg-muted">
@@ -251,7 +255,7 @@
             {#each data.favoriteRoutines as routine (routine.href)}
               <a
                 href={routine.href}
-                class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-xl px-3 py-2`}
+                class={`${buttonVariants({ variant: 'ghost' })} h-auto w-full justify-start rounded-3xl px-3 py-2`}
               >
                 <span class="min-w-0 text-left">
                   <span class="block truncate font-bold">{routine.name}</span>
@@ -294,11 +298,4 @@
     </div>
   </div>
 
-  {#if data.isOwnProfile}
-    <div class="flex justify-center">
-      <Button href="/account">
-        Edit profile
-      </Button>
-    </div>
-  {/if}
 </div>

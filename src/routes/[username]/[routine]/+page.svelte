@@ -346,7 +346,7 @@
 
       {#if !data.isLoggedIn}
         <div class="mt-3 flex justify-center">
-          <Button variant="default" class="rounded-xl" disabled>
+          <Button variant="default" disabled>
             You Must Log In
           </Button>
         </div>
@@ -355,7 +355,6 @@
           <Button
             href={demoResult.videoUrl}
             variant="default"
-            class="rounded-xl"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -364,14 +363,14 @@
         </div>
       {:else if hasDemoError}
         <div class="mt-3 flex justify-center">
-          <Button variant="default" class="rounded-xl" disabled>
+          <Button variant="default" disabled>
             Video Not Found
           </Button>
         </div>
       {:else}
         <form bind:this={demoSearchForm} method="POST" action="?/searchDemoVideo" use:enhance={enhanceDemoSearch} class="mt-3 flex justify-center">
           <input type="hidden" name="exerciseName" value={selectedExerciseName} />
-          <Button type="submit" variant="default" class="rounded-xl" disabled={isDemoSearchPending}>
+          <Button type="submit" variant="default" disabled={isDemoSearchPending}>
             {#if isDemoSearchPending}
               <Spinner />
               Searching...

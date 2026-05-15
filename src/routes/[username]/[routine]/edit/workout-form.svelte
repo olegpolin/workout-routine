@@ -412,7 +412,11 @@
             >
               <AlertDialog.Trigger
                 type="button"
-                class="ring-offset-background focus-visible:border-ring focus-visible:ring-ring inline-flex h-8 shrink-0 items-center gap-1.5 rounded-3xl border border-border bg-background px-2.5 text-sm font-bold text-destructive shadow-xs outline-none transition-all hover:bg-destructive hover:text-primary-foreground focus-visible:ring focus-visible:ring-offset-2 dark:bg-card"
+                class={buttonVariants({
+                  variant: 'outline',
+                  size: 'sm',
+                  class: 'shrink-0 text-destructive hover:bg-destructive hover:text-primary-foreground',
+                })}
                 aria-label={`Delete ${getDayTitle(index, $formData.uses_numbered_days)}`}
               >
                 <Trash2Icon class="size-4" />
@@ -537,7 +541,11 @@
                   >
                     <AlertDialog.Trigger
                       type="button"
-                      class="ml-auto shrink-0 rounded-full border border-border bg-background p-2 text-destructive shadow-xs transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted sm:ml-0 sm:mt-5"
+                      class={buttonVariants({
+                        variant: 'outline',
+                        size: 'icon-sm',
+                        class: 'ml-auto shrink-0 text-destructive hover:bg-destructive hover:text-primary-foreground sm:ml-0 sm:mt-5',
+                      })}
                       aria-label={`Delete ${exercise.name?.trim() || 'exercise'}`}
                     >
                       <Trash2Icon class="size-4" />

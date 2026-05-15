@@ -12,24 +12,24 @@
     <Button variant="ghost" size="icon" href="https://github.com/yoursplit/yoursplit.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
       <GitHubIcon />
     </Button>
-    <p class="text-sm text-center md:text-left text-muted-foreground">
+    <p class="text-sm font-semibold text-center md:text-left text-muted-foreground">
       Created by
-      <a class="font-medium underline underline-offset-4" href="https://olegpolin.com" target="_blank" rel="noopener noreferrer">
+      <a class="font-bold text-foreground underline underline-offset-4 decoration-2 hover:text-primary" href="https://olegpolin.com" target="_blank" rel="noopener noreferrer">
         Oleg
       </a>,
-      <a class="font-medium underline underline-offset-4" href="https://github.com/bodenharris" target="_blank" rel="noopener noreferrer">
+      <a class="font-bold text-foreground underline underline-offset-4 decoration-2 hover:text-primary" href="https://github.com/bodenharris" target="_blank" rel="noopener noreferrer">
         Boden
       </a> &amp;
-      <a class="font-medium underline underline-offset-4" href="https://github.com/lukesantos34" target="_blank" rel="noopener noreferrer">
+      <a class="font-bold text-foreground underline underline-offset-4 decoration-2 hover:text-primary" href="https://github.com/lukesantos34" target="_blank" rel="noopener noreferrer">
         Luke
       </a>.
     </p>
   </div>
 
   <div class="flex items-center gap-6">
-    <div class="text-sm text-muted-foreground flex gap-4">
-      <a class="hover:underline underline-offset-4" href="/privacy">Privacy Policy</a>
-      <a class="hover:underline underline-offset-4" href="/terms">Terms of Service</a>
+    <div class="text-sm font-bold text-muted-foreground flex gap-4">
+      <a class="hover:text-foreground hover:underline underline-offset-4 decoration-2 transition-colors" href="/privacy">Privacy Policy</a>
+      <a class="hover:text-foreground hover:underline underline-offset-4 decoration-2 transition-colors" href="/terms">Terms of Service</a>
     </div>
 
     <DropdownMenu.Root>

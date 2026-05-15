@@ -12,30 +12,30 @@
     </h1>
   </div>
 
-  <div class="w-full max-w-3xl space-y-6 rounded-4xl border border-border bg-card p-5 text-muted-foreground shadow-lg sm:p-8 font-medium">
+  <div class="w-full max-w-3xl space-y-6 rounded-4xl border border-border bg-card p-5 text-muted-foreground shadow-lg sm:p-8 font-semibold">
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">1. Acceptance of Terms</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">1. Acceptance of Terms</h2>
       <p>
         By logging into YourSplit using your <strong>Google Account</strong>, you agree to these basic terms. If you do not agree with them, please do not use the service.
       </p>
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">2. Account Responsibility</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">2. Account Responsibility</h2>
       <p>
         Because we strictly use Google login, you are responsible for maintaining the security of your own Google Account. We are not liable for any unauthorized access to your routines if your primary Google Account is compromised.
       </p>
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">3. User Content</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">3. User Content</h2>
       <p>
         You retain full ownership over any workout routines you create. However, by publishing a routine publicly on the platform, you grant us a non-exclusive license to display it to other users. We reserve the right to remove any content that is wildly inappropriate or malicious.
       </p>
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">4. "As Is" Service</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">4. "As Is" Service</h2>
       <p>
         YourSplit is provided on an "as is" and "as available" basis. While we strive to make it reliable, we do not warrant that the service will be entirely uninterrupted or completely error-free.
       </p>

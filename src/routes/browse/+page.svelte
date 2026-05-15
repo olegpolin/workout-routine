@@ -3,19 +3,19 @@
   import type { PageProps } from './$types';
   import Seo from '$lib/components/seo.svelte';
   import WorkoutCard from '$lib/components/workout-card.svelte';
+  import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
   import * as Pagination from '$lib/components/ui/pagination';
   import { WORKOUT_DIFFICULTY_FILTER_OPTIONS, WORKOUT_TYPE_FILTER_OPTIONS } from '$lib/constants';
+  import FilterIcon from '@lucide/svelte/icons/filter';
+  import GaugeIcon from '@lucide/svelte/icons/gauge';
+  import UsersIcon from '@lucide/svelte/icons/users';
+  import SearchIcon from '@lucide/svelte/icons/search';
 
   let { data }: PageProps = $props();
 
   const workoutTypeOptions = WORKOUT_TYPE_FILTER_OPTIONS;
   const workoutDifficultyOptions = WORKOUT_DIFFICULTY_FILTER_OPTIONS;
-
-  const filterButtonClass =
-    'px-5 py-2 rounded-4xl border border-border bg-background text-foreground hover:bg-muted text-sm font-bold shadow-sm transition-all';
-  const activeFilterButtonClass =
-    'px-5 py-2 rounded-4xl border border-border bg-primary text-primary-foreground text-sm font-bold shadow-md transition-all';
 
   const browseHref = (
     page: number,
@@ -152,81 +152,100 @@
         placeholder="Search routine, exercise, or creator"
         aria-label="Search workouts"
       />
-      <button type="submit" class={activeFilterButtonClass}>Search</button>
+      <Button type="submit">
+        <SearchIcon class="size-4" />
+        Search
+      </Button>
       {#if data.search}
-        <button type="button" class={filterButtonClass} onclick={clearSearch}>Clear</button>
+        <Button type="button" variant="outline" onclick={clearSearch}>Clear</Button>
       {/if}
     </form>
 
-    <div class="flex w-full flex-col items-start gap-4 font-medium">
-      <div class="flex flex-wrap items-center justify-center gap-2">
+    <div class="flex w-full flex-col items-start gap-4">
+      <div class="flex flex-wrap items-center gap-2">
         <span class="text-muted-foreground text-sm font-bold flex items-center gap-1.5 mr-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            ><path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-            /></svg
-          >
+          <FilterIcon class="size-4" />
           Type:
         </span>
 
         {#each workoutTypeOptions as option}
-          <button
+          <Button
             type="button"
-            class={option.value === data.workoutType ? activeFilterButtonClass : filterButtonClass}
+            variant={option.value === data.workoutType ? 'default' : 'outline'}
+            size="sm"
             aria-pressed={option.value === data.workoutType}
             onclick={() => handleTypeFilterChange(option.value)}
           >
             {option.label}
-          </button>
+          </Button>
         {/each}
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-2">
-        <span class="text-muted-foreground text-sm font-bold mr-2">Difficulty:</span>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-muted-foreground text-sm font-bold flex items-center gap-1.5 mr-2">
+          <GaugeIcon class="size-4" />
+          Difficulty:
+        </span>
 
         {#each workoutDifficultyOptions as option}
-          <button
+          <Button
             type="button"
-            class={option.value === data.workoutDifficulty ? activeFilterButtonClass : filterButtonClass}
+            variant={option.value === data.workoutDifficulty ? 'default' : 'outline'}
+            size="sm"
             aria-pressed={option.value === data.workoutDifficulty}
             onclick={() => handleDifficultyFilterChange(option.value)}
           >
             {option.label}
-          </button>
+          </Button>
         {/each}
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-2">
-        <span class="text-muted-foreground text-sm font-bold mr-2">Creator:</span>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-muted-foreground text-sm font-bold flex items-center gap-1.5 mr-2">
+          <UsersIcon class="size-4" />
+          Creator:
+        </span>
 
-        <button
+        <Button
           type="button"
-          class={!data.followingOnly ? activeFilterButtonClass : filterButtonClass}
+          variant={!data.followingOnly ? 'default' : 'outline'}
+          size="sm"
           aria-pressed={!data.followingOnly}
           onclick={() => handleFollowingFilterChange(false)}
         >
           Everyone
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
-          class={data.followingOnly ? activeFilterButtonClass : filterButtonClass}
+          variant={data.followingOnly ? 'default' : 'outline'}
+          size="sm"
           aria-pressed={data.followingOnly}
           onclick={() => handleFollowingFilterChange(true)}
         >
           Following
-        </button>
+        </Button>
       </div>
+    </div>
+
+    <div class="flex items-center justify-between gap-3 border-t border-border pt-4">
+      <p class="text-sm font-bold text-muted-foreground">
+        <span class="text-foreground font-black">{data.totalWorkoutRoutines}</span>
+        {data.totalWorkoutRoutines === 1 ? 'routine' : 'routines'} match your filters
+      </p>
     </div>
   </div>
 
-  <div class="rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-black text-secondary-foreground shadow-sm">Showing {data.totalWorkoutRoutines} workouts</div>
-
   {#if data.workoutRoutines.length === 0}
-    <p class="rounded-4xl border border-border bg-card px-6 py-8 text-lg font-bold text-muted-foreground shadow-md">No routines found on this page.</p>
+    <div class="flex w-full max-w-5xl flex-col items-center gap-4 rounded-4xl border border-border bg-card px-6 py-12 text-center shadow-md">
+      <div class="flex size-14 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
+        <SearchIcon class="size-6" />
+      </div>
+      <h2 class="text-xl font-black text-foreground">No routines found</h2>
+      <p class="max-w-md text-sm font-semibold text-muted-foreground">
+        Try clearing a filter or searching for a different term.
+      </p>
+    </div>
   {:else}
     <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
       {#each data.workoutRoutines as workoutRoutine}

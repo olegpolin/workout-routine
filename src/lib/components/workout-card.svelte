@@ -21,16 +21,23 @@
   import { Separator } from '$lib/components/ui/separator';
   import { toast } from 'svelte-sonner';
   import { ESTIMATED_MINUTES_PER_EXERCISE } from '$lib/constants';
+  import Share2Icon from '@lucide/svelte/icons/share-2';
+  import Clock3Icon from '@lucide/svelte/icons/clock-3';
+  import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
+  import ZapIcon from '@lucide/svelte/icons/zap';
+  import HeartIcon from '@lucide/svelte/icons/heart';
+  import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
 
   let { name, username, href, usesNumberedDays, workoutType, workoutDifficulty, daysPreview, totalExercises, favoritesCount }: WorkoutRoutineCardProps = $props();
 
   const workoutDaysCount = $derived(daysPreview.filter(d => d.numExercises > 0).length);
   const restDaysCount = $derived(daysPreview.length - workoutDaysCount);
-  
+
   const avgDurationPerWorkoutDay = $derived(workoutDaysCount > 0 ? Math.round((totalExercises * ESTIMATED_MINUTES_PER_EXERCISE) / workoutDaysCount) : 0);
 
   const shareWorkout = (e: MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (typeof window !== 'undefined') {
       const url = new URL(href, window.location.origin).toString();
       navigator.clipboard.writeText(url);
@@ -42,15 +49,16 @@
     value.length > 0 ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : value;
 </script>
 
-<a {href}>
-  <Card.Root class="overflow-hidden rounded-4xl transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none">
+<a {href} class="group/wcard block focus-visible:outline-none">
+  <Card.Root class="overflow-hidden rounded-4xl transition-all group-hover/wcard:translate-x-1 group-hover/wcard:translate-y-1 group-hover/wcard:shadow-none group-focus-visible/wcard:ring group-focus-visible/wcard:ring-ring group-focus-visible/wcard:ring-offset-2">
     <Card.Header class="pb-2">
       <div class="flex flex-wrap items-start justify-between gap-2 sm:gap-4">
         <div class="flex min-w-0 flex-col gap-2">
-          <div class="flex flex-col">
+          <div class="flex flex-col gap-0.5">
             <Card.Title class="text-lg sm:text-xl font-black text-foreground wrap-break-word">{name}</Card.Title>
             <p class="text-sm text-muted-foreground font-bold">@{username}</p>
-            <p class="text-xs text-muted-foreground font-bold mt-0.5">
+            <p class="mt-0.5 inline-flex items-center gap-1 text-xs text-muted-foreground font-bold">
+              <HeartIcon class="size-3 text-destructive {favoritesCount > 0 ? 'fill-destructive' : ''}" />
               {favoritesCount} {favoritesCount === 1 ? 'favorite' : 'favorites'}
             </p>
           </div>
@@ -63,10 +71,22 @@
             </span>
           </div>
         </div>
-        <button class="flex shrink-0 items-center gap-1.5 rounded-4xl border border-border bg-background px-2.5 py-1 text-xs font-black text-primary shadow-xs transition-colors hover:bg-muted sm:px-3" onclick={shareWorkout}>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
+        <span
+          role="button"
+          tabindex="0"
+          aria-label="Copy share link"
+          class="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-4xl border border-border bg-background px-2.5 py-1 text-xs font-black text-primary shadow-xs transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring focus-visible:ring-ring focus-visible:ring-offset-2 sm:px-3"
+          onclick={shareWorkout}
+          onkeydown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              shareWorkout(e as unknown as MouseEvent);
+            }
+          }}
+        >
+          <Share2Icon class="size-3.5" />
           Share
-        </button>
+        </span>
       </div>
     </Card.Header>
     <Card.Content class="pt-4">
@@ -106,32 +126,27 @@
     <Separator class="bg-border" />
     <Card.Footer class="pt-4 flex items-center justify-between text-muted-foreground">
       <div class="flex items-center gap-2">
-        <svg class="h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
+        <Clock3Icon class="size-4 text-primary" />
         <div class="flex flex-col leading-none">
           <span class="font-bold text-foreground">{avgDurationPerWorkoutDay}</span>
           <span class="text-[10px] text-muted-foreground">min/day</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <svg class="h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-        </svg>
+        <CalendarDaysIcon class="size-4 text-primary" />
         <div class="flex flex-col leading-none">
           <span class="font-bold text-foreground">{workoutDaysCount}d on / {restDaysCount}d</span>
           <span class="text-[10px] text-muted-foreground">rest</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <svg class="h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-        </svg>
+        <ZapIcon class="size-4 text-primary" />
         <div class="flex flex-col leading-none">
           <span class="font-bold text-foreground">{totalExercises}</span>
           <span class="text-[10px] text-muted-foreground">exercises</span>
         </div>
       </div>
+      <ArrowRightIcon class="size-4 shrink-0 text-primary opacity-0 transition-all duration-200 group-hover/wcard:translate-x-1 group-hover/wcard:opacity-100" aria-hidden="true" />
     </Card.Footer>
   </Card.Root>
 </a>

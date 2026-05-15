@@ -94,12 +94,17 @@
 </script>
 
 <div class="flex flex-col overflow-hidden rounded-4xl border border-border bg-card shadow-lg">
-  <button type="button" class="flex w-full cursor-pointer items-center justify-between bg-secondary p-4 text-secondary-foreground transition-colors hover:bg-secondary/90 {open ? 'border-b-2 border-border' : ''}" onclick={() => open = !open}>
+  <button
+    type="button"
+    class="flex w-full cursor-pointer items-center justify-between bg-secondary p-4 text-secondary-foreground transition-colors hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background {open ? 'border-b border-border' : ''}"
+    onclick={() => open = !open}
+    aria-expanded={open}
+  >
     <div class="flex items-center gap-2 font-black">
       <Bot class="h-5 w-5" />
       Routine Assistant
     </div>
-    <ChevronDownIcon class="w-4 h-4 transition-transform duration-200 {open ? '' : '-rotate-90'}" />
+    <ChevronDownIcon class="size-4 transition-transform duration-200 {open ? '' : '-rotate-90'}" />
   </button>
 
   {#if open}
@@ -108,33 +113,33 @@
     <div class="flex flex-col gap-4 py-4">
       {#each messages as msg}
         <div class="flex gap-2 {msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}">
-          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
+          <div class="flex size-8 shrink-0 items-center justify-center rounded-full border border-border {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
             {#if msg.role === 'user'}
-              <User class="w-4 h-4" />
+              <User class="size-4" />
             {:else}
-              <Bot class="w-4 h-4" />
+              <Bot class="size-4" />
             {/if}
           </div>
-          <div class="max-w-[80%] rounded-3xl border border-border p-3 text-sm font-semibold {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
+          <div class="max-w-[80%] rounded-3xl border border-border p-3 text-sm font-semibold leading-relaxed {msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}">
             {msg.content}
           </div>
         </div>
       {/each}
-      
+
       {#if isLoading}
         <div class="flex gap-2">
-          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-muted">
-            <Bot class="w-4 h-4" />
+          <div class="flex size-8 shrink-0 items-center justify-center rounded-full border border-border bg-muted">
+            <Bot class="size-4" />
           </div>
           <div class="flex max-w-[80%] items-center gap-2 rounded-3xl border border-border bg-muted p-3 text-sm font-semibold">
-            <Spinner class="w-4 h-4" /> Thinking...
+            <Spinner class="size-4" /> Thinking...
           </div>
         </div>
       {/if}
     </div>
   </ScrollArea>
 
-  <div class="border-t-2 border-border bg-background p-3 dark:bg-muted">
+  <div class="border-t border-border bg-background p-3 dark:bg-muted">
     <form onsubmit={(e) => { e.preventDefault(); sendMessage(); }} class="flex gap-2">
       <Textarea
         bind:value={inputMessage}
@@ -143,8 +148,8 @@
         disabled={isLoading}
         class="max-h-28 min-h-12 flex-1 resize-y"
       />
-      <Button type="submit" size="icon" disabled={isLoading || !inputMessage.trim()}>
-        <Send class="w-4 h-4" />
+      <Button type="submit" size="icon" disabled={isLoading || !inputMessage.trim()} aria-label="Send message">
+        <Send class="size-4" />
       </Button>
     </form>
   </div>

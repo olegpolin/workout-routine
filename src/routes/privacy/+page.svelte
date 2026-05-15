@@ -12,16 +12,16 @@
     </h1>
   </div>
 
-  <div class="w-full max-w-3xl space-y-6 rounded-4xl border border-border bg-card p-5 text-muted-foreground shadow-lg sm:p-8 font-medium">
+  <div class="w-full max-w-3xl space-y-6 rounded-4xl border border-border bg-card p-5 text-muted-foreground shadow-lg sm:p-8 font-semibold">
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">1. Information We Collect</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">1. Information We Collect</h2>
       <p>
         We keep it as simple as possible. The only personal information we collect is from your <strong>Google Account</strong> when you log in. This includes your email address, name, and profile picture provided by Google.
       </p>
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">2. How We Use Your Information</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">2. How We Use Your Information</h2>
       <p>
         We use this information exclusively to:
       </p>
@@ -33,14 +33,14 @@
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">3. Data Sharing and Protection</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">3. Data Sharing and Protection</h2>
       <p>
         <strong>We do not sell, rent, or share your personal data with third parties.</strong> Your data is structurally secured and used solely for the necessary functionality of YourSplit. Since we rely on Google for authentication, your passwords are never seen or stored by us.
       </p>
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold text-foreground mb-4">4. Your Rights</h2>
+      <h2 class="text-2xl font-black text-foreground mb-4 tracking-tight">4. Your Rights</h2>
       <p>
         You hold the right to delete your account and all associated workout routines from our database at any time. Simply sign out and reach out to us if you need full data removal.
       </p>

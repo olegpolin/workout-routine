@@ -4,7 +4,6 @@
   import AccountForm from './account-form.svelte';
   import SignoutForm from './signout-form.svelte';
   import * as Card from '$lib/components/ui/card';
-  import * as Separator from '$lib/components/ui/separator';
 
   let { data }: PageProps = $props();
 </script>
@@ -25,19 +24,21 @@
 
     <Card.Root class="w-full overflow-hidden">
       <Card.Content class="p-6 sm:p-8">
-        <div class="w-full flex gap-3 flex-col mb-8">
+        <div class="w-full flex gap-3 flex-col">
           <h2 class="text-2xl font-black text-foreground tracking-tight">Profile Details</h2>
           <AccountForm {data} />
         </div>
-        
-        <Separator.Root class="my-8 bg-border/60" />
-        
-        <div class="w-full flex flex-col items-center text-center gap-3">
+      </Card.Content>
+    </Card.Root>
+
+    <Card.Root class="w-full overflow-hidden border-destructive/40">
+      <Card.Content class="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div class="flex flex-col gap-1">
           <h2 class="text-xl font-black text-destructive tracking-tight">Danger Zone</h2>
-          <p class="text-sm text-muted-foreground mb-4">Log out of your current session.</p>
-          <div class="w-40">
-            <SignoutForm {data} />
-          </div>
+          <p class="text-sm font-semibold text-muted-foreground">Log out of your current session.</p>
+        </div>
+        <div class="w-full sm:w-auto">
+          <SignoutForm {data} />
         </div>
       </Card.Content>
     </Card.Root>
