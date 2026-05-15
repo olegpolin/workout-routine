@@ -7,7 +7,12 @@ import { GROQ_API_KEY } from '$env/static/private';
 
 const groq = new Groq({ apiKey: GROQ_API_KEY });
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, locals: { safeGetSession } }) => {
+  const { session } = await safeGetSession();
+  if (!session) {
+    return json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const { message, currentData, chatHistory } = await request.json();
 
