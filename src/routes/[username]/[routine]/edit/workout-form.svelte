@@ -514,12 +514,12 @@
             {#each $formData.workout_days[index].workout_exercises as exercise, eIndex}
               {@const exerciseKey = getExerciseDialogKey(index, eIndex)}
               <div class="flex flex-col gap-4 rounded-4xl border border-border bg-card p-4 shadow-md dark:bg-card sm:p-5">
-                <div class="flex items-start gap-3">
+                <div class="flex flex-wrap items-start gap-3">
                   <div class="flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-primary text-primary-foreground shadow-sm">
                     <DumbbellIcon class="size-5" />
                   </div>
 
-                  <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].name" class="min-w-0 flex-1 space-y-1">
+                  <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].name" class="order-last w-full min-w-0 space-y-1 sm:order-none sm:w-auto sm:flex-1">
                     <Form.Control>
                       {#snippet children({ props })}
                         <Form.Label class="text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
@@ -537,7 +537,7 @@
                   >
                     <AlertDialog.Trigger
                       type="button"
-                      class="mt-5 shrink-0 rounded-full border border-border bg-background p-2 text-destructive shadow-xs transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted"
+                      class="ml-auto shrink-0 rounded-full border border-border bg-background p-2 text-destructive shadow-xs transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted sm:ml-0 sm:mt-5"
                       aria-label={`Delete ${exercise.name?.trim() || 'exercise'}`}
                     >
                       <Trash2Icon class="size-4" />
@@ -565,8 +565,8 @@
                   </AlertDialog.Root>
                 </div>
 
-                <div class="grid grid-cols-3 gap-2 sm:gap-3">
-                  <div class="flex flex-col gap-1.5 rounded-3xl border border-border bg-background p-3 dark:bg-muted">
+                <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+                  <div class="col-span-2 flex flex-col gap-1.5 rounded-3xl border border-border bg-background p-3 dark:bg-muted sm:col-span-1">
                     <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].weight" class="space-y-1.5">
                       <Form.Control>
                         {#snippet children({ props })}
