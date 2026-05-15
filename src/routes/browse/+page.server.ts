@@ -98,6 +98,7 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
       ...previewFilters,
       limit: PAGE_SIZE,
       offset,
+      order_by: 'favorites',
     }),
     countPreviews(supabase, previewFilters),
   ]);

@@ -10,6 +10,7 @@ type Filters = {
   routine_ids?: string[];
   limit?: number;
   offset?: number;
+  order_by?: 'recent' | 'favorites';
 }
 
 const applyPreviewFilters = <Query>(query: Query, filters?: Filters): Query => {
@@ -90,14 +91,77 @@ export async function getSearchMatchedRoutineIds(
 export async function getPreviews(supabase: SupabaseClient, filters?: Filters): Promise<WorkoutRoutineCardProps[]> {
   const limit = filters?.limit ?? 20;
   const offset = filters?.offset ?? 0;
+  const orderBy = filters?.order_by ?? 'recent';
 
-  const workoutRoutinesQuery = applyPreviewFilters(supabase
-    .from('workout_routines')
-    .select('id, user_id, name, slug, uses_numbered_days, workout_type, workout_difficulty')
-    .order('id', { ascending: false })
-    .range(offset, offset + limit - 1), filters);
+  let workoutRoutinesData:
+    | Array<{
+        id: string;
+        user_id: string;
+        name: string;
+        slug: string;
+        uses_numbered_days: boolean;
+        workout_type: WorkoutType;
+        workout_difficulty: WorkoutDifficulty;
+      }>
+    | null = null;
+  let pageFavoritesCountByRoutineId: Map<string, number> | null = null;
 
-  const { data: workoutRoutinesData } = await workoutRoutinesQuery;
+  if (orderBy === 'favorites') {
+    const matchedIdsQuery = applyPreviewFilters(
+      supabase.from('workout_routines').select('id'),
+      filters,
+    );
+    const { data: matchedIdsData } = await matchedIdsQuery;
+    const matchedIds = (matchedIdsData ?? []).map((row) => row.id as string);
+
+    const favoritesCountByRoutineId = new Map<string, number>();
+    if (matchedIds.length > 0) {
+      const { data: favoritesData } = await supabase
+        .from('favorites')
+        .select('routine_id')
+        .in('routine_id', matchedIds);
+
+      for (const favorite of favoritesData ?? []) {
+        const routineId = favorite.routine_id as string;
+        favoritesCountByRoutineId.set(routineId, (favoritesCountByRoutineId.get(routineId) ?? 0) + 1);
+      }
+    }
+
+    const sortedIds = [...matchedIds].sort((a, b) => {
+      const countDiff = (favoritesCountByRoutineId.get(b) ?? 0) - (favoritesCountByRoutineId.get(a) ?? 0);
+      if (countDiff !== 0) return countDiff;
+      return a < b ? 1 : a > b ? -1 : 0;
+    });
+
+    const pageIds = sortedIds.slice(offset, offset + limit);
+
+    if (pageIds.length === 0) {
+      return [];
+    }
+
+    const { data: pageData } = await supabase
+      .from('workout_routines')
+      .select('id, user_id, name, slug, uses_numbered_days, workout_type, workout_difficulty')
+      .in('id', pageIds);
+
+    const pageById = new Map((pageData ?? []).map((row) => [row.id as string, row]));
+    workoutRoutinesData = pageIds
+      .map((id) => pageById.get(id))
+      .filter((row): row is NonNullable<typeof row> => row != null);
+
+    pageFavoritesCountByRoutineId = new Map(
+      pageIds.map((id) => [id, favoritesCountByRoutineId.get(id) ?? 0]),
+    );
+  } else {
+    const workoutRoutinesQuery = applyPreviewFilters(supabase
+      .from('workout_routines')
+      .select('id, user_id, name, slug, uses_numbered_days, workout_type, workout_difficulty')
+      .order('id', { ascending: false })
+      .range(offset, offset + limit - 1), filters);
+
+    const { data } = await workoutRoutinesQuery;
+    workoutRoutinesData = data;
+  }
 
   if (!workoutRoutinesData) {
     return [];
@@ -119,7 +183,7 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
 
   const dayIds = (workoutDaysData ?? []).map((day) => day.id);
   const exerciseCountByDayId = new Map<string, number>();
-  const favoritesCountByRoutineId = new Map<string, number>();
+  const favoritesCountByRoutineId = pageFavoritesCountByRoutineId ?? new Map<string, number>();
 
   if (dayIds.length > 0) {
     const { data: workoutExercisesData } = await supabase
@@ -133,7 +197,7 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
     }
   }
 
-  if (routineIds.length > 0) {
+  if (pageFavoritesCountByRoutineId === null && routineIds.length > 0) {
     const { data: favoritesData } = await supabase
       .from('favorites')
       .select('routine_id')
