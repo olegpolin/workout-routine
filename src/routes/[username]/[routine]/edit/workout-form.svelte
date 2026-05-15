@@ -232,8 +232,8 @@
     <Form.Field form={workoutForm} name="name">
       <Form.Control>
         {#snippet children({ props })}
-          <Form.Label class="flex items-center gap-1.5">
-            <TypeIcon class="size-4 text-muted-foreground" />
+          <Form.Label class="flex items-center gap-1.5 text-sm font-black">
+            <TypeIcon class="size-4 text-primary" />
             Workout Routine Name
           </Form.Label>
           <Input
@@ -277,8 +277,8 @@
     <Form.Field form={workoutForm} name="description">
       <Form.Control>
         {#snippet children({ props })}
-          <Form.Label class="flex items-center gap-1.5">
-            <AlignLeftIcon class="size-4 text-muted-foreground" />
+          <Form.Label class="flex items-center gap-1.5 text-sm font-black">
+            <AlignLeftIcon class="size-4 text-primary" />
             Description
           </Form.Label>
           <Textarea {...props} bind:value={$formData.description} placeholder="Enter a brief description of your workout routine" />
@@ -291,8 +291,8 @@
       <Form.Field form={workoutForm} name="workout_type">
         <Form.Control>
           {#snippet children()}
-            <Form.Label class="flex items-center gap-1.5">
-              <DumbbellIcon class="size-4 text-muted-foreground" />
+            <Form.Label class="flex items-center gap-1.5 text-sm font-black">
+              <DumbbellIcon class="size-4 text-primary" />
               Workout Type
             </Form.Label>
             <Select.Root type="single" bind:value={$formData.workout_type}>
@@ -313,8 +313,8 @@
       <Form.Field form={workoutForm} name="workout_difficulty">
         <Form.Control>
           {#snippet children()}
-            <Form.Label class="flex items-center gap-1.5">
-              <GaugeIcon class="size-4 text-muted-foreground" />
+            <Form.Label class="flex items-center gap-1.5 text-sm font-black">
+              <GaugeIcon class="size-4 text-primary" />
               Difficulty
             </Form.Label>
             <Select.Root type="single" bind:value={$formData.workout_difficulty}>
@@ -445,8 +445,8 @@
             <Form.Field form={workoutForm} name="workout_days[{index}].day_focus">
               <Form.Control>
                 {#snippet children({ props })}
-                  <Form.Label class="flex items-center gap-1.5">
-                    <TargetIcon class="size-4 text-muted-foreground" />
+                  <Form.Label class="flex items-center gap-1.5 text-sm font-black">
+                    <TargetIcon class="size-4 text-primary" />
                     Daily Focus
                   </Form.Label>
                   <Input {...props} placeholder="e.g. Push, Pull, Legs" bind:value={$formData.workout_days[index].day_focus} />
@@ -472,8 +472,8 @@
                 <Form.Field form={workoutForm} name="workout_days[{index}].notes">
                   <Form.Control>
                     {#snippet children({ props })}
-                      <Form.Label class="flex items-center gap-1.5">
-                        <StickyNoteIcon class="size-4 text-muted-foreground" />
+                      <Form.Label class="flex items-center gap-1.5 text-sm font-black">
+                        <StickyNoteIcon class="size-4 text-primary" />
                         Day Notes
                       </Form.Label>
                       <Textarea {...props} bind:value={$formData.workout_days[index].notes} placeholder="Optional notes for this day" />
@@ -571,7 +571,7 @@
                       <Form.Control>
                         {#snippet children({ props })}
                           <Form.Label class="flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
-                            <WeightIcon class="size-3" />
+                            <WeightIcon class="size-3 text-primary" />
                             Weight
                           </Form.Label>
                           <Input
@@ -605,7 +605,7 @@
                       <Form.Control>
                         {#snippet children({ props })}
                           <Form.Label class="flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
-                            <LayersIcon class="size-3" />
+                            <LayersIcon class="size-3 text-primary" />
                             Sets
                           </Form.Label>
                           <Input {...props} type="number" class="h-9 px-2 text-base font-black" bind:value={$formData.workout_days[index].workout_exercises[eIndex].sets} />
@@ -620,7 +620,7 @@
                       <Form.Control>
                         {#snippet children({ props })}
                           <Form.Label class="flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
-                            <RepeatIcon class="size-3" />
+                            <RepeatIcon class="size-3 text-primary" />
                             Reps
                           </Form.Label>
                           <Input {...props} type="number" class="h-9 px-2 text-base font-black" bind:value={$formData.workout_days[index].workout_exercises[eIndex].reps} />
@@ -648,8 +648,8 @@
                     <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].notes">
                       <Form.Control>
                         {#snippet children({ props })}
-                          <Form.Label class="flex items-center gap-1.5">
-                            <StickyNoteIcon class="size-4 text-muted-foreground" />
+                          <Form.Label class="flex items-center gap-1.5 text-sm font-black">
+                            <StickyNoteIcon class="size-4 text-primary" />
                             Exercise Notes
                           </Form.Label>
                           <Textarea {...props} bind:value={$formData.workout_days[index].workout_exercises[eIndex].notes} placeholder="Optional cues, tempo, rest time, or substitutions" />
