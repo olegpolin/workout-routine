@@ -360,12 +360,23 @@
               <Form.FieldErrors />
             </Form.Field>
 
+            <Form.Field form={workoutForm} name="workout_days[{index}].notes">
+              <Form.Control>
+                {#snippet children({ props })}
+                  <Form.Label>Day Notes</Form.Label>
+                  <Textarea {...props} bind:value={$formData.workout_days[index].notes} placeholder="Optional notes for this day" />
+                {/snippet}
+              </Form.Control>
+              <Form.FieldErrors />
+            </Form.Field>
+
             <Button class="w-full sm:w-fit" onclick={() => {
               $formData.workout_days[index].workout_exercises.push({
                 name: '',
                 weight: undefined,
                 sets: 4,
                 reps: 10,
+                notes: undefined,
               });
               $formData = $formData;
             }}>Add Exercise</Button>
@@ -473,6 +484,16 @@
                     <Form.FieldErrors />
                   </Form.Field>
                 </div>
+
+                <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].notes">
+                  <Form.Control>
+                    {#snippet children({ props })}
+                      <Form.Label>Exercise Notes</Form.Label>
+                      <Textarea {...props} bind:value={$formData.workout_days[index].workout_exercises[eIndex].notes} placeholder="Optional cues, tempo, rest time, or substitutions" />
+                    {/snippet}
+                  </Form.Control>
+                  <Form.FieldErrors />
+                </Form.Field>
               </div>
             {/each}
           </Accordion.Content>
