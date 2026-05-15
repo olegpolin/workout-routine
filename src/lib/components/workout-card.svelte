@@ -20,14 +20,14 @@
   import * as Card from '$lib/components/ui/card';
   import { Separator } from '$lib/components/ui/separator';
   import { toast } from 'svelte-sonner';
+  import { ESTIMATED_MINUTES_PER_EXERCISE } from '$lib/constants';
 
   let { name, username, href, usesNumberedDays, workoutType, workoutDifficulty, daysPreview, totalExercises, favoritesCount }: WorkoutRoutineCardProps = $props();
 
   const workoutDaysCount = $derived(daysPreview.filter(d => d.numExercises > 0).length);
   const restDaysCount = $derived(daysPreview.length - workoutDaysCount);
   
-  const AVG_MIN_PER_EXERCISE = 10;
-  const avgDurationPerWorkoutDay = $derived(workoutDaysCount > 0 ? Math.round((totalExercises * AVG_MIN_PER_EXERCISE) / workoutDaysCount) : 0);
+  const avgDurationPerWorkoutDay = $derived(workoutDaysCount > 0 ? Math.round((totalExercises * ESTIMATED_MINUTES_PER_EXERCISE) / workoutDaysCount) : 0);
 
   const shareWorkout = (e: MouseEvent) => {
     e.preventDefault();

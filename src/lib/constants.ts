@@ -31,6 +31,8 @@ export const WORKOUT_DIFFICULTY_FILTER_OPTIONS: ReadonlyArray<{ value: WorkoutDi
 
 export const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
 
+export const ESTIMATED_MINUTES_PER_EXERCISE = 12;
+
 export const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const isWorkoutType = (value: string): value is WorkoutType => WORKOUT_TYPES.includes(value as WorkoutType);

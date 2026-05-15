@@ -11,7 +11,7 @@
   import * as Card from '$lib/components/ui/card';
   import { toast } from 'svelte-sonner';
   import ProfileCard from '$lib/components/profile-card.svelte';
-  import { WEEKDAYS } from '$lib/constants';
+  import { ESTIMATED_MINUTES_PER_EXERCISE, WEEKDAYS } from '$lib/constants';
   import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
   import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
   import Clock3Icon from '@lucide/svelte/icons/clock-3';
@@ -66,9 +66,7 @@
   const restDaysCount = $derived((data.workoutDaysData?.length ?? 0) - workoutDaysCount);
   const totalExercises = $derived(data.workoutDaysData?.reduce((acc, current) => acc + (current.workout_exercises?.length ?? 0), 0) ?? 0);
 
-  // Assuming roughly 12 minutes per exercise for average duration calculation
-  const AVG_MIN_PER_EXERCISE = 12;
-  const avgDurationPerWorkoutDay = $derived(workoutDaysCount > 0 ? Math.round((totalExercises * AVG_MIN_PER_EXERCISE) / workoutDaysCount) : 0);
+  const avgDurationPerWorkoutDay = $derived(workoutDaysCount > 0 ? Math.round((totalExercises * ESTIMATED_MINUTES_PER_EXERCISE) / workoutDaysCount) : 0);
 
   const enhanceFavorite = () => {
     isFavoritePending = true;
