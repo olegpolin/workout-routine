@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { getPreviews, getSearchMatchedRoutineIds } from '$lib/server/workout-routines';
+import { countPreviews, getPreviews, getSearchMatchedRoutineIds } from '$lib/server/workout-routines';
 import { isWorkoutDifficulty, isWorkoutType } from '$lib/constants';
 
 const PAGE_SIZE = 12;
@@ -86,29 +86,22 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
     };
   }
 
-  const allWorkoutRoutines = await getPreviews(supabase, {
+  const previewFilters = {
     workout_type: workoutType ?? undefined,
     workout_difficulty: workoutDifficulty ?? undefined,
     routine_ids: searchMatchedRoutineIds ?? undefined,
     user_ids: followingUserIds ?? undefined,
-    limit: 10000,
-    offset: 0,
-  });
+  };
 
-  const sortedWorkoutRoutines = [...allWorkoutRoutines].sort((a, b) => {
-    if (b.favoritesCount !== a.favoritesCount) {
-      return b.favoritesCount - a.favoritesCount;
-    }
+  const [workoutRoutines, totalWorkoutRoutines] = await Promise.all([
+    getPreviews(supabase, {
+      ...previewFilters,
+      limit: PAGE_SIZE,
+      offset,
+    }),
+    countPreviews(supabase, previewFilters),
+  ]);
 
-    if (b.totalExercises !== a.totalExercises) {
-      return b.totalExercises - a.totalExercises;
-    }
-
-    return a.name.localeCompare(b.name);
-  });
-
-  const totalWorkoutRoutines = sortedWorkoutRoutines.length;
-  const workoutRoutines = sortedWorkoutRoutines.slice(offset, offset + PAGE_SIZE);
   const hasNextPage = offset + PAGE_SIZE < totalWorkoutRoutines;
 
   return {

@@ -12,6 +12,32 @@ type Filters = {
   offset?: number;
 }
 
+const applyPreviewFilters = <Query>(query: Query, filters?: Filters): Query => {
+  let filteredQuery = query as any;
+
+  if (filters?.user_id) {
+    filteredQuery = filteredQuery.eq('user_id', filters.user_id);
+  }
+
+  if (filters?.user_ids) {
+    filteredQuery = filteredQuery.in('user_id', filters.user_ids);
+  }
+
+  if (filters?.workout_type) {
+    filteredQuery = filteredQuery.eq('workout_type', filters.workout_type);
+  }
+
+  if (filters?.workout_difficulty) {
+    filteredQuery = filteredQuery.eq('workout_difficulty', filters.workout_difficulty);
+  }
+
+  if (filters?.routine_ids) {
+    filteredQuery = filteredQuery.in('id', filters.routine_ids);
+  }
+
+  return filteredQuery as Query;
+};
+
 export async function getSearchMatchedRoutineIds(
   supabase: SupabaseClient,
   rawSearch: string,
@@ -65,31 +91,11 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
   const limit = filters?.limit ?? 20;
   const offset = filters?.offset ?? 0;
 
-  let workoutRoutinesQuery = supabase
+  const workoutRoutinesQuery = applyPreviewFilters(supabase
     .from('workout_routines')
     .select('id, user_id, name, slug, uses_numbered_days, workout_type, workout_difficulty')
     .order('id', { ascending: false })
-    .range(offset, offset + limit - 1);
-
-  if (filters?.user_id) {
-    workoutRoutinesQuery = workoutRoutinesQuery.eq('user_id', filters.user_id);
-  }
-
-  if (filters?.user_ids) {
-    workoutRoutinesQuery = workoutRoutinesQuery.in('user_id', filters.user_ids);
-  }
-
-  if (filters?.workout_type) {
-    workoutRoutinesQuery = workoutRoutinesQuery.eq('workout_type', filters.workout_type);
-  }
-
-  if (filters?.workout_difficulty) {
-    workoutRoutinesQuery = workoutRoutinesQuery.eq('workout_difficulty', filters.workout_difficulty);
-  }
-
-  if (filters?.routine_ids) {
-    workoutRoutinesQuery = workoutRoutinesQuery.in('id', filters.routine_ids);
-  }
+    .range(offset, offset + limit - 1), filters);
 
   const { data: workoutRoutinesData } = await workoutRoutinesQuery;
 
@@ -178,4 +184,14 @@ export async function getPreviews(supabase: SupabaseClient, filters?: Filters): 
       favoritesCount: favoritesCountByRoutineId.get(routine.id) ?? 0,
     };
   });
+}
+
+export async function countPreviews(supabase: SupabaseClient, filters?: Filters): Promise<number> {
+  const workoutRoutinesCountQuery = applyPreviewFilters(supabase
+    .from('workout_routines')
+    .select('id', { count: 'exact', head: true }), filters);
+
+  const { count } = await workoutRoutinesCountQuery;
+
+  return count ?? 0;
 }
