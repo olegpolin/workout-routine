@@ -28,10 +28,20 @@
   import CheckCircle2Icon from '@lucide/svelte/icons/check-circle-2';
   import TriangleAlertIcon from '@lucide/svelte/icons/triangle-alert';
   import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
-  import XIcon from '@lucide/svelte/icons/x';
   import Trash2Icon from '@lucide/svelte/icons/trash-2';
   import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
   import ListOrderedIcon from '@lucide/svelte/icons/list-ordered';
+  import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
+  import DumbbellIcon from '@lucide/svelte/icons/dumbbell';
+  import GaugeIcon from '@lucide/svelte/icons/gauge';
+  import TypeIcon from '@lucide/svelte/icons/type';
+  import AlignLeftIcon from '@lucide/svelte/icons/align-left';
+  import TargetIcon from '@lucide/svelte/icons/target';
+  import StickyNoteIcon from '@lucide/svelte/icons/sticky-note';
+  import WeightIcon from '@lucide/svelte/icons/weight';
+  import LayersIcon from '@lucide/svelte/icons/layers';
+  import RepeatIcon from '@lucide/svelte/icons/repeat';
+  import PlusIcon from '@lucide/svelte/icons/plus';
   import { WEEKDAYS, WORKOUT_DIFFICULTY_OPTIONS, WORKOUT_TYPE_OPTIONS } from '$lib/constants';
 
   let { data }: { data: PageData & { workoutForm: SuperValidated<Infer<WorkoutFormSchema>> } } = $props();
@@ -41,6 +51,26 @@
   let isDeleting = $state(false);
   let deleteDialogOpen = $state<boolean[]>([]);
   let deleteExerciseDialogOpen = $state<Record<string, boolean>>({});
+  // svelte-ignore state_referenced_locally
+  let exerciseNotesOpen = $state<Record<string, boolean>>(
+    data.workoutForm.data.workout_days.reduce<Record<string, boolean>>((acc, day, dIdx) => {
+      day.workout_exercises.forEach((ex, eIdx) => {
+        if (ex.notes?.trim()) {
+          acc[`${dIdx}-${eIdx}`] = true;
+        }
+      });
+      return acc;
+    }, {})
+  );
+  // svelte-ignore state_referenced_locally
+  let dayNotesOpen = $state<Record<number, boolean>>(
+    data.workoutForm.data.workout_days.reduce<Record<number, boolean>>((acc, day, dIdx) => {
+      if (day.notes?.trim()) {
+        acc[dIdx] = true;
+      }
+      return acc;
+    }, {})
+  );
   const weekdays = WEEKDAYS;
   const workoutTypeOptions = WORKOUT_TYPE_OPTIONS;
   const workoutDifficultyOptions = WORKOUT_DIFFICULTY_OPTIONS;
@@ -189,15 +219,23 @@
 <div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-[1fr_24rem]">
   <form id="workout-form" class="order-2 flex w-full flex-col gap-6 sm:gap-8 lg:order-1" method="POST" action="?/save" use:enhance>
     <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-lg sm:p-6">
-      <div>
-        <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Setup</p>
-        <h2 class="text-2xl font-black">Basic Info</h2>
+      <div class="flex items-center gap-3">
+        <div class="flex size-12 shrink-0 items-center justify-center rounded-full border border-border bg-primary text-primary-foreground shadow-sm">
+          <ClipboardListIcon class="size-5" />
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Setup</p>
+          <h2 class="text-2xl font-black">Basic Info</h2>
+        </div>
       </div>
 
     <Form.Field form={workoutForm} name="name">
       <Form.Control>
         {#snippet children({ props })}
-          <Form.Label>Workout Routine Name</Form.Label>
+          <Form.Label class="flex items-center gap-1.5">
+            <TypeIcon class="size-4 text-muted-foreground" />
+            Workout Routine Name
+          </Form.Label>
           <Input
             {...props}
             bind:value={$formData.name}
@@ -239,7 +277,10 @@
     <Form.Field form={workoutForm} name="description">
       <Form.Control>
         {#snippet children({ props })}
-          <Form.Label>Description</Form.Label>
+          <Form.Label class="flex items-center gap-1.5">
+            <AlignLeftIcon class="size-4 text-muted-foreground" />
+            Description
+          </Form.Label>
           <Textarea {...props} bind:value={$formData.description} placeholder="Enter a brief description of your workout routine" />
         {/snippet}
       </Form.Control>
@@ -250,7 +291,10 @@
       <Form.Field form={workoutForm} name="workout_type">
         <Form.Control>
           {#snippet children()}
-            <Form.Label>Workout Type</Form.Label>
+            <Form.Label class="flex items-center gap-1.5">
+              <DumbbellIcon class="size-4 text-muted-foreground" />
+              Workout Type
+            </Form.Label>
             <Select.Root type="single" bind:value={$formData.workout_type}>
               <Select.Trigger class="w-full">{workoutTypeLabel}</Select.Trigger>
               <Select.Content>
@@ -269,7 +313,10 @@
       <Form.Field form={workoutForm} name="workout_difficulty">
         <Form.Control>
           {#snippet children()}
-            <Form.Label>Difficulty</Form.Label>
+            <Form.Label class="flex items-center gap-1.5">
+              <GaugeIcon class="size-4 text-muted-foreground" />
+              Difficulty
+            </Form.Label>
             <Select.Root type="single" bind:value={$formData.workout_difficulty}>
               <Select.Trigger class="w-full">{workoutDifficultyLabel}</Select.Trigger>
               <Select.Content>
@@ -288,53 +335,75 @@
   </div>
 
   <div class="flex flex-col gap-5 rounded-4xl border border-border bg-card p-4 shadow-lg sm:p-6">
-    <div>
-      <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Training days</p>
-      <h2 class="text-2xl font-black">Schedule</h2>
+    <div class="flex items-center gap-3">
+      <div class="flex size-12 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-secondary-foreground shadow-sm">
+        <CalendarDaysIcon class="size-5" />
+      </div>
+      <div>
+        <p class="text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">Training days</p>
+        <h2 class="text-2xl font-black">Schedule</h2>
+      </div>
     </div>
 
-    <Button
-      type="button"
-      class="w-full sm:w-fit gap-2"
-      onclick={() => {
-        $formData.uses_numbered_days = !$formData.uses_numbered_days;
-        $formData = $formData;
-      }}
-    >
-      {#if $formData.uses_numbered_days}
-        <CalendarDaysIcon class="size-4" />
-        Use Weekdays
-      {:else}
-        <ListOrderedIcon class="size-4" />
-        Use Numbered Days
-      {/if}
-    </Button>
+    <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      <Button
+        type="button"
+        variant="outline"
+        class="w-full sm:w-fit gap-2"
+        onclick={() => {
+          $formData.uses_numbered_days = !$formData.uses_numbered_days;
+          $formData = $formData;
+        }}
+      >
+        {#if $formData.uses_numbered_days}
+          <CalendarDaysIcon class="size-4" />
+          Use Weekdays
+        {:else}
+          <ListOrderedIcon class="size-4" />
+          Use Numbered Days
+        {/if}
+      </Button>
 
-    <Button class="w-full sm:w-fit" onclick={() => {
-      $formData.workout_days.push({
-        day_focus: undefined,
-        marked_for_deletion: false,
-        workout_exercises: []
-      });
-      $formData = $formData;
-    }}>Add Day</Button>
+      <Button class="w-full sm:w-fit gap-2" onclick={() => {
+        $formData.workout_days.push({
+          day_focus: undefined,
+          marked_for_deletion: false,
+          workout_exercises: []
+        });
+        $formData = $formData;
+      }}>
+        <PlusIcon class="size-4" />
+        Add Day
+      </Button>
+    </div>
 
     <Accordion.Root class="rounded-4xl border border-border bg-background dark:bg-muted" type="single" value="0">
       {#each $formData.workout_days as day, index}
         <Accordion.Item value={index.toString()} class="border-b border-border last:border-b-0">
           <AccordionPrimitive.Header level={3} class="flex flex-wrap items-start gap-2 px-3 transition-colors hover:bg-muted/60 sm:flex-nowrap sm:items-center sm:px-4">
             <AccordionPrimitive.Trigger
-              class="ring-offset-background focus-visible:border-ring focus-visible:ring-ring min-w-0 flex flex-1 items-center gap-2 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring focus-visible:ring-offset-2 sm:py-4 sm:text-base [&[data-state=open]>svg]:rotate-180"
+              class="ring-offset-background focus-visible:border-ring focus-visible:ring-ring min-w-0 flex flex-1 items-center gap-3 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring focus-visible:ring-offset-2 sm:py-4 sm:text-base [&>svg.chevron]:rotate-0 [&[data-state=open]>svg.chevron]:rotate-180"
             >
-              <ChevronDownIcon
-                class="text-muted-foreground pointer-events-none size-4 shrink-0 transition-transform duration-200"
-              />
-              <span class="min-w-0 wrap-break-word">
-                {getDayTitle(index, $formData.uses_numbered_days)}
-                {#if day.day_focus?.trim()}
-                  <span class="text-xs text-muted-foreground wrap-break-word sm:text-sm">{' - '}{day.day_focus}</span>
+              <span class="flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-primary text-xs font-black text-primary-foreground shadow-sm sm:size-10 sm:text-sm">
+                {#if $formData.uses_numbered_days}
+                  {index + 1}
+                {:else}
+                  {weekdays[index % weekdays.length].slice(0, 3)}
                 {/if}
               </span>
+              <span class="min-w-0 flex-1 wrap-break-word">
+                <span class="block">{getDayTitle(index, $formData.uses_numbered_days)}</span>
+                {#if day.day_focus?.trim()}
+                  <span class="block text-xs font-bold text-muted-foreground wrap-break-word sm:text-sm">{day.day_focus}</span>
+                {:else}
+                  <span class="block text-xs font-bold text-muted-foreground/70 sm:text-sm">
+                    {day.workout_exercises.length} {day.workout_exercises.length === 1 ? 'exercise' : 'exercises'}
+                  </span>
+                {/if}
+              </span>
+              <ChevronDownIcon
+                class="chevron text-muted-foreground pointer-events-none size-4 shrink-0 transition-transform duration-200"
+              />
             </AccordionPrimitive.Trigger>
 
             <AlertDialog.Root
@@ -376,147 +445,220 @@
             <Form.Field form={workoutForm} name="workout_days[{index}].day_focus">
               <Form.Control>
                 {#snippet children({ props })}
-                  <Form.Label>Daily Focus</Form.Label>
+                  <Form.Label class="flex items-center gap-1.5">
+                    <TargetIcon class="size-4 text-muted-foreground" />
+                    Daily Focus
+                  </Form.Label>
                   <Input {...props} placeholder="e.g. Push, Pull, Legs" bind:value={$formData.workout_days[index].day_focus} />
                 {/snippet}
               </Form.Control>
               <Form.FieldErrors />
             </Form.Field>
 
-            <Form.Field form={workoutForm} name="workout_days[{index}].notes">
-              <Form.Control>
-                {#snippet children({ props })}
-                  <Form.Label>Day Notes</Form.Label>
-                  <Textarea {...props} bind:value={$formData.workout_days[index].notes} placeholder="Optional notes for this day" />
-                {/snippet}
-              </Form.Control>
-              <Form.FieldErrors />
-            </Form.Field>
+            <Collapsible.Root
+              open={dayNotesOpen[index] ?? false}
+              onOpenChange={(v) => (dayNotesOpen = { ...dayNotesOpen, [index]: v })}
+            >
+              {#if !(dayNotesOpen[index] ?? false)}
+                <Collapsible.Trigger
+                  type="button"
+                  class={buttonVariants({ variant: 'outline', size: 'sm', class: 'w-full gap-1.5 sm:w-fit' })}
+                >
+                  <StickyNoteIcon class="size-4" />
+                  Add day notes
+                </Collapsible.Trigger>
+              {/if}
+              <Collapsible.Content>
+                <Form.Field form={workoutForm} name="workout_days[{index}].notes">
+                  <Form.Control>
+                    {#snippet children({ props })}
+                      <Form.Label class="flex items-center gap-1.5">
+                        <StickyNoteIcon class="size-4 text-muted-foreground" />
+                        Day Notes
+                      </Form.Label>
+                      <Textarea {...props} bind:value={$formData.workout_days[index].notes} placeholder="Optional notes for this day" />
+                    {/snippet}
+                  </Form.Control>
+                  <Form.FieldErrors />
+                </Form.Field>
+              </Collapsible.Content>
+            </Collapsible.Root>
 
-            <Button class="w-full sm:w-fit" onclick={() => {
-              $formData.workout_days[index].workout_exercises.push({
-                name: '',
-                weight: undefined,
-                sets: 4,
-                reps: 10,
-                notes: undefined,
-              });
-              $formData = $formData;
-            }}>Add Exercise</Button>
+            <div class="flex items-center justify-between gap-2 border-t border-border pt-4">
+              <div>
+                <p class="text-xs font-black uppercase tracking-[0.12em] text-muted-foreground">Exercises</p>
+                <p class="text-sm font-black">{$formData.workout_days[index].workout_exercises.length} added</p>
+              </div>
+              <Button class="gap-1.5" onclick={() => {
+                $formData.workout_days[index].workout_exercises.push({
+                  name: '',
+                  weight: undefined,
+                  sets: 4,
+                  reps: 10,
+                  notes: undefined,
+                });
+                $formData = $formData;
+              }}>
+                <PlusIcon class="size-4" />
+                Add Exercise
+              </Button>
+            </div>
 
             {#if $formData.workout_days[index].workout_exercises.length === 0}
-              <p class="rounded-3xl border border-border bg-card px-4 py-5 text-sm font-bold text-muted-foreground dark:bg-background">No exercises added yet.</p>
+              <div class="flex flex-col items-center justify-center gap-2 rounded-3xl border border-dashed border-border bg-background px-4 py-8 text-center dark:bg-background">
+                <DumbbellIcon class="size-6 text-muted-foreground" />
+                <p class="text-sm font-bold text-muted-foreground">No exercises added yet.</p>
+              </div>
             {/if}
 
             {#each $formData.workout_days[index].workout_exercises as exercise, eIndex}
-              <div class="relative flex flex-col gap-4 rounded-4xl border border-border bg-card p-4 shadow-md dark:bg-card sm:p-5">
-                <AlertDialog.Root
-                  open={deleteExerciseDialogOpen[getExerciseDialogKey(index, eIndex)] ?? false}
-                  onOpenChange={(open) => setDeleteExerciseDialogOpen(index, eIndex, open)}
-                >
-                  <AlertDialog.Trigger
-                    type="button"
-                    class="absolute right-3 top-3 rounded-full border border-border bg-background p-1 text-destructive shadow-xs transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted"
-                    aria-label={`Delete ${exercise.name?.trim() || 'exercise'}`}
+              {@const exerciseKey = getExerciseDialogKey(index, eIndex)}
+              <div class="flex flex-col gap-4 rounded-4xl border border-border bg-card p-4 shadow-md dark:bg-card sm:p-5">
+                <div class="flex items-start gap-3">
+                  <div class="flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-primary text-primary-foreground shadow-sm">
+                    <DumbbellIcon class="size-5" />
+                  </div>
+
+                  <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].name" class="min-w-0 flex-1 space-y-1">
+                    <Form.Control>
+                      {#snippet children({ props })}
+                        <Form.Label class="text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
+                          Exercise Name
+                        </Form.Label>
+                        <Input {...props} placeholder="e.g. Bench Press" class="font-bold" bind:value={$formData.workout_days[index].workout_exercises[eIndex].name} />
+                      {/snippet}
+                    </Form.Control>
+                    <Form.FieldErrors />
+                  </Form.Field>
+
+                  <AlertDialog.Root
+                    open={deleteExerciseDialogOpen[exerciseKey] ?? false}
+                    onOpenChange={(open) => setDeleteExerciseDialogOpen(index, eIndex, open)}
                   >
-                    <Trash2Icon class="size-4" />
-                  </AlertDialog.Trigger>
-                  <AlertDialog.Content>
-                    <AlertDialog.Header>
-                      <AlertDialog.Title>Delete this exercise?</AlertDialog.Title>
-                      <AlertDialog.Description>
-                        This exercise will be removed when you save the workout routine.
-                      </AlertDialog.Description>
-                    </AlertDialog.Header>
-                    <AlertDialog.Footer>
-                      <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
-                      <AlertDialog.Action
-                        type="button"
-                        variant="destructive"
-                        onclick={() => {
-                          markExerciseForDeletion(index, eIndex);
-                        }}
-                      >
-                        Delete
-                      </AlertDialog.Action>
-                    </AlertDialog.Footer>
-                  </AlertDialog.Content>
-                </AlertDialog.Root>
-
-                <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].name">
-                  <Form.Control>
-                    {#snippet children({ props })}
-                      <Form.Label>Exercise Name</Form.Label>
-                      <Input {...props} placeholder="e.g. Bench Press" bind:value={$formData.workout_days[index].workout_exercises[eIndex].name} />
-                    {/snippet}
-                  </Form.Control>
-                  <Form.FieldErrors />
-                </Form.Field>
-
-                <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].weight">
-                  <Form.Control>
-                    {#snippet children({ props })}
-                      <Form.Label>Weight</Form.Label>
-                      <InputGroup.Root>
-                        <InputGroup.Input
-                          {...props}
-                          type="number"
-                          bind:value={$formData.workout_days[index].workout_exercises[eIndex].weight}
-                        />
-                        <InputGroup.Addon align="inline-end">
-                          <InputGroup.Text>lbs</InputGroup.Text>
-                          <InputGroup.Button
-                            type="button"
-                            size="icon-xs"
-                            variant="outline"
-                            aria-label="Clear weight"
-                            disabled={$formData.workout_days[index].workout_exercises[eIndex].weight === undefined}
-                            onclick={() => {
-                              $formData.workout_days[index].workout_exercises[eIndex].weight = undefined;
-                              $formData = $formData;
-                            }}
-                          >
-                            <XIcon />
-                          </InputGroup.Button>
-                        </InputGroup.Addon>
-                      </InputGroup.Root>
-                      <Form.Description>Weight is not required.</Form.Description>
-                    {/snippet}
-                  </Form.Control>
-                  <Form.FieldErrors />
-                </Form.Field>
-
-                <div class="grid grid-cols-2 gap-4">
-                  <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].sets">
-                    <Form.Control>
-                      {#snippet children({ props })}
-                        <Form.Label>Sets</Form.Label>
-                        <Input {...props} type="number" bind:value={$formData.workout_days[index].workout_exercises[eIndex].sets} />
-                      {/snippet}
-                    </Form.Control>
-                    <Form.FieldErrors />
-                  </Form.Field>
-
-                  <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].reps">
-                    <Form.Control>
-                      {#snippet children({ props })}
-                        <Form.Label>Reps</Form.Label>
-                        <Input {...props} type="number" bind:value={$formData.workout_days[index].workout_exercises[eIndex].reps} />
-                      {/snippet}
-                    </Form.Control>
-                    <Form.FieldErrors />
-                  </Form.Field>
+                    <AlertDialog.Trigger
+                      type="button"
+                      class="mt-5 shrink-0 rounded-full border border-border bg-background p-2 text-destructive shadow-xs transition-colors hover:bg-destructive hover:text-primary-foreground dark:bg-muted"
+                      aria-label={`Delete ${exercise.name?.trim() || 'exercise'}`}
+                    >
+                      <Trash2Icon class="size-4" />
+                    </AlertDialog.Trigger>
+                    <AlertDialog.Content>
+                      <AlertDialog.Header>
+                        <AlertDialog.Title>Delete this exercise?</AlertDialog.Title>
+                        <AlertDialog.Description>
+                          This exercise will be removed when you save the workout routine.
+                        </AlertDialog.Description>
+                      </AlertDialog.Header>
+                      <AlertDialog.Footer>
+                        <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
+                        <AlertDialog.Action
+                          type="button"
+                          variant="destructive"
+                          onclick={() => {
+                            markExerciseForDeletion(index, eIndex);
+                          }}
+                        >
+                          Delete
+                        </AlertDialog.Action>
+                      </AlertDialog.Footer>
+                    </AlertDialog.Content>
+                  </AlertDialog.Root>
                 </div>
 
-                <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].notes">
-                  <Form.Control>
-                    {#snippet children({ props })}
-                      <Form.Label>Exercise Notes</Form.Label>
-                      <Textarea {...props} bind:value={$formData.workout_days[index].workout_exercises[eIndex].notes} placeholder="Optional cues, tempo, rest time, or substitutions" />
-                    {/snippet}
-                  </Form.Control>
-                  <Form.FieldErrors />
-                </Form.Field>
+                <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                  <div class="flex flex-col gap-1.5 rounded-3xl border border-border bg-background p-3 dark:bg-muted">
+                    <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].weight" class="space-y-1.5">
+                      <Form.Control>
+                        {#snippet children({ props })}
+                          <Form.Label class="flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
+                            <WeightIcon class="size-3" />
+                            Weight
+                          </Form.Label>
+                          <Input
+                            {...props}
+                            type="number"
+                            placeholder="—"
+                            class="h-9 px-2 text-base font-black"
+                            bind:value={$formData.workout_days[index].workout_exercises[eIndex].weight}
+                          />
+                          <div class="flex items-center justify-between gap-1 text-[10px] font-bold text-muted-foreground">
+                            <span>lbs</span>
+                            {#if $formData.workout_days[index].workout_exercises[eIndex].weight !== undefined}
+                              <button
+                                type="button"
+                                class="underline transition-colors hover:text-foreground"
+                                onclick={() => {
+                                  $formData.workout_days[index].workout_exercises[eIndex].weight = undefined;
+                                  $formData = $formData;
+                                }}
+                              >Clear</button>
+                            {/if}
+                          </div>
+                        {/snippet}
+                      </Form.Control>
+                      <Form.FieldErrors />
+                    </Form.Field>
+                  </div>
+
+                  <div class="flex flex-col gap-1.5 rounded-3xl border border-border bg-background p-3 dark:bg-muted">
+                    <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].sets" class="space-y-1.5">
+                      <Form.Control>
+                        {#snippet children({ props })}
+                          <Form.Label class="flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
+                            <LayersIcon class="size-3" />
+                            Sets
+                          </Form.Label>
+                          <Input {...props} type="number" class="h-9 px-2 text-base font-black" bind:value={$formData.workout_days[index].workout_exercises[eIndex].sets} />
+                        {/snippet}
+                      </Form.Control>
+                      <Form.FieldErrors />
+                    </Form.Field>
+                  </div>
+
+                  <div class="flex flex-col gap-1.5 rounded-3xl border border-border bg-background p-3 dark:bg-muted">
+                    <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].reps" class="space-y-1.5">
+                      <Form.Control>
+                        {#snippet children({ props })}
+                          <Form.Label class="flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.12em] text-muted-foreground">
+                            <RepeatIcon class="size-3" />
+                            Reps
+                          </Form.Label>
+                          <Input {...props} type="number" class="h-9 px-2 text-base font-black" bind:value={$formData.workout_days[index].workout_exercises[eIndex].reps} />
+                        {/snippet}
+                      </Form.Control>
+                      <Form.FieldErrors />
+                    </Form.Field>
+                  </div>
+                </div>
+
+                <Collapsible.Root
+                  open={exerciseNotesOpen[exerciseKey] ?? false}
+                  onOpenChange={(v) => (exerciseNotesOpen = { ...exerciseNotesOpen, [exerciseKey]: v })}
+                >
+                  {#if !(exerciseNotesOpen[exerciseKey] ?? false)}
+                    <Collapsible.Trigger
+                      type="button"
+                      class={buttonVariants({ variant: 'outline', size: 'sm', class: 'w-full gap-1.5 sm:w-fit' })}
+                    >
+                      <StickyNoteIcon class="size-4" />
+                      Add notes
+                    </Collapsible.Trigger>
+                  {/if}
+                  <Collapsible.Content>
+                    <Form.Field form={workoutForm} name="workout_days[{index}].workout_exercises[{eIndex}].notes">
+                      <Form.Control>
+                        {#snippet children({ props })}
+                          <Form.Label class="flex items-center gap-1.5">
+                            <StickyNoteIcon class="size-4 text-muted-foreground" />
+                            Exercise Notes
+                          </Form.Label>
+                          <Textarea {...props} bind:value={$formData.workout_days[index].workout_exercises[eIndex].notes} placeholder="Optional cues, tempo, rest time, or substitutions" />
+                        {/snippet}
+                      </Form.Control>
+                      <Form.FieldErrors />
+                    </Form.Field>
+                  </Collapsible.Content>
+                </Collapsible.Root>
               </div>
             {/each}
           </Accordion.Content>
