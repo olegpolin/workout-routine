@@ -60,7 +60,7 @@
 
 <Seo />
 
-<div class="mx-auto flex w-full max-w-6xl flex-col gap-12 py-6 sm:gap-16 sm:py-10">
+<div class="mx-auto flex w-full max-w-6xl flex-col gap-20 py-6 sm:gap-28 sm:py-10">
   <section class="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
     <div class="flex flex-col items-start gap-5 text-left">
       <span class="inline-flex items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-sm">
