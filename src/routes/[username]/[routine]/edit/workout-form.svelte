@@ -380,7 +380,7 @@
     <Accordion.Root class="rounded-4xl border border-border bg-background dark:bg-muted" type="single" value="0">
       {#each $formData.workout_days as day, index}
         <Accordion.Item value={index.toString()} class="border-b border-border last:border-b-0">
-          <AccordionPrimitive.Header level={3} class="flex flex-wrap items-start gap-2 px-3 transition-colors hover:bg-muted/60 sm:flex-nowrap sm:items-center sm:px-4">
+          <AccordionPrimitive.Header level={3} class="flex flex-wrap items-center gap-2 px-3 transition-colors hover:bg-muted/60 sm:flex-nowrap sm:px-4">
             <AccordionPrimitive.Trigger
               class="ring-offset-background focus-visible:border-ring focus-visible:ring-ring min-w-0 flex flex-1 items-center gap-3 rounded-3xl py-3 pr-1 text-left text-sm font-black outline-none transition-all hover:no-underline focus-visible:ring focus-visible:ring-offset-2 sm:py-4 sm:text-base [&>svg.chevron]:rotate-0 [&[data-state=open]>svg.chevron]:rotate-180"
             >
