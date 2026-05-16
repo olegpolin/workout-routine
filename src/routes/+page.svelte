@@ -96,7 +96,8 @@
       </div>
     </div>
 
-    <div class="rounded-4xl border border-border bg-card p-4 shadow-lg sm:p-5">
+    <div class="lg:perspective-distant">
+    <div class="rounded-4xl border border-border bg-card p-4 shadow-lg transition-transform duration-700 ease-out will-change-transform sm:p-5 lg:rotate-x-[8deg] lg:rotate-y-[-14deg] lg:hover:rotate-x-0 lg:hover:rotate-y-0">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -163,6 +164,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </section>
 
