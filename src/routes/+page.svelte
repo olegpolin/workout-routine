@@ -60,7 +60,7 @@
 
 <Seo />
 
-<div class="mx-auto flex w-full max-w-6xl flex-col gap-20 py-6 sm:gap-28 sm:py-10">
+<div class="mx-auto flex w-full max-w-6xl flex-col gap-24 py-6 sm:gap-40 sm:py-12">
   <section class="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
     <div class="flex flex-col items-start gap-5 text-left">
       <span class="inline-flex items-center gap-2 rounded-4xl border border-border bg-secondary px-4 py-2 text-sm font-bold text-secondary-foreground shadow-sm">
@@ -168,8 +168,8 @@
     </div>
   </section>
 
-  <section class="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
-    <div class="rounded-4xl border border-border bg-primary p-6 text-primary-foreground shadow-lg sm:p-7">
+  <section class="grid gap-8 sm:gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+    <div class="rounded-4xl border border-border bg-primary p-6 text-primary-foreground shadow-lg sm:p-7 lg:-rotate-1">
       <p class="text-xs font-black uppercase tracking-[0.16em]">Routine builder</p>
       <h2 class="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Everything your split needs before it leaves your head.</h2>
       <p class="mt-4 text-base font-bold leading-7">
@@ -181,10 +181,10 @@
       </a>
     </div>
 
-    <div class="grid gap-5 md:grid-cols-3">
+    <div class="grid gap-6 md:grid-cols-3 md:gap-8">
       {#each buildFeatures as feature}
         {@const FeatureIcon = feature.icon}
-        <article class="rounded-4xl border border-border bg-card p-5 text-left shadow-md">
+        <article class="rounded-4xl border border-border bg-card p-5 text-left shadow-md transition-transform duration-500 ease-out hover:-translate-y-1 hover:rotate-0 md:-rotate-1 md:even:translate-y-6 md:even:rotate-1">
           <div class="mb-4 flex size-12 items-center justify-center rounded-full border border-border bg-secondary text-secondary-foreground">
             <FeatureIcon class="size-5" />
           </div>
@@ -195,11 +195,11 @@
     </div>
   </section>
 
-  <section class="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-    <div class="grid gap-5 md:grid-cols-3">
+  <section class="grid gap-8 sm:gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+    <div class="grid gap-6 md:grid-cols-3 md:gap-8">
       {#each shareFeatures as feature}
         {@const FeatureIcon = feature.icon}
-        <article class="rounded-4xl border border-border bg-card p-5 text-left shadow-md">
+        <article class="rounded-4xl border border-border bg-card p-5 text-left shadow-md transition-transform duration-500 ease-out hover:-translate-y-1 hover:rotate-0 md:translate-y-6 md:rotate-1 md:even:translate-y-0 md:even:-rotate-1">
           <div class="mb-4 flex size-12 items-center justify-center rounded-full border border-border bg-accent text-accent-foreground">
             <FeatureIcon class="size-5" />
           </div>
@@ -209,7 +209,7 @@
       {/each}
     </div>
 
-    <div class="rounded-4xl border border-border bg-secondary p-6 text-secondary-foreground shadow-lg sm:p-7">
+    <div class="rounded-4xl border border-border bg-secondary p-6 text-secondary-foreground shadow-lg sm:p-7 lg:rotate-1">
       <p class="text-xs font-black uppercase tracking-[0.16em]">Shareable workout pages</p>
       <h2 class="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Make a routine that is useful after you send it.</h2>
       <p class="mt-4 text-base font-bold leading-7">
@@ -242,8 +242,8 @@
         </div>
       </div>
 
-      <div class="grid gap-3 sm:grid-cols-2">
-        <div class="rounded-3xl border border-border bg-background p-4 dark:bg-muted">
+      <div class="grid gap-5 sm:grid-cols-2 sm:gap-6">
+        <div class="rounded-3xl border border-border bg-background p-4 transition-transform duration-500 ease-out hover:-translate-y-1 hover:rotate-0 sm:-rotate-1 dark:bg-muted">
           <div class="mb-4 flex items-center gap-2 text-sm font-black text-primary">
             <SearchIcon class="size-4" />
             Search and filter
@@ -254,7 +254,7 @@
             <span class="rounded-4xl border border-border bg-accent px-3 py-1 text-xs font-black text-accent-foreground">Following</span>
           </div>
         </div>
-        <div class="rounded-3xl border border-border bg-background p-4 dark:bg-muted">
+        <div class="rounded-3xl border border-border bg-background p-4 transition-transform duration-500 ease-out hover:-translate-y-1 hover:rotate-0 sm:translate-y-6 sm:rotate-1 dark:bg-muted">
           <div class="mb-4 flex items-center gap-2 text-sm font-black text-primary">
             <UserRoundIcon class="size-4" />
             Profiles and favorites
