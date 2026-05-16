@@ -186,7 +186,7 @@
 </script>
 
 <div class="w-full flex flex-col gap-8">
-<div class="sticky top-0 z-20 flex w-full flex-col gap-3 border-b border-border bg-background/95 pt-4 pb-4 lg:hidden dark:bg-background/95">
+<div class="sticky top-0 z-20 -mx-5 flex flex-col gap-3 border-b border-border bg-background px-5 pt-4 pb-4 sm:-mx-14 sm:px-14 md:-mx-22 md:px-22 lg:hidden">
   {#if $tainted}
     <Alert.Root class="border border-border bg-secondary text-secondary-foreground shadow-sm [&>svg]:text-secondary-foreground">
       <TriangleAlertIcon />
