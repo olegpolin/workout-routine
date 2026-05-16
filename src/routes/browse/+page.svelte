@@ -11,6 +11,7 @@
   import GaugeIcon from '@lucide/svelte/icons/gauge';
   import UsersIcon from '@lucide/svelte/icons/users';
   import SearchIcon from '@lucide/svelte/icons/search';
+  import XIcon from '@lucide/svelte/icons/x';
 
   let { data }: PageProps = $props();
 
@@ -144,20 +145,27 @@
       </p>
     </div>
 
-    <form class="w-full max-w-xl mt-4 flex items-center gap-2" onsubmit={handleSearchSubmit}>
+    <form class="mt-4 flex w-full max-w-xl items-center gap-2" onsubmit={handleSearchSubmit}>
       <Input
         name="search"
         type="search"
         value={data.search ?? ''}
         placeholder="Search routine, exercise, or creator"
         aria-label="Search workouts"
+        class="min-w-0 flex-1"
       />
-      <Button type="submit">
+      <Button type="submit" size="icon" class="sm:hidden" aria-label="Search">
+        <SearchIcon class="size-4" />
+      </Button>
+      <Button type="submit" class="hidden sm:inline-flex">
         <SearchIcon class="size-4" />
         Search
       </Button>
       {#if data.search}
-        <Button type="button" variant="outline" onclick={clearSearch}>Clear</Button>
+        <Button type="button" variant="outline" size="icon" class="sm:hidden" aria-label="Clear search" onclick={clearSearch}>
+          <XIcon class="size-4" />
+        </Button>
+        <Button type="button" variant="outline" class="hidden sm:inline-flex" onclick={clearSearch}>Clear</Button>
       {/if}
     </form>
 
