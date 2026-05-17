@@ -18,6 +18,16 @@
   const workoutTypeOptions = WORKOUT_TYPE_FILTER_OPTIONS;
   const workoutDifficultyOptions = WORKOUT_DIFFICULTY_FILTER_OPTIONS;
 
+  let searchText = $state(data.search ?? '');
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  $effect(() => {
+    const fromData = data.search ?? '';
+    if (debounceTimer === null) {
+      searchText = fromData;
+    }
+  });
+
   const browseHref = (
     page: number,
     workoutType: string | null = data.workoutType,
@@ -95,19 +105,8 @@
     });
   };
 
-  const handleSearchSubmit = async (event: Event) => {
-    event.preventDefault();
-
-    const searchForm = event.currentTarget;
-    if (!(searchForm instanceof HTMLFormElement)) {
-      return;
-    }
-
-    const formData = new FormData(searchForm);
-    const formSearchValue = formData.get('search');
-    const formSearchText = typeof formSearchValue === 'string' ? formSearchValue : '';
-
-    const nextSearch = formSearchText.trim() || null;
+  const runSearch = async (nextSearchText: string) => {
+    const nextSearch = nextSearchText.trim() || null;
 
     if (nextSearch === data.search) {
       return;
@@ -119,7 +118,42 @@
     });
   };
 
+  const handleSearchInput = (event: Event) => {
+    const target = event.currentTarget;
+    if (!(target instanceof HTMLInputElement)) {
+      return;
+    }
+
+    searchText = target.value;
+
+    if (debounceTimer !== null) {
+      clearTimeout(debounceTimer);
+    }
+    debounceTimer = setTimeout(() => {
+      debounceTimer = null;
+      runSearch(searchText);
+    }, 300);
+  };
+
+  const handleSearchSubmit = async (event: Event) => {
+    event.preventDefault();
+
+    if (debounceTimer !== null) {
+      clearTimeout(debounceTimer);
+      debounceTimer = null;
+    }
+
+    await runSearch(searchText);
+  };
+
   const clearSearch = async () => {
+    if (debounceTimer !== null) {
+      clearTimeout(debounceTimer);
+      debounceTimer = null;
+    }
+
+    searchText = '';
+
     if (!data.search) {
       return;
     }
@@ -149,7 +183,8 @@
       <Input
         name="search"
         type="search"
-        value={data.search ?? ''}
+        value={searchText}
+        oninput={handleSearchInput}
         placeholder="Search routine, exercise, or creator"
         aria-label="Search workouts"
         class="min-w-0 flex-1"
